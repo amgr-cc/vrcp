@@ -6,7 +6,7 @@ import CardViewWorld from "@/components/view/item-CardView/CardViewWorld";
 import LoadingIndicator from "@/components/view/LoadingIndicator";
 import SelectGroupButton from "@/components/view/SelectGroupButton";
 import { spacing } from "@/config/styles";
-import useVRChat from "@/contexts/VRChatContext";
+import { useVRChat } from "@/contexts/VRChatContext";
 import { extractErrMsg } from "@/lib/extractErrMsg";
 import { routeToAvatar, routeToUser, routeToWorld } from "@/lib/route";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";

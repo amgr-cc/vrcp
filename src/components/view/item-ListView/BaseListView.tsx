@@ -23,13 +23,14 @@ const BaseListView = <T,>({ data, onPress, onLongPress, title, subtitles, Overla
   const theme = useTheme();
   const resolvedTitle = typeof title === "function" ? title(data) : title;
   const resolvedSubtitles = typeof subtitles === "function" ? subtitles(data) : subtitles;
+  const subTitleStyles = resolvedSubtitles?.map((subtitle) => subtitle.startsWith("*") && subtitle.endsWith("*") ? { fontStyle: "italic", color: theme.colors.subText } : {});
   return (
     <View style={[styles.root, rest.style]}  {...omitObject(rest, "style", "ContainerStyle", "TitleStyle", "SubtitleStyle")}>
     <TouchableOpacity onPress={onPress} onLongPress={onLongPress} style={[styles.base, { backgroundColor: theme.colors.card }]}>
       <View style={[styles.container, rest.ContainerStyle]}>
         <Text style={[styles.title, rest.TitleStyle]} numberOfLines={1}>{resolvedTitle}</Text>
         {resolvedSubtitles && resolvedSubtitles.map((subtitle, index) => (
-          <Text key={index} style={[styles.subtitle, rest.SubtitleStyle]} numberOfLines={1}>{subtitle}</Text>
+          <Text key={index} style={[styles.subtitle, subTitleStyles?.[index] , rest.SubtitleStyle]} numberOfLines={1}>{subtitle}</Text>
         ))}
       </View>
       <View style={styles.overlap}>

@@ -5,7 +5,7 @@ import DevelopperModal from "@/components/screen/settings/DevelopperModal";
 import IconSymbol from "@/components/view/icon-components/IconView";
 import { SupportedIconNames } from "@/components/view/icon-components/utils";
 import globalStyles, { fontSize, spacing } from "@/config/styles";
-import useAuth from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@react-navigation/native";
 import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";

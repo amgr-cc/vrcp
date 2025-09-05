@@ -3,7 +3,7 @@ import { extractErrMsg } from "@/lib/extractErrMsg";
 import { router } from "expo-router";
 import Storage from 'expo-sqlite/kv-store';
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import useVRChat from "./VRChatContext";
+import { useVRChat } from "./VRChatContext";
 
 type AuthUser = {
   id?: string;
@@ -191,6 +191,5 @@ const AuthProvider: React.FC<{ children?: ReactNode }> = ({children}) => {
 
 
 
-export default useAuth
-export { AuthProvider };
+export { AuthProvider, useAuth };
 

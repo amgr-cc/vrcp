@@ -6,7 +6,7 @@ import CardViewUserDetail from "@/components/view/item-CardView/detail/CardViewU
 import LoadingIndicator from "@/components/view/LoadingIndicator";
 import { fontSize, radius, spacing } from "@/config/styles";
 import { CachedImage } from "@/contexts/CacheContext";
-import useVRChat from "@/contexts/VRChatContext";
+import { useVRChat } from "@/contexts/VRChatContext";
 import { extractErrMsg } from "@/lib/extractErrMsg";
 import { getInstanceType, parseLocationString } from "@/lib/vrchatUtils";
 import { useTheme } from "@react-navigation/native";

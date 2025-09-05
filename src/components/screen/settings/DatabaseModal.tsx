@@ -1,7 +1,7 @@
 import GenericModal from "@/components/layout/GenericModal";
 import LoadingIndicator from "@/components/view/LoadingIndicator";
 import globalStyles, { spacing } from "@/config/styles";
-import useCache from "@/contexts/CacheContext";
+import { useCache } from "@/contexts/CacheContext";
 import { Button, Text } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
 import { useEffect, useState } from "react";

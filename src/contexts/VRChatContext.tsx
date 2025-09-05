@@ -33,7 +33,7 @@ const VRChatProvider: React.FC<{ children?: ReactNode }> = ({children}) => {
   // setting up VRChat client with application details
   const name = Constants.expoConfig?.name || "vrcmm";
   const version = Constants.expoConfig?.version || "0.0.0-dev";
-  const contact = Constants.expoConfig?.extra?.vrcmm?.contact || "dev@example.com";
+  const contact = Constants.expoConfig?.extra?.vrcmm?.contact || "dev@ktrn.dev";
   const [config, setConfig] = useState<Configuration>();
   const configure = (user: { username?: string; password?: string }) => {
     const newConfig = new Configuration({
@@ -70,6 +70,5 @@ const VRChatProvider: React.FC<{ children?: ReactNode }> = ({children}) => {
 
 
 
-export default useVRChat
-export { VRChatProvider };
+export { useVRChat, VRChatProvider };
 

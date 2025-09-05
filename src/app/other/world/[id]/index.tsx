@@ -8,7 +8,7 @@ import ListViewInstance, { MinInstance } from "@/components/view/item-ListView/L
 import LoadingIndicator from "@/components/view/LoadingIndicator";
 import SelectGroupButton from "@/components/view/SelectGroupButton";
 import { fontSize, radius, spacing } from "@/config/styles";
-import useVRChat from "@/contexts/VRChatContext";
+import { useVRChat } from "@/contexts/VRChatContext";
 import { formatToDateTime } from "@/lib/date";
 import { extractErrMsg } from "@/lib/extractErrMsg";
 import { getAuthorTags, getWorldPlatform, parseInstanceId } from "@/lib/vrchatUtils";

@@ -5,7 +5,7 @@ import * as Crypto from 'expo-crypto';
 import * as FileSystem from 'expo-file-system';
 import React, { createContext, ReactNode, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Image } from "react-native";
-import useVRChat from "./VRChatContext";
+import { useVRChat } from "./VRChatContext";
 
 // Image Cache in Storage
 interface Cache<T> {
@@ -62,18 +62,16 @@ const CacheProvider: React.FC<{ children?: ReactNode }> = ({children}) => {
   }, [])
 
   /// Cache Getters
-  const getRawImage = async (url: string) => (await fetch (url, { headers: vrc.config?.baseOptions["headers"] || {} })).blob();
-
   const getWorld = async (id: string) => (await vrc.worldsApi.getWorld(id)).data;
   const getUser = async (id: string) => (await vrc.usersApi.getUser(id)).data;
-  const wrappers = useMemo(() => ({
+  // Initialize cached images (called when clear cache and on mount)
+  useEffect(initCachedImage, [initTrigger.current]); // for images
+  const wrappers = useMemo(() => ({ // for other data
     user: initCacheWrapper<User>("users/", getUser),
     world: initCacheWrapper<World>("worlds/", getWorld),
-  }), [initTrigger.current, vrc.config]); // re-initiate (ex. on Clear Cache)
-  useEffect(() => {
-    initCachedImage();
-  }, [initTrigger.current]);
+  }), [initTrigger.current, vrc.config]); 
   
+
   const clearCache = async () => {
     // delete all files in cache root-dir and recreate it
     await FileSystem.deleteAsync(cacheRootDir, { idempotent: true });
@@ -222,6 +220,5 @@ const CachedImage = ({src:remoteUri , ...rest}: {src: string, [key: string]: any
 
 
 
-export default useCache
-export { CachedImage, CacheProvider };
+export { CachedImage, CacheProvider, useCache };
 

@@ -4,12 +4,12 @@ import IconSymbol from "@/components/view/icon-components/IconView";
 import LoadingIndicator from "@/components/view/LoadingIndicator";
 import globalStyles, { spacing } from "@/config/styles";
 import texts from "@/config/texts";
-import useAuth from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
 import { navigate } from "expo-router/build/global-state/routing";
 import { useRef, useState } from "react";
-import { Alert, KeyboardAvoidingView, Text, TextInput, View } from "react-native";
+import { Alert, KeyboardAvoidingView, Linking, Text, TextInput, View } from "react-native";
 
 
 // login screen
@@ -98,7 +98,7 @@ export default function Login() {
   return (
     <KeyboardAvoidingView style={{flex:1}} behavior="padding">
       <GenericScreen>
-        { (isLoadingLogin || isLoadingVerify) && <LoadingIndicator/> }
+        { (isLoadingLogin || isLoadingVerify) && <LoadingIndicator absolute/> }
         <View style={globalStyles.containerCentered}>
           <IconSymbol name="logo-dev" size={128} color={theme.colors.text} />
           <Text style={[globalStyles.text,{color: theme.colors.text}]}>{texts.welcome}</Text>
@@ -106,7 +106,7 @@ export default function Login() {
             <TextInput
               ref={usernameRef}
               style={[globalStyles.input, {color: theme.colors.text}]}
-              placeholder="Username"
+              placeholder="Username / Email"
               placeholderTextColor={theme.colors.subText}
               autoComplete="username"
               value={username}
@@ -125,14 +125,14 @@ export default function Login() {
           </View>
           <View style={globalStyles.containerHorizontal}>
             <Button  // button to navigate to sitemap (for debug)
-              style={[globalStyles.button, {flex:1}]}
+              style={[globalStyles.button]}
               color={theme.colors.primary}
-              onPress={() => navigate("/_sitemap")}
+              onPress={() => Linking.openURL("https://vrchat.com/home/register")}
             > 
-              [ Sitemap ] 
+              Create Account
             </Button>
             <Button
-              style={[globalStyles.button, globalStyles.repeatingitemHorizontal]}
+              style={[globalStyles.button, globalStyles.repeatingitemHorizontal, {flex:1}]}
               color={theme.colors.primary}
               onPress={handleLogin}
               variant="filled"
@@ -140,6 +140,14 @@ export default function Login() {
               Login 
             </Button>
           </View>
+
+          <Button  // button to navigate to sitemap (for debug)
+            style={[globalStyles.button, {transform: [{ translateY: 200 }]}]}
+            color={theme.colors.primary}
+            onPress={() => navigate("/_sitemap")}
+          > 
+            [ SiteMap ]
+          </Button>
         </View>
 
         {/* 2fa modal */}
@@ -153,6 +161,7 @@ export default function Login() {
             style={[globalStyles.input, {color: theme.colors.text}]}
             placeholder="Enter code"
             keyboardType="numeric"
+            autoComplete="one-time-code"
             placeholderTextColor={theme.colors.subText}
             value={TFACode}
             onChangeText={setTFACode}

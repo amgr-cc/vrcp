@@ -1,6 +1,6 @@
 import { World } from "@/api/vrchat";
 import { radius, spacing } from "@/config/styles";
-import useCache, { CachedImage } from "@/contexts/CacheContext";
+import { CachedImage, useCache } from "@/contexts/CacheContext";
 import { getInstanceType, getStatusColor, parseInstanceId, parseLocationString, UserLike } from "@/lib/vrchatUtils";
 import { useTheme } from "@react-navigation/native";
 import { useEffect, useState } from "react";
@@ -16,21 +16,22 @@ interface Props {
 }
 const extractTitle = (data: UserLike) => data.displayName;
 const extractSubtitles = (data: UserLike, world?: World) => {
+  const statusText = data.statusDescription !== "" ? data.statusDescription : data.status;
+  let locationText = "unknown";
   if (Object(data).hasOwnProperty("location")) {
     const { isOffline, isPrivate, parsedLocation } =  parseLocationString(Object(data).location);
-    if (isOffline) return ["offline"];
-    if (isPrivate) return ["private"];
+    if (isOffline) locationText = "* user is offline *";
+    if (isPrivate) locationText = "* user is in a private instance *";
     if (parsedLocation) {
       const parsedInstance = parseInstanceId(parsedLocation.instanceId);
       const worldName =  world?.name ?? ""
       const instanceType = parsedInstance ? getInstanceType(parsedInstance.type, parsedInstance.groupAccessType) : "";
       const instanceStr = parsedInstance ? `#${parsedInstance.name}` : "";
-      return [`${instanceType} ${instanceStr}  ${worldName}`];
+      locationText = `${instanceType} ${instanceStr}  ${worldName}`.trim();
     }
-    return ["unknown"];
-  } else {
-    return ["unknown"];
   }
+  return [statusText, locationText];
+
 };
 
 const ListViewUser = ({ user, onPress, onLongPress, ...rest }: Props) => {

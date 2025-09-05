@@ -5,7 +5,7 @@ import CardViewUser from "@/components/view/item-CardView/CardViewUser";
 import CardViewWorld from "@/components/view/item-CardView/CardViewWorld";
 import SearchBox from "@/components/view/SearchBox";
 import { spacing } from "@/config/styles";
-import useVRChat from "@/contexts/VRChatContext";
+import { useVRChat } from "@/contexts/VRChatContext";
 import { extractErrMsg } from "@/lib/extractErrMsg";
 import { routeToGroup, routeToUser, routeToWorld } from "@/lib/route";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";

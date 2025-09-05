@@ -5,7 +5,7 @@ import LinkChip from "@/components/view/chip-badge/LinkChip";
 import CardViewUserDetail from "@/components/view/item-CardView/detail/CardViewUserDetail";
 import LoadingIndicator from "@/components/view/LoadingIndicator";
 import { radius, spacing } from "@/config/styles";
-import useVRChat from "@/contexts/VRChatContext";
+import { useVRChat } from "@/contexts/VRChatContext";
 import { extractErrMsg } from "@/lib/extractErrMsg";
 import { useTheme } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";

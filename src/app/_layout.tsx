@@ -1,6 +1,7 @@
 import { darkTheme, lightTheme } from "@/config/theme";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CacheProvider } from "@/contexts/CacheContext";
+import { DataProvider } from "@/contexts/DataContext";
 import { VRChatProvider } from "@/contexts/VRChatContext";
 import { ThemeProvider } from "@react-navigation/native";
 import { Stack } from "expo-router";
@@ -23,6 +24,7 @@ export default function Root() {
     <VRChatProvider>
       <AuthProvider>
         <CacheProvider>
+          <DataProvider>
           <SafeAreaProvider>
             <SafeAreaView style={{ flex: 1 }} edges={['left', 'right']}>
               <ThemeProvider value={ useColorScheme() !== 'dark' ? lightTheme : darkTheme }>
@@ -31,6 +33,7 @@ export default function Root() {
               </ThemeProvider>
             </SafeAreaView>
           </SafeAreaProvider>
+          </DataProvider>
         </CacheProvider>
       </AuthProvider>
     </VRChatProvider>

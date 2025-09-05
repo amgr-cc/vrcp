@@ -1,18 +1,15 @@
 import GenericScreen from "@/components/layout/GenericScreen";
 import globalStyles from "@/config/styles";
 import texts from "@/config/texts";
-import useAuth from "@/contexts/AuthContext";
-import useVRChat from "@/contexts/VRChatContext";
+import { useData } from "@/contexts/DataContext";
 import { Button } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
 import { navigate } from "expo-router/build/global-state/routing";
 import { StyleSheet, Text } from "react-native";
 
 export default function Home() {
-  const vrc = useVRChat();
-  const auth = useAuth();
   const theme = useTheme();
-
+  const {currentUser} = useData();
 
   return (
     <GenericScreen>
@@ -26,7 +23,11 @@ export default function Home() {
         [ToDo]  
         - Webhook for Feed,
         - GloballyStateControl for Favorite Friend, Active-Online-Offline Friends
+      </Text>
 
+      
+      <Text style={[globalStyles.text, {color: theme.colors.text}]}>
+        {currentUser.data ? `Logged in as ${currentUser.data.displayName} (${currentUser.data.id})` : "Not logged in" }
       </Text>
     </GenericScreen>
   );
