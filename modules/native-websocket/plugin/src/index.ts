@@ -7,30 +7,33 @@ import {
 } from "@expo/config-plugins";
 import { ExpoConfig } from "@expo/config-types";
 
-type Config = {
-  apiKey: string;
+
+// https://docs.expo.dev/modules/config-plugin-and-native-module-tutorial/#create-a-new-config-plugin
+
+type ExtraConfig = {
+  moduleKey: string;
 };
 
 
 
-const withIOS = (config: ExpoConfig, ios: Config) => {
+const withIOS = (config: ExpoConfig, extra: ExtraConfig) => {
   config = withInfoPlist(config, (config) => {
-    config.modResults["SUGOI_SDK_API_KEY"] = ios.apiKey;
+    config.modResults["MODULE_KEY"] = extra.moduleKey;
     return config;
   });
-  //
+  
   return config;
 }
 
-const withAndroid = (config: ExpoConfig, android: Config) => {
+const withAndroid = (config: ExpoConfig, extra: ExtraConfig) => {
   config = withAndroidManifest(config, (config) => { // Api key
     const mainApplication = AndroidConfig.Manifest.getMainApplicationOrThrow(
       config.modResults
     );
     AndroidConfig.Manifest.addMetaDataItemToMainApplication(
       mainApplication,
-      "SUGOI_SDK_API_KEY",
-      android.apiKey
+      "MODULE_KEY",
+      extra.moduleKey
     );
     return config;
   });
@@ -56,12 +59,9 @@ const withAndroid = (config: ExpoConfig, android: Config) => {
 
 
 // apply config plugin
-const withModuleConfig: ConfigPlugin<{
-  ios: Config;
-  android: Config;
-}> = (config, { ios, android }) => {
-  config = withIOS(config, ios);
-  config = withAndroid(config, android);
+const withModuleConfig: ConfigPlugin<ExtraConfig> = (config, extra) => {
+  if (config.ios) config = withIOS(config, extra);
+  if (config.android) config = withAndroid(config, extra);
   return config;
 };
 

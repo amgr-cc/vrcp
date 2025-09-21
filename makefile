@@ -18,7 +18,7 @@ gen-vrcapi:  # generate the vrcapi types
 	@npx @openapitools/openapi-generator-cli generate -i ./src/vrchat/openapi.yaml -g typescript-axios -o ./src/vrchat/api/
 
 gen-plugins: # generate the expo plugins
-	@cd modules/native-websocket && npx expo-module build plugin
+	@cd modules/native-websocket && npx expo-module build plugin --no-watch
 
 prebuild: # pre build tasks
 	@npx expo prebuild --clean
