@@ -32,3 +32,14 @@ build-pre:  # build the application for preview
 	@eas build --profile preview --platform android
 build-submit:  # submit the application for store
 	@eas build --profile production --platform android --submit
+
+
+
+
+
+
+.PHONY : m2r r2m
+m2r:  # temporary command module to root
+	@cp -r modules/native-websocket/android/src/main/* android/app/src/debug
+r2m:  # temporary command root to module
+	@cp -r android/app/src/debug/* modules/native-websocket/android/src/main
