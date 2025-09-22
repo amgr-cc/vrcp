@@ -61,10 +61,6 @@ export default ({ config }: ConfigContext) => ({
       "expo-router",
       "expo-secure-store",
       "expo-sqlite",
-      [ // local module with config plugin  
-        "./modules/native-websocket/app.plugin.js", 
-        { moduleKey: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" } // dummy, will be replaced by build plugin
-      ],
       [
         "expo-splash-screen",
         {

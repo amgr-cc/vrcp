@@ -1,6 +1,6 @@
 import GenericScreen from "@/components/layout/GenericScreen";
 import globalStyles from "@/config/styles";
-import NativeWebsocketModule from "@modules/native-websocket/src/NativeWebsocketModule";
+import { useVRChat } from "@/contexts/VRChatContext";
 import { Button } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
 import { useEffect, useRef, useState } from "react";
@@ -17,43 +17,19 @@ const TODO_TEXT = `
 
 export default function Home() {
   const theme = useTheme();
+  const vrc = useVRChat();
 
-  // WebSocket demo
-  const [reconnectTrigger, setReconnectTrigger] = useState(0);
-  const inputRef = useRef<TextInput | null>(null);
-  const wsRef = useRef<WebSocket | null>(null);
   const [msgs, setMsgs] = useState<{
     mode: "send" | "recv" | "info",
     data: string
   }[]>([]);
-  useEffect(() => {
-    const demourl = "wss://echo.websocket.org";
-    if (wsRef.current) return ; // already connected 
-    wsRef.current = new WebSocket(demourl);
-    wsRef.current.onerror = (error) => setMsgs((prev) => [...prev, { mode: "info", data: "WebSocket error: " + JSON.stringify(error) }]);
-    wsRef.current.onopen = () => setMsgs((prev) => [...prev, { mode: "info", data: "WebSocket connected" }]);
-    wsRef.current.onmessage = (event) => setMsgs((prev) => [...prev, { mode: "recv", data: JSON.stringify(event.data) }]);
-    return () => {
-      wsRef.current?.close();
-      wsRef.current = null;
-      setMsgs([]);
-    };
-  },[reconnectTrigger]);
-  const sendMessage = (msg: string) => {
-    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-      wsRef.current.send(msg);
-      setMsgs((prev) => [...prev, { mode: "send", data: msg }]);
-    } else {
-      setMsgs((prev) => [...prev, { mode: "info", data: "WebSocket not connected" }]);
-    }
-  }
 
-  // test Native Module
-  const [nmHello, setNmHello] = useState<string>("");
   useEffect(() => {
-    setNmHello(NativeWebsocketModule.hello());
-  },[]);
-
+    if (!vrc.pipeline?.lastMessage) return ;
+    const msg = vrc.pipeline.lastMessage;
+    const ctt = JSON.stringify(msg.content, null, 2);
+    setMsgs((prev) => [...prev, {mode: "recv", data: `[${msg.type}] ${ctt}`}]);
+  }, [vrc.pipeline?.lastMessage])
 
   return (
     <GenericScreen>
@@ -61,31 +37,13 @@ export default function Home() {
       <Text style={[globalStyles.text, {color: theme.colors.text}]}>
         {TODO_TEXT}
       </Text>
-      <Text style={[globalStyles.text, {color: theme.colors.text}]}>
-        {nmHello}
-      </Text>
-
-
-
-      {/* Native WebSocket Test */}
-      <View style={styles.tmpContainer}>
-
-      </View>
       
       {/* Standard WebSocket Test */}
-      <View style={styles.tmpContainer}>
+      <View >
         <View style={{display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
-          <TextInput 
-            ref={inputRef}
-            style={{borderWidth: 1, borderColor: theme.colors.border, borderRadius: 4, padding: 8, flex: 1}} placeholder="Type a message..."
-            onSubmitEditing={(e) => {
-              sendMessage(e.nativeEvent.text);
-              inputRef.current?.clear();
-            }}
-          />
           <Button onPress={() => {
-            setReconnectTrigger((prev) => prev + 1);
-          }} > Reconnect </Button>
+            setMsgs([]);
+          }} > Clear </Button>
         </View>
         <FlatList
           data={msgs}
@@ -100,12 +58,3 @@ export default function Home() {
     </GenericScreen>
   );
 }
-
-const styles = StyleSheet.create({
-  tmpContainer: {
-    borderWidth: 1,
-    borderColor: "red",
-    borderStyle: "dashed",
-    height: "30%",
-  }
-}); 

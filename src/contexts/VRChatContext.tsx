@@ -1,17 +1,14 @@
 // VRCのAPIを使うためのContext
 import { AuthenticationApi, AvatarsApi, Configuration, FavoritesApi, FriendsApi, GroupsApi, InstancesApi, InviteApi, UsersApi, WorldsApi } from "@/vrchat/api";
-import { PipelineMessage } from "@/vrchat/pipline/type";
+import { PipelineMessage, PipelineRawMessage } from "@/vrchat/pipline/type";
 import Constants from "expo-constants";
-import { createContext, ReactNode, useContext, useRef, useState } from "react";
-
-
-type Socket = string; // or other WebSocket implementation
+import { createContext, ReactNode, use, useContext, useEffect, useRef, useState } from "react";
 
 const BASE_PIPELINE_URL = "wss://pipeline.vrchat.cloud";
 const BASE_API_URL = "https://api.vrchat.cloud/api/1";
 
 interface Pipeline {
-  socket: Socket | null;
+  client: WebSocket | null;
   lastMessage: PipelineMessage<any> | null;
   sendMessage?: (msg: object) => void; // not implemented for vrcapi
 }
@@ -51,10 +48,13 @@ const VRChatProvider: React.FC<{ children?: ReactNode }> = ({children}) => {
   const version = Constants.expoConfig?.version || "0.0.0-dev";
   const contact = Constants.expoConfig?.extra?.vrcmm?.contact || "dev@ktrn.dev";
   const [config, setConfig] = useState<Configuration>();
-  const socketRef = useRef<Socket | null>(null);
+
+  const pipelineRef = useRef<WebSocket | null>(null);
   const authTokenRef = useRef<string | null>(null); // authToken for pipeline
   const [lastJsonMessage, setLastJsonMessage] = useState<PipelineMessage<any> | null>(null);
   const MAX_RECONNECT_ATTEMPTS = 10;
+  const reconnectAttemptsRef = useRef(0);
+  const shouldReconnectRef = useRef(true);
 
   const configureAPI = (user: { username?: string; password?: string }) => {
     const newConfig = new Configuration({
@@ -72,21 +72,68 @@ const VRChatProvider: React.FC<{ children?: ReactNode }> = ({children}) => {
   // Pipeline(Websocket)  https://vrchat.community/websocket
   const configurePipeline = (authToken: string) => {
     authTokenRef.current = authToken;
+    shouldReconnectRef.current = true;
     createSocket();
     console.log("Configure VRChatContext with authToken:", authTokenRef.current);
   }
 
   const createSocket = () => {
-    if (socketRef.current) return ;
-    socketRef.current = "dummy"
+    if (pipelineRef.current) {
+      pipelineRef.current.close();
+      pipelineRef.current = null;
+    }
+    const pipeUrl = BASE_PIPELINE_URL + "?authToken=" + authTokenRef.current;
+    // @ts-ignore ignore for options param
+    pipelineRef.current = new WebSocket(pipeUrl, undefined, {headers: {'User-Agent': `${name}/${version} ${contact}` }});
+
+    pipelineRef.current.onmessage = (event) => {
+      try {
+        const raw = JSON.parse(event.data) as PipelineRawMessage;
+        const parsed: PipelineMessage = {
+          type: raw.type,
+          content: raw.content ? JSON.parse(raw.content) : null
+        };
+        setLastJsonMessage(parsed);
+      } catch (e) {
+        console.log("Failed to parse pipeline message:", event.data);
+      }
+    }
+    pipelineRef.current.onopen = () => {
+      console.log("Pipeline connected");
+      reconnectAttemptsRef.current = 0;
+    }
+    pipelineRef.current.onclose = (event) => {
+      console.log("Pipeline closed:", event.reason);
+    }
+    pipelineRef.current.onerror = (error) => {
+      console.log("Pipeline error:", error);
+      // try reconnect
+      if (shouldReconnectRef.current && reconnectAttemptsRef.current < MAX_RECONNECT_ATTEMPTS) {
+        const timeout = Math.pow(2, reconnectAttemptsRef.current) * 1000; // exponential backoff
+        console.log(`Reconnecting in ${timeout/1000} seconds...`);
+        setTimeout(() => {
+          reconnectAttemptsRef.current += 1;
+          createSocket();
+        }, timeout);
+      } else {
+        console.log("Max reconnect attempts reached. Giving up.");
+      }
+    }
+
+
   }
 
   const unConfigure = () => {
     console.log("Unconfigure VRChatContext");
     setConfig(undefined);
     authTokenRef.current = null;
-    if (socketRef.current) socketRef.current = null;
+    if (pipelineRef.current) {
+      pipelineRef.current.close();
+      pipelineRef.current = null;
+    }
   }
+
+
 
   return (
     <Context.Provider value={{
@@ -106,7 +153,7 @@ const VRChatProvider: React.FC<{ children?: ReactNode }> = ({children}) => {
       inviteApi: new InviteApi(config),
       // pipeline
       pipeline: {
-        socket: socketRef.current,
+        client: pipelineRef.current,
         lastMessage: lastJsonMessage,
         sendMessage: undefined, // not implemented for vrcapi
       }

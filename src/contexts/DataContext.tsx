@@ -48,6 +48,8 @@ const DataProvider: React.FC<{ children?: React.ReactNode }> = ({children}) => {
   const auth = useAuth();
   const vrc = useVRChat();
 
+
+  /** APIs */
   // data getters
   const getCurrentUser = async () => (await vrc.authenticationApi.getCurrentUser()).data;
   const getFavoriteGroups = async () => (await vrc.favoritesApi.getFavoriteGroups()).data;
@@ -72,8 +74,8 @@ const DataProvider: React.FC<{ children?: React.ReactNode }> = ({children}) => {
     }
   }, [auth.user]);
 
-
-
+  /** Pipelines */
+  // log pipeline messages for debug
   useEffect(() => {
     const msg = vrc.pipeline?.lastMessage;
     if (!msg) return ;
