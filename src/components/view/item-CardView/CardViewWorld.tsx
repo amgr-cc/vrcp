@@ -2,7 +2,7 @@ import { fontSize, spacing } from "@/config/styles";
 import { getWorldPlatform, WorldLike } from "@/lib/vrchatUtils";
 import { Text } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
-import { useState } from "react";
+import React, { useState } from "react";
 import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 import PlatformChips from "../chip-badge/PlatformChips";
 import IconSymbol from "../icon-components/IconView";
@@ -77,4 +77,4 @@ const styles = StyleSheet.create({
     // borderColor: "red", borderStyle: "solid", borderWidth: 1,
   },
 });
-export default CardViewWorld;
+export default React.memo(CardViewWorld);

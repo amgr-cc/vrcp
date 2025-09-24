@@ -1,6 +1,8 @@
 import GenericScreen from "@/components/layout/GenericScreen";
 import DetailItemContainer from "@/components/screen/detail/DetailItemContainer";
+import BadgeChip from "@/components/view/chip-badge/BadgeChip";
 import LinkChip from "@/components/view/chip-badge/LinkChip";
+import RegionBadge from "@/components/view/chip-badge/RegionBadge";
 import CardViewUserDetail from "@/components/view/item-CardView/detail/CardViewUserDetail";
 import LoadingIndicator from "@/components/view/LoadingIndicator";
 import { radius, spacing } from "@/config/styles";
@@ -54,10 +56,21 @@ export default function Profile() {
               </View>
             </DetailItemContainer>
 
+            <DetailItemContainer title="Badges">
+              <View style={[styles.detailItemContent, styles.horizontal]}>
+                {currentUser.data.badges?.map((badge) => (
+                  <BadgeChip key={badge.badgeId} badge={badge} />
+                ))}
+              </View>
+            </DetailItemContainer>
+
             <DetailItemContainer title="Joined date">
               <View style={styles.detailItemContent}>
                 <Text style={{ color: theme.colors.text }}>
-                  {currentUser.data.date_joined}
+                  {`last activity: ${currentUser.data.last_activity}`}
+                </Text>
+                <Text style={{ color: theme.colors.text }}>
+                  {`first joined: ${currentUser.data.date_joined}`}
                 </Text>
               </View>
             </DetailItemContainer>
@@ -99,5 +112,10 @@ const styles = StyleSheet.create({
   detailItemContent: {
     flex: 1,
     // borderStyle:"dotted", borderColor:"red",borderWidth:1
+  },
+  horizontal: { 
+    flexDirection: "row", 
+    alignItems: "center",
+    flexWrap: "wrap",
   },
 });

@@ -13,6 +13,12 @@ import { useTheme } from "@react-navigation/native";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 
+interface FriendsByState {
+  online: LimitedUserFriend[];
+  active: LimitedUserFriend[];
+  offline: LimitedUserFriend[];
+}
+
 export default function Friends() {
   const theme = useTheme();
 
@@ -31,22 +37,59 @@ export default function Friends() {
         .finally(() => setIsLoading(false));
     };
 
-    const favoriteFriends = useMemo(() => {
+    const friFavSet = useMemo<Map<string, string>>(() => {
       const friFavs = favorites.data.filter((ff) => ff.type === "friend");
-      const friFavSet = new Set(friFavs.map((ff) => ff.favoriteId));
-      return friends.data.filter((f) => friFavSet.has(f.id));
-    }, [friends.data, favorites.data, favoriteGroups.data]);
+      return new Map(friFavs.map((ff) => [ff.favoriteId, ff.tags.length ? ff.tags[0] : ""]));
+    }, [favorites.data]);
+
+    const favoriteFriends = useMemo(() => {
+      const favFriends = friends.data.filter((f) => friFavSet.has(f.id));
+      const devided : FriendsByState = { online: [], active: [], offline: []};
+      favFriends.forEach(f => {
+        const state = getState(f);
+        if(state === "online") devided.online.push(f);
+        else if(state === "active") devided.active.push(f);
+        else devided.offline.push(f);
+      });
+
+      const sorter = (a: LimitedUserFriend, b: LimitedUserFriend) => {
+        const aLast = a.last_activity ?? "";
+        const bLast = b.last_activity ?? "";
+        return aLast.localeCompare(bLast);
+      }
+      const sorted: FriendsByState = {
+        online: devided.online.sort(sorter),
+        active: devided.active.sort(sorter),
+        offline: devided.offline.sort(sorter),
+      };
+
+      return sorted;
+    }, [friends.data]);
+
+    const deviderIdx = [
+      favoriteFriends.online.length,
+      favoriteFriends.online.length + favoriteFriends.active.length,
+    ];
 
     return (
       <>
         {isLoading && <LoadingIndicator absolute />}
         <FlatList
-          data={favoriteFriends}
+          data={[
+            ...favoriteFriends.online,
+            ...favoriteFriends.active,
+            ...favoriteFriends.offline,
+          ]}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <ListViewUser
               user={item}
-              style={styles.cardView}
+              style={[
+                styles.cardView, 
+                deviderIdx.includes(index) 
+                ? {...styles.withDevider, borderTopColor: theme.colors.subText} 
+                : undefined 
+              ]}
               onPress={() => routeToUser(item.id)}
             />
           )}
@@ -187,6 +230,11 @@ const styles = StyleSheet.create({
   cardView: {
     padding: spacing.small,
     width: "100%",
+  },
+  withDevider: {
+    marginTop: spacing.medium,
+    paddingTop: spacing.large,
+    borderTopWidth: 1,
   },
   selectGroupButton: {
     padding: spacing.small,

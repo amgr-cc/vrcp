@@ -11,7 +11,7 @@ interface Props {
   iconButtonConfig?: {
     name?: SupportedIconNames;
     onPress: () => void;
-  };
+  }[];
 }
 
 const DetailItemContainer = ({ title, children, iconButtonConfig }: Props) => {
@@ -24,14 +24,17 @@ const DetailItemContainer = ({ title, children, iconButtonConfig }: Props) => {
         >
           {title}
         </Text>
-        {iconButtonConfig && (
-          <IconButton
-            style={[styles.icon, { backgroundColor: theme.colors.background }]}
-            name={iconButtonConfig.name ?? "edit"}
-            size={fontSize.medium}
-            onPress={iconButtonConfig.onPress}
-          />
-        )}
+        <View style={styles.iconContainer}>
+          {iconButtonConfig && iconButtonConfig.map((conf, idx) => (
+            <IconButton
+              key={`detail-item-icon-${idx}`}
+              style={[styles.icon, { backgroundColor: theme.colors.background }]}
+              name={conf.name ?? "edit"}
+              size={fontSize.large}
+              onPress={conf.onPress}
+            />
+          ))}
+        </View>
       </View>
       <View style={styles.children}>{children}</View>
     </View>
@@ -57,8 +60,13 @@ const styles = StyleSheet.create({
     paddingRight: spacing.small,
     fontWeight: "bold",
   },
+  iconContainer: {
+    display: "flex",
+    flexDirection: "row",
+  },
   icon: {
-    paddingLeft: spacing.small,
+    paddingHorizontal: spacing.small,
+    // borderWidth: 1, borderColor: "red", borderStyle: "dotted",
   },
   children: {
     marginTop: spacing.small,

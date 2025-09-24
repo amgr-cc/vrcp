@@ -47,7 +47,7 @@ export default function GroupDetail() {
 
             <DetailItemContainer
               title="Title2"
-              iconButtonConfig={{ name: "edit", onPress: () => {} }}
+              iconButtonConfig={[{ name: "edit", onPress: () => {} }]}
             >
               <View style={styles.detailItemContent}>
                 <Text style={{ color: theme.colors.text }}>text2-1</Text>
@@ -60,7 +60,7 @@ export default function GroupDetail() {
           </ScrollView>
         </View>
       ) : (
-        <LoadingIndicator />
+        <LoadingIndicator absolute />
       )}
     </GenericScreen>
   );

@@ -12,7 +12,8 @@ import { User } from "@/vrchat/api";
 import { useTheme } from "@react-navigation/native";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform } from "react-native";
+import { KeyboardAvoidingView, KeyboardAvoidingViewComponent, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function UserDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -21,39 +22,31 @@ export default function UserDetail() {
   const theme = useTheme();
   const [user, setUser] = useState<User>();
   const [locationInfo, setLocationInfo] = useState<{
-    image: string | undefined;
+    image?: string | undefined;
     baseInfo: string | undefined;
-    instType: string | undefined;
-    capacity: string | undefined;
+    instType?: string | undefined;
+    capacity?: string | undefined;
   }>();
 
-  const fetchData = async () => {
-    try {
-      const res = await cache.user.get(id, true); // fetch and force refresh cache
-      setUser(res);
-    } catch (error) {
-      console.error("Error fetching user profile:", extractErrMsg(error));
-    }
-  };
+  const [editNote, setEditNote] = useState(false);
+  const editting = React.useRef<string>("");
 
   const fetchLocationInfo = async () => {
     if (!user?.location) return;
-    const { isOffline, isPrivate, parsedLocation } = parseLocationString(
+    const { isOffline, isPrivate, isTraveling, parsedLocation } = parseLocationString(
       user?.location
     );
     if (isOffline) {
       setLocationInfo({
-        image: undefined,
         baseInfo: "the user is offline...",
-        instType: undefined,
-        capacity: undefined,
       });
     } else if (isPrivate) {
       setLocationInfo({
-        image: undefined,
         baseInfo: "the user is in a private instance...",
-        instType: undefined,
-        capacity: undefined,
+      });
+    } else if (isTraveling) {
+      setLocationInfo({
+        baseInfo: "the user is traveling...",
       });
     } else if (parsedLocation?.worldId && parsedLocation?.instanceId) {
       try {
@@ -74,25 +67,39 @@ export default function UserDetail() {
       }
     } else {
       setLocationInfo({
-        image: undefined,
         baseInfo: "the user is in an unknown location...",
-        instType: undefined,
-        capacity: undefined,
       });
     }
   };
 
   useEffect(() => {
-    fetchData();
+    cache.user.get(id, true) // force latest data
+    .then(setUser)
+    .catch(console.error);
   }, []);
 
   useEffect(() => {
     fetchLocationInfo();
   }, [user?.location]);
 
-  const handleEditNote = () => {};
+  const handleEditNote = () => {
+    editting.current = user?.note ?? "";
+    setEditNote(p => !p);
+  };
+  const handleSubmitNote = () => {
+    vrc.usersApi.updateUserNote({ updateUserNoteRequest: {
+      targetUserId: id,
+      note: editting.current,
+    }}).then(res => {
+      res.status === 200 && setUser(u => u ? { ...u, note: editting.current } : u);
+    }).catch(err => {
+      console.error("Error updating user note:", extractErrMsg(err));
+    });
+    setEditNote(false);
+  }
 
   return (
+    <KeyboardAvoidingView behavior={ Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
     <GenericScreen>
       {user ? (
         <View style={{ flex: 1 }}>
@@ -127,11 +134,29 @@ export default function UserDetail() {
 
             <DetailItemContainer
               title="Note"
-              iconButtonConfig={{ name: "edit", onPress: handleEditNote }}
+              iconButtonConfig={
+                editNote ? [
+                  { name: "close", onPress: handleEditNote },
+                  // { name: "save", onPress: () => handleSubmitNote(editting.current) },
+                ] : [
+                  { name: "edit", onPress: handleEditNote }
+                ]}
             >
               <View style={styles.detailItemContent}>
-                <Text style={{ color: theme.colors.text }}>{user.note}</Text>
-              </View>
+                {editNote ?
+                    <TextInput
+                      style={{ color: theme.colors.text, borderColor: theme.colors.border, borderWidth: 1, borderRadius: radius.small, padding: spacing.small }}
+                      defaultValue={user.note}
+                      onChange={e => editting.current = e.nativeEvent.text}
+                      autoFocus
+                      placeholder="Add a note"
+                      multiline
+                      numberOfLines={4}
+                      onBlur={handleSubmitNote} // submit on blur
+                    />
+                  : <Text style={{ color: theme.colors.text }}>{user.note}</Text>
+                }
+                </View>
             </DetailItemContainer>
 
             <DetailItemContainer title="Bio">
@@ -148,10 +173,13 @@ export default function UserDetail() {
               </View>
             </DetailItemContainer>
 
-            <DetailItemContainer title="Joined date">
+            <DetailItemContainer title="History">
               <View style={styles.detailItemContent}>
                 <Text style={{ color: theme.colors.text }}>
-                  {user.date_joined}
+                  {`last activity: ${user.last_activity}`}
+                </Text>
+                <Text style={{ color: theme.colors.text }}>
+                  {`first joined: ${user.date_joined}`}
                 </Text>
               </View>
             </DetailItemContainer>
@@ -162,9 +190,10 @@ export default function UserDetail() {
           </ScrollView>
         </View>
       ) : (
-        <LoadingIndicator />
+        <LoadingIndicator absolute />
       )}
     </GenericScreen>
+    </KeyboardAvoidingView>
   );
 }
 

@@ -1,6 +1,6 @@
 import { fontSize, radius, spacing } from "@/config/styles";
 import { CachedImage } from "@/contexts/CacheContext";
-import { getStatusColor, getTrustRankColor, UserLike } from "@/lib/vrchatUtils";
+import { getStatusColor, getTrustRankColor, getUserIconUrl, getUserProfilePicUrl, UserLike } from "@/lib/vrchatUtils";
 import { Text } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
@@ -16,10 +16,7 @@ interface Props {
 
   [key: string]: any;
 }
-const extractImageUrl = (data: UserLike) =>
-  data.profilePicOverride && data.profilePicOverride !== ""
-    ? data.profilePicOverride
-    : data.currentAvatarImageUrl;
+const extractImageUrl = (data: UserLike) => getUserProfilePicUrl(data);
 const extractTitle = (data: UserLike) => data.displayName;
 
 const CardViewUserDetail = ({
@@ -43,12 +40,7 @@ const CardViewUserDetail = ({
         <>
           <View style={styles.iconContainer}>
             <CachedImage
-              src={
-                user.userIcon && user.userIcon.length > 0
-                  ? user.userIcon
-                  : user.currentAvatarThumbnailImageUrl ??
-                    user.currentAvatarImageUrl
-              }
+              src={getUserIconUrl(user)}
               style={[
                 styles.icon,
                 {

@@ -7,12 +7,13 @@ import {
   LimitedUserFriend,
   LimitedWorld,
 } from "@/vrchat/api";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react";
 import { useAuth } from "./AuthContext";
 import { useVRChat } from "./VRChatContext";
 import { PipelineContent, PipelineType } from "@/vrchat/pipline/type";
 import { convertUserToLimitedUserFriend } from "@/lib/vrchatUtils";
 import { useCache } from "./CacheContext";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 // Store VRCAPI Data Globally
 
@@ -87,7 +88,7 @@ const DataProvider: React.FC<{ children?: React.ReactNode }> = ({
     let nReqOnline = 2,
       nReqOffline = 2;
     const cuser: CurrentUser =
-      values.currentUser.data ?? (await cache.currentUser.get()); // use cache without force fetch
+      wrappers.currentUser.data ?? (await cache.currentUser.get()); // use cache without force fetch
     if (cuser) {
       const all = cuser.friends?.length ?? 0;
       const off = cuser.offlineFriends?.length ?? 0;
@@ -132,24 +133,20 @@ const DataProvider: React.FC<{ children?: React.ReactNode }> = ({
   };
 
   // register data wrappers
-  const values = {
-    currentUser: initDataWrapper<CurrentUser | undefined>(
-      undefined,
-      getCurrentUser
-    ),
-    friends: initDataWrapper<LimitedUserFriend[]>([], getFriends),
-    favoriteGroups: initDataWrapper<FavoriteGroup[]>([], getFavoriteGroups),
-    favorites: initDataWrapper<Favorite[]>([], getFavorites),
-    worlds: initDataWrapper<FavoritedWorld[]>([], getWorlds),
-    avatars: initDataWrapper<Avatar[]>([], getAvatars),
+  const wrappers = {
+    currentUser: useDataWrapper<CurrentUser | undefined>(undefined, getCurrentUser),
+    friends: useDataWrapper<LimitedUserFriend[]>([], getFriends),
+    favoriteGroups: useDataWrapper<FavoriteGroup[]>([], getFavoriteGroups),
+    favorites: useDataWrapper<Favorite[]>([], getFavorites),
+    worlds: useDataWrapper<FavoritedWorld[]>([], getWorlds),
+    avatars: useDataWrapper<Avatar[]>([], getAvatars),
   };
-
   // fetch all data in order
   const fetchAll = async () => {
-    await Promise.all(Object.values(values).map((v) => v.fetch()));
+    await Promise.all(Object.values(wrappers).map((v) => v.fetch()));
   };
   const clearAll = async () => {
-    await Promise.all(Object.values(values).map((v) => v.clear()));
+    await Promise.all(Object.values(wrappers).map((v) => v.clear()));
   };
 
   useEffect(() => {
@@ -180,32 +177,32 @@ const DataProvider: React.FC<{ children?: React.ReactNode }> = ({
       const data = content as PipelineContent<
         "friend-update" | "friend-location" | "friend-online" | "friend-active"
       >;
-      if (values.friends.data.find((f) => f.id === data.userId) != undefined) {
-        values.friends.set((prev) =>
+      if (wrappers.friends.data.find((f) => f.id === data.userId) != undefined) {
+        wrappers.friends.set((prev) =>
           prev.map((f) => (f.id === data.userId ? { ...f, ...data.user } : f))
         );
       } else {
-        values.friends.set((prev) => [
+        wrappers.friends.set((prev) => [
           ...prev,
           convertUserToLimitedUserFriend(data.user),
         ]);
       }
     } else if (type == "friend-offline") {
       const data = content as PipelineContent<"friend-offline">;
-      values.friends.set((prev) =>
+      wrappers.friends.set((prev) =>
         prev.map((f) =>
           f.id === data.userId ? { ...f, location: "offline" } : f
         )
       );
     } else if (type == "friend-add") {
       const data = content as PipelineContent<"friend-add">;
-      values.friends.set((prev) => [
+      wrappers.friends.set((prev) => [
         ...prev,
         convertUserToLimitedUserFriend(data.user),
       ]);
     } else if (type == "friend-delete") {
       const data = content as PipelineContent<"friend-delete">;
-      values.friends.set((prev) => prev.filter((f) => f.id !== data.userId));
+      wrappers.friends.set((prev) => prev.filter((f) => f.id !== data.userId));
     } else {
       console.log("Pipeline type:", type);
     }
@@ -226,7 +223,7 @@ const DataProvider: React.FC<{ children?: React.ReactNode }> = ({
       value={{
         fetchAll,
         clearAll,
-        ...values,
+        ...wrappers,
       }}
     >
       {children}
@@ -234,29 +231,34 @@ const DataProvider: React.FC<{ children?: React.ReactNode }> = ({
   );
 };
 
-function initDataWrapper<T>(
+function useDataWrapper<T>(
   initialData: T,
   getter?: () => Promise<T>,
   order?: number
 ): DataWrapper<T> {
-  const [data, setData] = useState<T>(initialData);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [wrapperState, setWrapperState] = useState<{data: T, isLoading: boolean}>({data: initialData, isLoading: false});
   const fetch = async () => {
-    if (!getter) return data; // no getter, just return current data
-    setIsLoading(true);
+    if (!getter) return wrapperState.data; // no getter, just return current data
+    if (wrapperState.isLoading) return wrapperState.data; // already loading
+    setWrapperState((s) => ({...s, isLoading: true}));
     try {
       const newData = await getter();
-      setData(newData);
-      setIsLoading(false);
+      setWrapperState({data: newData, isLoading: false});
       return newData;
     } catch (error) {
-      setIsLoading(false);
+      setWrapperState((s) => ({...s, isLoading: false}));
       throw error;
     }
   };
-  const set = (v: React.SetStateAction<T>) => setData(v);
-  const clear = () => setData(initialData);
-  return { data, fetch, set, clear, isLoading, _order: order ?? 0 };
+  const set = (v: React.SetStateAction<T>) => {
+    if (typeof v === "function") {
+      setWrapperState((s) => ({...s, data: (v as (prevState: T) => T)(s.data)}));
+    } else {
+      setWrapperState((s) => ({...s, data: v}));
+    }
+  };
+  const clear = () => setWrapperState({data: initialData, isLoading: false});
+  return { data: wrapperState.data, fetch, set, clear, isLoading: wrapperState.isLoading, _order: order ?? 0 };
 }
 
 export { DataProvider, useData };

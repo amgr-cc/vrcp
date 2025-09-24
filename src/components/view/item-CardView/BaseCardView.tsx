@@ -11,6 +11,7 @@ interface Props<T> {
   title: string | ((data: T) => string);
   onPress?: () => void;
   onLongPress?: () => void;
+  numberOfLines?: number; // for title
   OverlapComponents?: React.ReactNode; // Optional components to overlap on the card
   // Additional props
   [key: string]: any;
@@ -25,6 +26,7 @@ const BaseCardView = <T,>({
   onLongPress,
   imageUrl,
   title,
+  numberOfLines = 1,
   OverlapComponents,
   ...rest
 }: Props<T>) => {
@@ -47,7 +49,7 @@ const BaseCardView = <T,>({
           style={[styles.image, rest.ImageStyle]}
         />
         <View style={[styles.footer, rest.FooterStyle]}>
-          <Text style={[styles.title, rest.TitleStyle]} numberOfLines={1}>
+          <Text style={[styles.title, rest.TitleStyle]} numberOfLines={numberOfLines}>
             {resolvedTitle}
           </Text>
         </View>

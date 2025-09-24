@@ -1,6 +1,6 @@
 import { spacing } from "@/config/styles";
 import { Avatar } from "@/vrchat/api";
-import { useState } from "react";
+import React, { useState } from "react";
 import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 import ReleaseStatusChip from "../chip-badge/ReleaseStatusChip";
 import BaseCardView from "./BaseCardView";
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CardViewAvatar;
+export default React.memo(CardViewAvatar);

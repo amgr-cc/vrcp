@@ -6,6 +6,24 @@ export type AvatarLike = Avatar
 type StatusGettableUser = Exclude<UserLike, LimitedUserInstance>
 
 
+// get ImageUrls from user 
+
+export function getUserIconUrl(user: UserLike): string {
+  if (user.userIcon && user.userIcon.length > 0) {
+    return user.userIcon;
+  }
+  return user.currentAvatarThumbnailImageUrl ?? user.currentAvatarImageUrl;
+}
+export function getUserProfilePicUrl(user: UserLike): string {
+  if (user.profilePicOverride && user.profilePicOverride.length > 0) {
+    return user.profilePicOverride;
+  }
+  return user.currentAvatarThumbnailImageUrl ?? user.currentAvatarImageUrl;
+}
+
+
+// parse location string
+
 export function parseLocationString(location: string| undefined): 
 {
   isOffline?: boolean;
@@ -33,8 +51,8 @@ export function parseLocationString(location: string| undefined):
 export function parseInstanceId(instanceId: string | undefined): {
   name: string; 
   type: InstanceType;
-  groupAccessType: GroupAccessType | undefined;
-  region: InstanceRegion
+  groupAccessType?: GroupAccessType;
+  region?: InstanceRegion
 
   hidden?: string;
   friends?: string;

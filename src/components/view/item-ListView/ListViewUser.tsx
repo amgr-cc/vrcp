@@ -3,6 +3,7 @@ import { CachedImage, useCache } from "@/contexts/CacheContext";
 import {
   getInstanceType,
   getStatusColor,
+  getUserIconUrl,
   parseInstanceId,
   parseLocationString,
   UserLike,
@@ -77,12 +78,7 @@ const ListViewUser = ({ user, onPress, onLongPress, ...rest }: Props) => {
       OverlapComponents={
         <View style={styles.iconContainer}>
           <CachedImage
-            src={
-              user.userIcon && user.userIcon.length > 0
-                ? user.userIcon
-                : user.currentAvatarThumbnailImageUrl ??
-                  user.currentAvatarImageUrl
-            }
+            src={getUserIconUrl(user)}
             style={[
               styles.icon,
               {

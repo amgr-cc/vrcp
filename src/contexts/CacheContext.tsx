@@ -114,20 +114,12 @@ const CacheProvider: React.FC<{ children?: ReactNode }> = ({ children }) => {
   const wrappers = useMemo(
     () => ({
       // for other data
-      currentUser: initCacheWrapper<CurrentUser>(
-        "currentUser",
-        getCurrentUser,
-        { expiration: 1000 }
-      ), // expire with 1 second, basically, use useData(),currentUser instaead of this
-      favoriteLimits: initCacheWrapper<FavoriteLimits>(
-        "favoriteLimits",
-        getFavoriteLimits,
-        { expiration: 24 * 60 * 60 * 1000 }
-      ), // expire with 24 hours
-      user: initCacheByIdWrapper<User>("users/", getUser),
-      world: initCacheByIdWrapper<World>("worlds/", getWorld),
-      group: initCacheByIdWrapper<Group>("groups/", getGroup),
-      avatar: initCacheByIdWrapper<Avatar>("avatars/", getAvatar),
+      currentUser: useCacheWrapper<CurrentUser>("currentUser", getCurrentUser, { expiration: 1000 }), // expire with 1 second, basically, use useData(),currentUser instaead of this
+      favoriteLimits: useCacheWrapper<FavoriteLimits>("favoriteLimits", getFavoriteLimits, { expiration: 24 * 60 * 60 * 1000 }), // expire with 24 hours
+      user: useCacheByIdWrapper<User>("users/", getUser),
+      world: useCacheByIdWrapper<World>("worlds/", getWorld),
+      group: useCacheByIdWrapper<Group>("groups/", getGroup),
+      avatar: useCacheByIdWrapper<Avatar>("avatars/", getAvatar),
     }),
     [initTrigger.current, vrc.config]
   );
@@ -179,7 +171,7 @@ const CacheProvider: React.FC<{ children?: ReactNode }> = ({ children }) => {
 
 /** Cache Initializers */
 
-function initCacheWrapper<T = any>(
+function useCacheWrapper<T = any>(
   path: string, //directry filename
   getter: CacheWrapper<T>["get"],
   options?: {
@@ -235,7 +227,7 @@ function initCacheWrapper<T = any>(
   };
   return { get, set, del };
 }
-function initCacheByIdWrapper<T = any>(
+function useCacheByIdWrapper<T = any>(
   subDir: string, // sub-directory name, must end with /
   getter: CacheByIdWrapper<T>["get"],
   options?: {
@@ -357,7 +349,7 @@ const CachedImage = ({
     }
   };
   useEffect(() => {
-    load();
+    if (remoteUri.length > 0) load();
   }, [remoteUri]);
   return (
     <Image

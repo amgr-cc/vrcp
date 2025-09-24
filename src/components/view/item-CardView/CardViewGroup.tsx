@@ -1,6 +1,7 @@
 import { GroupLike } from "@/lib/vrchatUtils";
 import { StyleSheet } from "react-native";
 import BaseCardView from "./BaseCardView";
+import React from "react";
 
 interface Props {
   group: GroupLike;
@@ -31,4 +32,4 @@ const styles = StyleSheet.create({
     aspectRatio: 16 / 7,
   },
 });
-export default CardViewGroup;
+export default React.memo(CardViewGroup);

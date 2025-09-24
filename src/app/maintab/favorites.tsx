@@ -19,7 +19,7 @@ import {
 } from "@/vrchat/api";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useTheme } from "@react-navigation/native";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 export default function Favorites() {
@@ -51,19 +51,19 @@ export default function Favorites() {
     );
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const worlds = useMemo(() => {
-      if (!selectedGroup) return [];
-      const favWorldMap = new Map(
-        favorites.data
-          .filter(
-            (fvrt) =>
-              fvrt.type === "world" && fvrt.tags.includes(selectedGroup.name)
-          )
-          .map((fvrt) => [fvrt.favoriteId, true])
-      );
-      return worldsData.data.filter((w) => favWorldMap.has(w.id));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [worldsData.data, selectedGroup]);
+    const favWorldMap = useMemo(
+      () => new Map(favorites.data
+        .filter((fvrt) => selectedGroup && 
+          fvrt.type === "world" && 
+          fvrt.tags.includes(selectedGroup.name)
+        )
+        .map((fvrt) => [fvrt.favoriteId, true])
+      ), [selectedGroup, favorites.data]
+    );
+
+    const worlds = useMemo(() => worldsData.data.filter(
+      (w) => favWorldMap.has(w.id)
+    ), [worldsData.data, favWorldMap]);
 
     useEffect(() => {
       setSelectedGroup(favoriteGroupsMap.worlds[0] || null);
@@ -117,19 +117,20 @@ export default function Favorites() {
     );
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const friends = useMemo(() => {
-      if (!selectedGroup) return [];
-      const favFriendMap = new Map(
-        favorites.data
-          .filter(
-            (fvrt) =>
-              fvrt.type === "friend" && fvrt.tags.includes(selectedGroup.name)
-          )
-          .map((fvrt) => [fvrt.favoriteId, true])
-      );
-      return friendsData.data.filter((f) => favFriendMap.has(f.id));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [friendsData.data, selectedGroup]);
+    
+    const favFriendMap = useMemo(
+      () => new Map(favorites.data
+        .filter((fvrt) => selectedGroup && 
+          fvrt.type === "friend" && 
+          fvrt.tags.includes(selectedGroup.name)
+        )
+        .map((fvrt) => [fvrt.favoriteId, true])
+      ), [selectedGroup, favorites.data]
+    );
+
+    const friends = useMemo(() => friendsData.data.filter(
+      (f) => favFriendMap.has(f.id)
+    ), [friendsData.data, favFriendMap]);
 
     useEffect(() => {
       setSelectedGroup(favoriteGroupsMap.friends[0] || null);
@@ -183,19 +184,20 @@ export default function Favorites() {
     );
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const avatars = useMemo(() => {
-      if (!selectedGroup) return [];
-      const favAvatarMap = new Map(
-        favorites.data
-          .filter(
-            (fvrt) =>
-              fvrt.type === "avatar" && fvrt.tags.includes(selectedGroup.name)
-          )
-          .map((fvrt) => [fvrt.favoriteId, true])
-      );
-      return avatarsData.data.filter((a) => favAvatarMap.has(a.id));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [avatarsData.data, selectedGroup]);
+
+    const favAvatarMap = useMemo(
+      () => new Map(favorites.data
+        .filter((fvrt) => selectedGroup && 
+          fvrt.type === "avatar" && 
+          fvrt.tags.includes(selectedGroup.name)
+        )
+        .map((fvrt) => [fvrt.favoriteId, true])
+      ), [selectedGroup, favorites.data]
+    );
+
+    const avatars = useMemo(() => avatarsData.data.filter(
+      (a) => favAvatarMap.has(a.id)
+    ), [avatarsData.data, selectedGroup]);
 
     useEffect(() => {
       setSelectedGroup(favoriteGroupsMap.avatars[0] || null);
@@ -254,17 +256,17 @@ export default function Favorites() {
         <MaterialTab.Screen
           name="worlds"
           options={{ tabBarLabel: "Worlds" }}
-          component={WorldsTab}
+          component={useCallback(WorldsTab, [favoriteGroupsMap.worlds])}
         />
         <MaterialTab.Screen
           name="friends"
           options={{ tabBarLabel: "Friends" }}
-          component={FriendsTab}
+          component={useCallback(FriendsTab, [favoriteGroupsMap.friends])}
         />
         <MaterialTab.Screen
           name="avatars"
           options={{ tabBarLabel: "Avatars" }}
-          component={AvatarsTab}
+          component={useCallback(AvatarsTab, [favoriteGroupsMap.avatars])}
         />
       </MaterialTab.Navigator>
     </GenericScreen>

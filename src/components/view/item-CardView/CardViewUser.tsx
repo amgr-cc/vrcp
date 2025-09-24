@@ -1,9 +1,10 @@
 import { radius, spacing } from "@/config/styles";
 import { CachedImage } from "@/contexts/CacheContext";
-import { getStatusColor, UserLike } from "@/lib/vrchatUtils";
+import { getStatusColor, getUserIconUrl, getUserProfilePicUrl, UserLike } from "@/lib/vrchatUtils";
 import { useTheme } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 import BaseCardView from "./BaseCardView";
+import React from "react";
 
 interface Props {
   user: UserLike;
@@ -12,10 +13,7 @@ interface Props {
 
   [key: string]: any;
 }
-const extractImageUrl = (data: UserLike) =>
-  data.profilePicOverride && data.profilePicOverride !== ""
-    ? data.profilePicOverride
-    : data.currentAvatarThumbnailImageUrl ?? data.currentAvatarImageUrl;
+const extractImageUrl = (data: UserLike) => getUserProfilePicUrl(data);
 const extractTitle = (data: UserLike) => data.displayName;
 
 const CardViewUser = ({ user, onPress, onLongPress, ...rest }: Props) => {
@@ -32,12 +30,7 @@ const CardViewUser = ({ user, onPress, onLongPress, ...rest }: Props) => {
       OverlapComponents={
         <View style={styles.iconContainer}>
           <CachedImage
-            src={
-              user.userIcon && user.userIcon.length > 0
-                ? user.userIcon
-                : user.currentAvatarThumbnailImageUrl ??
-                  user.currentAvatarImageUrl
-            }
+            src={getUserIconUrl(user)}
             style={[
               styles.icon,
               {
@@ -73,4 +66,4 @@ const styles = StyleSheet.create({
     borderRadius: radius.all,
   },
 });
-export default CardViewUser;
+export default React.memo(CardViewUser);
