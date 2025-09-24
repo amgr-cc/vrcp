@@ -107,7 +107,7 @@ const AuthProvider: React.FC<{ children?: ReactNode }> = ({children}) => {
     const api = new AuthenticationApi(vrc.config);
     try {
       if (mode == "totp") {
-        const res = await api.verify2FA({code});
+        const res = await api.verify2FA({twoFactorAuthCode: {code}});
         if (res.data.verified) {
           return "success";
         } else if (!res.data.enabled) {
@@ -116,7 +116,7 @@ const AuthProvider: React.FC<{ children?: ReactNode }> = ({children}) => {
           return "failed";
         }
       } else if (mode == "email") {
-        const res = await api.verify2FA({code});
+        const res = await api.verify2FA({twoFactorAuthCode: {code}});
         if (res.data.verified) {
           const tfaCookie = extract2faCookie(res.headers?.["set-cookie"]?.[0]);
           if (tfaCookie) {

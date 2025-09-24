@@ -45,6 +45,6 @@ build-submit:  # submit the application for store
 .PHONY: lint 
 lint: # lint the codebase
 # @npx eslint . --fix
-	@npx prettier --write "**/*.{tsx}"
+	@npx prettier --write "**/*.tsx"
 	@npx tsc --noEmit
 # @npx next lint --fix
