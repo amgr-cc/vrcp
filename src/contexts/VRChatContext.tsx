@@ -57,9 +57,7 @@ const Context = createContext<VRChatContextType | undefined>(undefined);
 
 const useVRChat = () => {
   const context = useContext(Context);
-  if (!context) {
-    throw new Error("useVRChat must be used within a VRChatProvider");
-  }
+  if (!context) throw new Error("useVRChat must be used within a VRChatProvider");
   return context;
 };
 

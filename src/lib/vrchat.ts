@@ -6,6 +6,8 @@ export type AvatarLike = Avatar
 export type InstanceLike = MinInstance | Instance
 
 
+export type TrustRank = "legend" | "trusted" | "known" | "user" | "new_user" | "visitor" | "nuisance";
+
 type StatusGettableUser = Exclude<UserLike, LimitedUserInstance>
 
 // 最低限のInstance情報だけを持つ型 (Worldに付随した部分的なInstance情報に対応)
@@ -156,8 +158,9 @@ export function getTrustRankColor(user: UserLike, useFriendColor: boolean = fals
   return "#ffffffff"; // Visitor
 }
 
+
 // get trust rank string from Tags
-export function getTrustRank(user: UserLike): string {
+export function getTrustRank(user: UserLike): TrustRank {
   const tags = user.tags;
   if (tags.includes("system_troll")) return "nuisance";
   if (tags.includes("system_trust_legend")) return "legend"; // (unused?)

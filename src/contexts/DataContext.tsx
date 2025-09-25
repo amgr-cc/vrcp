@@ -11,7 +11,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useReducer,
 import { useAuth } from "./AuthContext";
 import { useVRChat } from "./VRChatContext";
 import { PipelineContent, PipelineType } from "@/vrchat/pipline/type";
-import { convertToLimitedUserFriend } from "@/lib/vrchatUtils";
+import { convertToLimitedUserFriend } from "@/lib/vrchat";
 import { useCache } from "./CacheContext";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
@@ -44,9 +44,7 @@ const Context = createContext<DataContextType | undefined>(undefined);
 
 const useData = () => {
   const context = useContext(Context);
-  if (!context) {
-    throw new Error("useData must be used within a DataProvider");
-  }
+  if (!context) throw new Error("useData must be used within a DataProvider");
   return context;
 };
 

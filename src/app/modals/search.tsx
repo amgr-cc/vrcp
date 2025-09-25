@@ -5,7 +5,7 @@ import CardViewWorld from "@/components/view/item-CardView/CardViewWorld";
 import SearchBox from "@/components/view/SearchBox";
 import { spacing } from "@/config/styles";
 import { useVRChat } from "@/contexts/VRChatContext";
-import { extractErrMsg } from "@/lib/extractErrMsg";
+import { extractErrMsg } from "@/lib/utils";
 import { routeToGroup, routeToUser, routeToWorld } from "@/lib/route";
 import {
   GroupsApi,

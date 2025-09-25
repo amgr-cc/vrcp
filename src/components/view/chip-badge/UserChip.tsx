@@ -1,12 +1,13 @@
 import { fontSize, radius, spacing } from "@/config/styles";
 import { CachedImage } from "@/contexts/CacheContext";
-import { omitObject } from "@/lib/objectUtils";
-import { getStatusColor, getTrustRankColor, getUserIconUrl, UserLike } from "@/lib/vrchatUtils";
+import { omitObject } from "@/lib/utils";
+import { getStatusColor, getTrustRankColor, getUserIconUrl, UserLike } from "@/lib/vrchat";
 import { Text } from "@react-navigation/elements";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import IconSymbol from "../icon-components/IconView";
 import { useTheme } from "@react-navigation/native";
+import { SupportedIconNames } from "../icon-components/utils";
 
 
 
@@ -16,16 +17,17 @@ interface Props {
   size?: number; // default 32
   textSize?: number;
   textColor?: string;
+  icon?: SupportedIconNames;
   [key: string]: any;
 }
 
-const UserChip = ({ user, optional = false, textSize, textColor, size = 32, ...rest }: Props) => {
+const UserChip = ({ user, icon, textSize, textColor, size = 32, ...rest }: Props) => {
   const theme = useTheme()
   return (
     <View style={[styles.container, rest.style]}>
       
-      {optional && (
-        <IconSymbol name="crown" size={size/2} style={styles.option} />
+      {icon && (
+        <IconSymbol name={icon} size={size/2} style={styles.option} />
       )}
 
       <CachedImage

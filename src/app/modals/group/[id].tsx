@@ -5,7 +5,7 @@ import LoadingIndicator from "@/components/view/LoadingIndicator";
 import { fontSize, radius, spacing } from "@/config/styles";
 import { useCache } from "@/contexts/CacheContext";
 import { useVRChat } from "@/contexts/VRChatContext";
-import { extractErrMsg } from "@/lib/extractErrMsg";
+import { extractErrMsg } from "@/lib/utils";
 import { Group } from "@/vrchat/api";
 import { useTheme } from "@react-navigation/native";
 import { useLocalSearchParams } from "expo-router/build/hooks";

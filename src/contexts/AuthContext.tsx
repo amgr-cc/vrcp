@@ -1,4 +1,4 @@
-import { extractErrMsg } from "@/lib/extractErrMsg";
+import { extractErrMsg } from "@/lib/utils";
 import { AuthenticationApi } from "@/vrchat/api";
 import { router } from "expo-router";
 import Storage from "expo-sqlite/kv-store";
@@ -40,9 +40,7 @@ const Context = createContext<AuthContextType | undefined>(undefined);
 
 const useAuth = () => {
   const context = useContext(Context);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
+  if (!context) throw new Error("useAuth must be used within an AuthProvider");
   return context;
 };
 

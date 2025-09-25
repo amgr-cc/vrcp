@@ -1,6 +1,6 @@
 import { fontSize, spacing } from "@/config/styles";
 import { CachedImage } from "@/contexts/CacheContext";
-import { omitObject } from "@/lib/objectUtils";
+import { omitObject } from "@/lib/utils";
 import { Badge, InstanceRegion, Region } from "@/vrchat/api";
 
 interface Props {

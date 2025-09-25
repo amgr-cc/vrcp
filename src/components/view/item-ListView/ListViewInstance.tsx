@@ -1,5 +1,5 @@
 import { spacing } from "@/config/styles";
-import { getInstanceType, InstanceLike } from "@/lib/vrchatUtils";
+import { getInstanceType, InstanceLike } from "@/lib/vrchat";
 import { Instance } from "@/vrchat/api";
 import { StyleSheet, View } from "react-native";
 import RegionBadge from "../chip-badge/RegionBadge";

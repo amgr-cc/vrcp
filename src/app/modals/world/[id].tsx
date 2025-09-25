@@ -10,13 +10,13 @@ import { fontSize, radius, spacing } from "@/config/styles";
 import { useCache } from "@/contexts/CacheContext";
 import { useVRChat } from "@/contexts/VRChatContext";
 import { formatToDateTime } from "@/lib/date";
-import { extractErrMsg } from "@/lib/extractErrMsg";
+import { extractErrMsg } from "@/lib/utils";
 import {
   getAuthorTags,
   getWorldPlatform,
   InstanceLike,
   parseInstanceId,
-} from "@/lib/vrchatUtils";
+} from "@/lib/vrchat";
 import { World } from "@/vrchat/api";
 import { useTheme } from "@react-navigation/native";
 import { useLocalSearchParams } from "expo-router/build/hooks";

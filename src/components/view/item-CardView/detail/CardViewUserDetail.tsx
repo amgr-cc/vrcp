@@ -1,6 +1,6 @@
 import { fontSize, radius, spacing } from "@/config/styles";
 import { CachedImage } from "@/contexts/CacheContext";
-import { getStatusColor, getTrustRankColor, getUserIconUrl, getUserProfilePicUrl, UserLike } from "@/lib/vrchatUtils";
+import { getStatusColor, getTrustRankColor, getUserIconUrl, getUserProfilePicUrl, UserLike } from "@/lib/vrchat";
 import { Text } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";

@@ -2,7 +2,7 @@ import { spacing } from "@/config/styles";
 import { LimitedUserInstance } from "@/vrchat/api";
 import React, { useEffect, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { getInstanceType, InstanceLike, parseInstanceId, parseLocationString, UserLike, WorldLike } from "@/lib/vrchatUtils";
+import { getInstanceType, InstanceLike, parseInstanceId, parseLocationString, UserLike, WorldLike } from "@/lib/vrchat";
 import { useCache } from "@/contexts/CacheContext";
 import { LinearGradient } from 'expo-linear-gradient';
 import BaseCardView from "../BaseCardView";

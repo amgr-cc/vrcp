@@ -1,4 +1,4 @@
-import { omitObject } from "@/lib/objectUtils";
+import { omitObject } from "@/lib/utils";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";

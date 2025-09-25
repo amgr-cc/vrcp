@@ -1,6 +1,6 @@
 import { fontSize, radius, spacing } from "@/config/styles";
 import { CachedImage } from "@/contexts/CacheContext";
-import { omitObject } from "@/lib/objectUtils";
+import { omitObject } from "@/lib/utils";
 import { Text } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
 import { StyleSheet, TouchableOpacity, View } from "react-native";

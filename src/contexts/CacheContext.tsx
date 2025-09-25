@@ -1,4 +1,4 @@
-import { omitObject } from "@/lib/objectUtils";
+import { omitObject } from "@/lib/utils";
 import {
   Avatar,
   CurrentUser,
@@ -72,9 +72,7 @@ const getLocalUri = async (
 
 const useCache = () => {
   const context = useContext(Context);
-  if (!context) {
-    throw new Error("useCache must be used within a CacheProvider");
-  }
+  if (!context) throw new Error("useCache must be used within a CacheProvider");
   return context;
 };
 const CacheProvider: React.FC<{ children?: ReactNode }> = ({ children }) => {

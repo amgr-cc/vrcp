@@ -2,6 +2,7 @@ import { HapticTab } from "@/components/layout/HapticTab";
 import IconButton from "@/components/view/icon-components/IconButton";
 import SearchBox from "@/components/view/SearchBox";
 import { spacing } from "@/config/styles";
+import { routeToSearch } from "@/lib/route";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { push } from "expo-router/build/global-state/routing";
@@ -50,7 +51,7 @@ export default function TabLayout() {
           headerRight: () => (
             <View style={{ flex: 1, paddingRight: spacing.medium }}>
               <SearchBox
-                onSubmit={(query) => push(`/modals/search?query=${query}`)}
+                onSubmit={routeToSearch}
                 placeholder="Search worlds, avatars, and users..."
               />
             </View>

@@ -13,7 +13,7 @@ import { useCache } from "@/contexts/CacheContext";
 import { useData } from "@/contexts/DataContext";
 import { useVRChat } from "@/contexts/VRChatContext";
 import { formatToDateTime } from "@/lib/date";
-import { extractErrMsg } from "@/lib/extractErrMsg";
+import { extractErrMsg } from "@/lib/utils";
 import {
   getAuthorTags,
   getTrustRankColor,
@@ -22,7 +22,7 @@ import {
   parseInstanceId,
   parseLocationString,
   UserLike,
-} from "@/lib/vrchatUtils";
+} from "@/lib/vrchat";
 import { Instance, World } from "@/vrchat/api";
 import { useTheme } from "@react-navigation/native";
 import { useLocalSearchParams } from "expo-router/build/hooks";
@@ -75,7 +75,7 @@ export default function InstanceDetail() {
   const ownerAndFriends = useMemo(() => {
     const list = [];
     if (owner) list.push(owner);
-    list.forEach(f => {
+    friends.forEach(f => {
       if (f.id !== owner?.id) list.push(f);
     });
     return list;
@@ -91,7 +91,7 @@ export default function InstanceDetail() {
             <DetailItemContainer title="Users">
               <View style={styles.detailItemContent}>
                 {ownerAndFriends.map((friend) => (
-                  <UserChip key={friend.id} user={friend} textColor={getTrustRankColor(friend, true, false)} optional={friend.id === owner?.id}/>
+                  <UserChip key={friend.id} user={friend} textColor={getTrustRankColor(friend, true, false)} icon={friend.id === owner?.id ? "crown" : undefined} />
                 ))}
               </View>
             </DetailItemContainer>

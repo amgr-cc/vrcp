@@ -4,7 +4,7 @@ import CardViewWorld from "@/components/view/item-CardView/CardViewWorld";
 import LoadingIndicator from "@/components/view/LoadingIndicator";
 import { spacing } from "@/config/styles";
 import { useVRChat } from "@/contexts/VRChatContext";
-import { extractErrMsg } from "@/lib/extractErrMsg";
+import { extractErrMsg } from "@/lib/utils";
 import { routeToAvatar, routeToWorld } from "@/lib/route";
 import { Avatar, LimitedWorld } from "@/vrchat/api";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";

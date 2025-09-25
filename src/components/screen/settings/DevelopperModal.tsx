@@ -1,11 +1,12 @@
 import GenericModal from "@/components/layout/GenericModal";
 import globalStyles, { spacing } from "@/config/styles";
+import { useVRChat } from "@/contexts/VRChatContext";
 import { Button, Text } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
 import Constants from "expo-constants";
 import * as FileSystem from "expo-file-system";
 import { navigate } from "expo-router/build/global-state/routing";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Platform, View } from "react-native";
 
 interface Props {
@@ -15,6 +16,8 @@ interface Props {
 
 const DevelopperModal = ({ open, setOpen }: Props) => {
   const theme = useTheme();
+  const { pipeline } = useVRChat();
+
   const devInfo = {
     version: Constants.expoConfig?.version,
     expoSdkVersion: Constants.expoConfig?.sdkVersion,
@@ -27,6 +30,14 @@ const DevelopperModal = ({ open, setOpen }: Props) => {
     expoBuildProfile: Constants.expoConfig?.extra?.vrcmm?.buildProfile,
     node_env: process.env.NODE_ENV,
   };
+
+  const [lastFiveMsgs, setLastFiveMsgs] = useState<string[]>([]);
+  useEffect(() => {
+    if (!pipeline.lastMessage) return;
+    const { type, content } = pipeline.lastMessage;
+    const newMsg = `${type}: ${JSON.stringify(content).slice(0, 25)}`;
+    setLastFiveMsgs((prev) => [...(prev.slice(-4)), newMsg]);
+  }, [pipeline.lastMessage]);
 
   const [cacheInfo, setCacheInfo] = useState<string>("");
   const getCacheInfo = async () => {
@@ -75,6 +86,14 @@ const DevelopperModal = ({ open, setOpen }: Props) => {
           </Button>
         </View>
       )}
+
+      <View>
+        {lastFiveMsgs.map((msg, index) => (
+          <Text key={index} style={[globalStyles.text, { color: theme.colors.text }]}>
+            {msg}
+          </Text>
+        ))}
+      </View>
 
       <Button
         style={[

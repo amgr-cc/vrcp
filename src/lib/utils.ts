@@ -9,3 +9,8 @@ export function omitObject <T extends object> (obj: T, ...keys: Array<keyof T>):
   });
   return newObj;
 };
+
+
+export const extractErrMsg = (error: any): string => {
+  return error.response?.data?.error?.message || "Unknown error";
+};

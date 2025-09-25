@@ -1,5 +1,7 @@
 import { push } from "expo-router/build/global-state/routing";
 
+export const routeToSearch = (query:string) => push(`/modals/search?query=${query}`);
+
 export const routeToUser = (id:string) => push(`/modals/user/${id}`);
 export const routeToWorld = (id:string) => push(`/modals/world/${id}`);
 export const routeToAvatar = (id:string) => push(`/modals/avatar/${id}`);

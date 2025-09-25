@@ -1,5 +1,5 @@
 import { spacing } from "@/config/styles";
-import { omitObject } from "@/lib/objectUtils";
+import { omitObject } from "@/lib/utils";
 import { Text } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
 import React from "react";
