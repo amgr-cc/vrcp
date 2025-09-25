@@ -1,9 +1,10 @@
 import GenericScreen from "@/components/layout/GenericScreen";
-import CardViewLocation, { LocationData } from "@/components/view/item-CardView/CardViewLocation";
+import CardViewInstance from "@/components/view/item-CardView/CardViewInstance";
 import globalStyles, { spacing } from "@/config/styles";
 import { useData } from "@/contexts/DataContext";
 import { useVRChat } from "@/contexts/VRChatContext";
-import { parseLocationString } from "@/lib/vrchatUtils";
+import { routeToInstance, routeToWorld } from "@/lib/route";
+import { convertToLimitedUserInstance, getInstanceType, InstanceLike, parseInstanceId, parseLocationString } from "@/lib/vrchatUtils";
 import { LimitedUserFriend } from "@/vrchat/api";
 import { Button } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
@@ -11,12 +12,19 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
 
 
+type LocationData = {
+  location: string;
+  friends?: LimitedUserFriend[];
+  friendsCount?: number;
+  hasFavoriteFriends?: boolean;
+}
+
 export default function Home() {
   const theme = useTheme();
   const vrc = useVRChat();  
   const { friends, favorites } = useData();
 
-  const locationData = useMemo<LocationData[]>(() => {
+  const instances = useMemo<InstanceLike[]>(() => {
     if (!friends.data) return [];
     // create favoriteMap for quick lookup
     const favoriteMap: Record<string, boolean> = {};
@@ -40,7 +48,33 @@ export default function Home() {
       if (favoriteMap[friend.id]) map[location].hasFavoriteFriends = true;
 
     }
-    const instanceFriends = Object.values(map).map(({ location, friends, friendsCount, hasFavoriteFriends }) => ({ location, friends, friendsCount, hasFavoriteFriends }));
+    // convert to MinInstance[]
+    const instanceFriends: (
+      InstanceLike & {hasFavoriteFriends: boolean, friendsCount: number}
+    )[] = [];
+    Object.values(map).forEach((locData) => {
+      const { parsedLocation } = parseLocationString(locData.location);
+      const parsedInstance = parseInstanceId(parsedLocation?.instanceId);
+      if (!parsedLocation?.worldId || !parsedLocation?.instanceId || !parsedInstance) {
+        return;
+      }
+      const instance = {
+        id: parsedLocation?.instanceId,
+        instanceId: parsedLocation?.instanceId,
+        worldId: parsedLocation?.worldId,
+        location: locData.location,
+        users: locData.friends?.map(convertToLimitedUserInstance),
+        n_users: -1,
+        capacity: -1,
+        type: parsedInstance?.type ?? "hidden",
+        region: parsedInstance?.region ?? "unknown",
+        name: parsedInstance?.name ?? "",
+        // for sort, not from MinInstance interface
+        hasFavoriteFriends: locData.hasFavoriteFriends ?? false,
+        friendsCount: locData.friendsCount ?? 0,
+      };
+      instanceFriends.push(instance);
+    });
     const sorted = instanceFriends.sort((a, b) => {
       if (a.hasFavoriteFriends && !b.hasFavoriteFriends) return -1;
       if (!a.hasFavoriteFriends && b.hasFavoriteFriends) return 1;
@@ -48,7 +82,7 @@ export default function Home() {
       const aCount = a.friendsCount ?? 0;
       const bCount = b.friendsCount ?? 0;
       if (aCount !== bCount) return bCount - aCount;
-      return a.location.localeCompare(b.location);
+      return a.type.localeCompare(b.type);
     });
     return sorted;
   }, [friends.data, favorites.data]);
@@ -57,10 +91,10 @@ export default function Home() {
     <GenericScreen>
       <View style={styles.container}>
         <FlatList
-          data={locationData}
-          keyExtractor={(item) => item.location}
+          data={instances}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <CardViewLocation locationData={item} style={styles.cardView} />
+            <CardViewInstance instance={item} style={styles.cardView} onPress={() => routeToInstance(item.worldId, item.instanceId)} />
           )}
           ListEmptyComponent={() => (
             <View style={{ alignItems: "center", marginTop: spacing.large }}>

@@ -7,6 +7,7 @@ import { SupportedIconNames } from "@/components/view/icon-components/utils";
 import globalStyles, { fontSize, spacing } from "@/config/styles";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@react-navigation/native";
+import { push } from "expo-router/build/global-state/routing";
 import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 

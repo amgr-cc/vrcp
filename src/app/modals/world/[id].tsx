@@ -3,9 +3,7 @@ import DetailItemContainer from "@/components/screen/detail/DetailItemContainer"
 import PlatformChips from "@/components/view/chip-badge/PlatformChips";
 import TagChips from "@/components/view/chip-badge/TagChips";
 import CardViewWorldDetail from "@/components/view/item-CardView/detail/CardViewWorldDetail";
-import ListViewInstance, {
-  MinInstance,
-} from "@/components/view/item-ListView/ListViewInstance";
+import ListViewInstance from "@/components/view/item-ListView/ListViewInstance";
 import LoadingIndicator from "@/components/view/LoadingIndicator";
 import SelectGroupButton from "@/components/view/SelectGroupButton";
 import { fontSize, radius, spacing } from "@/config/styles";
@@ -16,6 +14,7 @@ import { extractErrMsg } from "@/lib/extractErrMsg";
 import {
   getAuthorTags,
   getWorldPlatform,
+  InstanceLike,
   parseInstanceId,
 } from "@/lib/vrchatUtils";
 import { World } from "@/vrchat/api";
@@ -47,8 +46,8 @@ export default function WorldDetail() {
 
   const formatAndSortInstances = (
     instances: any[][] | undefined
-  ): MinInstance[] => {
-    const parsedInstances = [] as MinInstance[];
+  ): InstanceLike[] => {
+    const parsedInstances = [] as InstanceLike[];
     instances?.forEach((item) => {
       const [id, n_users] = item;
       if (typeof id !== "string" || typeof n_users !== "number") return;
@@ -56,6 +55,8 @@ export default function WorldDetail() {
       if (!parsed) return;
       const instance = {
         id: id,
+        instanceId: id,
+        worldId: world?.id ?? "",
         name: parsed?.name,
         type: parsed.type,
         groupAccessType: parsed?.groupAccessType,

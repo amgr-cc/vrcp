@@ -50,7 +50,7 @@ export default function TabLayout() {
           headerRight: () => (
             <View style={{ flex: 1, paddingRight: spacing.medium }}>
               <SearchBox
-                onSubmit={(query) => push(`/other/search?query=${query}`)}
+                onSubmit={(query) => push(`/modals/search?query=${query}`)}
                 placeholder="Search worlds, avatars, and users..."
               />
             </View>

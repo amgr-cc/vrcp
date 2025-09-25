@@ -11,7 +11,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useReducer,
 import { useAuth } from "./AuthContext";
 import { useVRChat } from "./VRChatContext";
 import { PipelineContent, PipelineType } from "@/vrchat/pipline/type";
-import { convertUserToLimitedUserFriend } from "@/lib/vrchatUtils";
+import { convertToLimitedUserFriend } from "@/lib/vrchatUtils";
 import { useCache } from "./CacheContext";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
@@ -184,7 +184,7 @@ const DataProvider: React.FC<{ children?: React.ReactNode }> = ({
       } else {
         wrappers.friends.set((prev) => [
           ...prev,
-          convertUserToLimitedUserFriend(data.user),
+          convertToLimitedUserFriend(data.user),
         ]);
       }
     } else if (type == "friend-offline") {
@@ -198,7 +198,7 @@ const DataProvider: React.FC<{ children?: React.ReactNode }> = ({
       const data = content as PipelineContent<"friend-add">;
       wrappers.friends.set((prev) => [
         ...prev,
-        convertUserToLimitedUserFriend(data.user),
+        convertToLimitedUserFriend(data.user),
       ]);
     } else if (type == "friend-delete") {
       const data = content as PipelineContent<"friend-delete">;

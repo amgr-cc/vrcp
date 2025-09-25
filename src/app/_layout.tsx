@@ -11,8 +11,9 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 function RootLayout() {
   return (
-    <Stack initialRouteName="index">
+    <Stack initialRouteName="index" screenOptions={{ headerShown: false, gestureEnabled: true }}>
       <Stack.Screen name="maintab" options={{ headerShown: false }} />
+      <Stack.Screen name="modals" options={{ headerShown: false }} />
       <Stack.Screen name="other" options={{ headerShown: false }} />
       <Stack.Screen name="index" options={{ headerShown: false }} />
     </Stack>

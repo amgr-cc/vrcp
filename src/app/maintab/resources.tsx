@@ -9,7 +9,7 @@ import { routeToAvatar, routeToWorld } from "@/lib/route";
 import { Avatar, LimitedWorld } from "@/vrchat/api";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useTheme } from "@react-navigation/native";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 // user's avatar, world, and other uploaded resources
 export default function Resources() {
@@ -131,17 +131,17 @@ export default function Resources() {
         <MaterialTab.Screen
           name="avatar"
           options={{ tabBarLabel: "Avatars" }}
-          component={AvatarsTab}
+          component={useCallback(AvatarsTab, [])}
         />
         <MaterialTab.Screen
           name="world"
           options={{ tabBarLabel: "Worlds" }}
-          component={WorldsTab}
+          component={useCallback(WorldsTab, [])}
         />
         <MaterialTab.Screen
           name="other"
           options={{ tabBarLabel: "Other" }}
-          component={OtherTab}
+          component={useCallback(OtherTab, [])}
         />
       </MaterialTab.Navigator>
     </GenericScreen>

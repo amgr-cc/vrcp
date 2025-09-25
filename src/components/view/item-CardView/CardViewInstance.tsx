@@ -1,40 +1,28 @@
 import { spacing } from "@/config/styles";
-import { Avatar, Instance, LimitedUserFriend } from "@/vrchat/api";
-import React, { useEffect, useState } from "react";
-import { LayoutChangeEvent, StyleSheet, View } from "react-native";
-import ReleaseStatusChip from "../chip-badge/ReleaseStatusChip";
+import { LimitedUserInstance } from "@/vrchat/api";
+import React, { useEffect, useMemo, useState } from "react";
+import { StyleSheet, View } from "react-native";
 import BaseCardView from "./BaseCardView";
-import { getInstanceType, parseInstanceId, parseLocationString, UserLike, WorldLike } from "@/lib/vrchatUtils";
+import { getInstanceType, InstanceLike, parseInstanceId, parseLocationString, UserLike, WorldLike } from "@/lib/vrchatUtils";
 import { useCache } from "@/contexts/CacheContext";
 import UserChip from "../chip-badge/UserChip";
 import { LinearGradient } from 'expo-linear-gradient';
 
-export interface LocationData {
-  location: string;
-  friends?: UserLike[];
-  friendsCount?: number;
-  world?: WorldLike;
-  instance?: Instance;
-  hasFavoriteFriends?: boolean;
-  isFavorite?: boolean;
-}
 
 interface Props {
-  locationData: LocationData;
-  instance?: Instance; // optional, if provided, use this instance data to show release status
+  instance: InstanceLike; 
   onPress?: () => void;
   onLongPress?: () => void;
   [key: string]: any;
 }
 
-const extractImageUrl = (data: LocationData) => {
+const extractImageUrl = (data: InstanceLike) => {
   const url = data?.world?.thumbnailImageUrl ?? data?.world?.imageUrl;
   if (url && url.length > 0) return url;
   return "";
 };
-const extractTitle = (data: LocationData) => { // <instanceName> <worldName>
-  const { parsedLocation } = parseLocationString(data.location);
-  const parsedInstance = parseInstanceId(parsedLocation?.instanceId);
+const extractTitle = (data: InstanceLike) => { // <instanceName> <worldName>
+  const parsedInstance = parseInstanceId(data.instanceId ?? data.id ?? parseLocationString(data.location).parsedLocation?.instanceId);
   if (parsedInstance) {
     const instType = getInstanceType(parsedInstance.type, parsedInstance.groupAccessType);
     return `${instType} #${parsedInstance.name}\n${data.world?.name}`;
@@ -42,39 +30,48 @@ const extractTitle = (data: LocationData) => { // <instanceName> <worldName>
   return data.world?.name ?? "Unknown";
 };
 
-const CardViewLocation = ({ locationData, onPress, onLongPress, ...rest }: Props) => {
+const CardViewInstance = ({ instance, onPress, onLongPress, ...rest }: Props) => {
   const cache = useCache();
   const [imageUrl, setImageUrl] = useState<string>(
-    extractImageUrl(locationData)
+    extractImageUrl(instance)
   );
   const [title, setTitle] = useState<string>(
-    extractTitle(locationData)
+    extractTitle(instance)
   );
-
-  const fetchData = async () => {
-    if (locationData.world) {
-      const url = extractImageUrl(locationData);
-      const title = extractTitle(locationData);
+  const fetchWorld = async () => {
+    if (instance.world) {
+      const url = extractImageUrl(instance);
+      const title = extractTitle(instance);
       setImageUrl(url);
       setTitle(title);
-    } else {
-      const worldId = parseLocationString(locationData.location).parsedLocation?.worldId;
-      if (!worldId) return;
-      const world = await cache.world.get(worldId);
-      const title = extractTitle({ ...locationData, world });
-      const url = extractImageUrl({ ...locationData, world });
+    } else if (instance.worldId && instance.worldId.length > 0) {
+      const world = await cache.world.get(instance.worldId);
+      const title = extractTitle({ ...instance, world });
+      const url = extractImageUrl({ ...instance, world });
       setImageUrl(url);
       setTitle(title);
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [locationData.world]);
+  const friends = useMemo(() => {
+    const users = instance.users ?? [];
+    const friends = [] as LimitedUserInstance[];
+    users.forEach((user) => {
+      if (user.isFriend) {
+        friends.push(user);
+      }
+    });
+    return friends;
+  }, [instance.users]);
 
+  useEffect(() => {
+    fetchWorld();
+  }, [instance.world]);
+
+  
   return (
     <BaseCardView
-      data={locationData}
+      data={instance}
       onPress={onPress}
       onLongPress={onLongPress}
       imageUrl={imageUrl}
@@ -91,7 +88,7 @@ const CardViewLocation = ({ locationData, onPress, onLongPress, ...rest }: Props
             style={styles.gradient}
           />
           <View style={styles.friendsContainer}>
-            {locationData.friends?.map((friend)=> (
+            {friends.map((friend)=> (
               <UserChip key={friend.id} user={friend} style={styles.chip}/>
             ))}
           </View>
@@ -127,4 +124,4 @@ const styles = StyleSheet.create({
   },
 });
  
-export default React.memo(CardViewLocation);
+export default React.memo(CardViewInstance);

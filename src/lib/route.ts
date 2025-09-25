@@ -1,7 +1,7 @@
 import { push } from "expo-router/build/global-state/routing";
 
-export const routeToUser = (id:string) => push(`/other/user/${id}`);
-export const routeToWorld = (id:string) => push(`/other/world/${id}`);
-export const routeToAvatar = (id:string) => push(`/other/avatar/${id}`);
-export const routeToGroup = (id:string) => push(`/other/group/${id}`);
-
+export const routeToUser = (id:string) => push(`/modals/user/${id}`);
+export const routeToWorld = (id:string) => push(`/modals/world/${id}`);
+export const routeToAvatar = (id:string) => push(`/modals/avatar/${id}`);
+export const routeToGroup = (id:string) => push(`/modals/group/${id}`);
+export const routeToInstance = (wrldId:string, instId: string) => push(`/modals/instance/${wrldId}:${instId}`);

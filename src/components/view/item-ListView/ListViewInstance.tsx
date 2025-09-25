@@ -1,26 +1,23 @@
 import { spacing } from "@/config/styles";
-import { getInstanceType } from "@/lib/vrchatUtils";
+import { getInstanceType, InstanceLike } from "@/lib/vrchatUtils";
 import { Instance } from "@/vrchat/api";
 import { StyleSheet, View } from "react-native";
 import RegionBadge from "../chip-badge/RegionBadge";
 import BaseListView from "./BaseListView";
 
-// 最低限のInstance情報だけを持つ型 (Worldに付随した部分的なInstance情報に対応)
-export type MinInstance = Pick<
-  Instance,
-  "id" | "name" | "n_users" | "capacity" | "type" | "groupAccessType" | "region"
->;
+
+
 
 interface Props {
-  instance: MinInstance;
+  instance: InstanceLike;
   onPress?: () => void;
   onLongPress?: () => void;
 
   [key: string]: any;
 }
-const extractTitle = (data: MinInstance) =>
+const extractTitle = (data: InstanceLike) =>
   `${getInstanceType(data.type, data.groupAccessType)}  #${data.name}`;
-const extractSubtitles = (data: MinInstance) => [
+const extractSubtitles = (data: InstanceLike) => [
   `${data.n_users} / ${data.capacity}`,
 ];
 

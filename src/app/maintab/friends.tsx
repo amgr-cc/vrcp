@@ -10,7 +10,7 @@ import { getState } from "@/lib/vrchatUtils";
 import { LimitedUserFriend } from "@/vrchat/api";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useTheme } from "@react-navigation/native";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 
 interface FriendsByState {
@@ -204,22 +204,22 @@ export default function Friends() {
         <MaterialTab.Screen
           name="favorite"
           options={{ tabBarLabel: "Favorite" }}
-          component={FavoriteFriendsTab}
+          component={useCallback(FavoriteFriendsTab, [])}
         />
         <MaterialTab.Screen
           name="online"
           options={{ tabBarLabel: "Online" }}
-          component={OnlineFriendsTab}
+          component={useCallback(OnlineFriendsTab, [])}
         />
         <MaterialTab.Screen
           name="active"
           options={{ tabBarLabel: "Active" }}
-          component={ActiveFriendsTab}
+          component={useCallback(ActiveFriendsTab, [])}
         />
         <MaterialTab.Screen
           name="offline"
           options={{ tabBarLabel: "Offline" }}
-          component={OfflineFriendsTab}
+          component={useCallback(OfflineFriendsTab, [])}
         />
       </MaterialTab.Navigator>
     </GenericScreen>
