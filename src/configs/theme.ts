@@ -15,8 +15,14 @@ const lightTheme = {
     success: "#70ff50ff",
     warning: "#ffcc00ff",
 
-    card: "#dfdfdfff",
-    subText: "#888888ff",
+    // text colors
+    text: "#000000ff",
+    subText: "#4d4d4dff",
+
+    // backgrounds
+    card: "#afafafff",
+    paper: "#dfdfdfff",
+    background: "#f6f6f6ff",
   },
 };
 
@@ -29,8 +35,14 @@ const darkTheme = {
     success: "#70ff50ff",
     warning: "#ffcc00ff",
     
-    card: "#222222ff",
-    subText: "#888888ff",
+    // text colors
+    text: "#ffffffff",
+    subText: "#9f9f9fff",
+
+    // backgrounds
+    card: "#313131ff",
+    paper: "#222222ff",
+    background: "#000000ff",
   },
 };
 

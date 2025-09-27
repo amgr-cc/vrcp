@@ -47,9 +47,8 @@ export default function Resources() {
     }, []);
 
     return (
-      <View>
+      <View style={styles.tabpanel}>
         {isLoading && <LoadingIndicator absolute />}
-        <Text style={{ color: theme.colors.text }}>Avatars</Text>
         <FlatList
           data={avatars}
           keyExtractor={(item) => item.id}
@@ -93,9 +92,8 @@ export default function Resources() {
     }, []);
 
     return (
-      <View>
+      <View style={styles.tabpanel}>
         {isLoading && <LoadingIndicator absolute />}
-        <Text style={{ color: theme.colors.text }}>Worlds</Text>
         <FlatList
           data={worlds}
           keyExtractor={(item) => item.id}
@@ -114,8 +112,8 @@ export default function Resources() {
   const OtherTab = () => {
     // prints, ...etc
     return (
-      <View>
-        <Text style={{ color: theme.colors.text }}>Other</Text>
+      <View style={styles.tabpanel}>
+        <LoadingIndicator absolute />
       </View>
     );
   };
@@ -149,6 +147,9 @@ export default function Resources() {
 }
 
 const styles = StyleSheet.create({
+  tabpanel: {
+    flex: 1,
+  },
   cardView: {
     padding: spacing.small,
     width: "50%",

@@ -116,7 +116,12 @@ const VRChatProvider: React.FC<{ children?: ReactNode }> = ({ children }) => {
     pipelineRef.current.onmessage = (event) => {
       try {
         const raw = JSON.parse(event.data) as PipelineRawMessage;
+        if (raw.type == lastJsonMessage?.type && event.timeStamp == lastJsonMessage?.timestamp) {
+          console.log("Duplicate message, ignoring:", raw.type, event.timeStamp);
+          return;
+        }
         const parsed: PipelineMessage = {
+          timestamp: event.timeStamp,
           type: raw.type,
           content: raw.content ? JSON.parse(raw.content) : null,
         };

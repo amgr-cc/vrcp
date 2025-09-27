@@ -62,7 +62,9 @@ const BaseCardView = <T,>({
 
 const styles = StyleSheet.create({
   root: {
-    padding: spacing.small,
+    // padding: spacing.small,
+    paddingHorizontal: spacing.small,
+    paddingBottom: spacing.small,
   },
   base: {
     overflow: "hidden",

@@ -10,6 +10,7 @@ export interface PipelineRawMessage<T extends PipelineType = PipelineType> {
 }
 
 export interface PipelineMessage<T extends PipelineType = PipelineType> {
+  timestamp: number; // milliseconds
   type: T;
   content?: PipelineContent<T>;
 }
