@@ -111,13 +111,15 @@ const CacheProvider: React.FC<{ children?: ReactNode }> = ({ children }) => {
   }, [initTrigger.current]);
   const wrappers = useMemo(
     () => ({
+      // only used for DataContext, use useData(),currentUser instaead of this, 
+      currentUser: useCacheWrapper<CurrentUser>("currentUser", getCurrentUser, { expiration: 1000 }), // expire with 1 second, basically, 
       // for other data
-      currentUser: useCacheWrapper<CurrentUser>("currentUser", getCurrentUser, { expiration: 1000 }), // expire with 1 second, basically, use useData(),currentUser instaead of this
-      favoriteLimits: useCacheWrapper<FavoriteLimits>("favoriteLimits", getFavoriteLimits, { expiration: 24 * 60 * 60 * 1000 }), // expire with 24 hours
-      user: useCacheByIdWrapper<User>("users/", getUser),
-      world: useCacheByIdWrapper<World>("worlds/", getWorld),
-      group: useCacheByIdWrapper<Group>("groups/", getGroup),
-      avatar: useCacheByIdWrapper<Avatar>("avatars/", getAvatar),
+      favoriteLimits: useCacheWrapper<FavoriteLimits>("favoriteLimits", getFavoriteLimits, { expiration: 30 * 24 * 60 * 60 * 1000 }), // expire with 30 days
+      // by id (basiccally, use for name lookup)
+      user: useCacheByIdWrapper<User>("users/", getUser, { expiration: 1 * 24 * 60 * 60 * 1000 }), // expire with 1 day
+      world: useCacheByIdWrapper<World>("worlds/", getWorld, {expiration: 7 * 24 * 60 * 60 * 1000}), // expire with 7 days
+      group: useCacheByIdWrapper<Group>("groups/", getGroup, { expiration: 7 * 24 * 60 * 60 * 1000 }), // expire with 7 days
+      avatar: useCacheByIdWrapper<Avatar>("avatars/", getAvatar, {expiration: 7 * 24 * 60 * 60 * 1000}), // expire with 7 days
     }),
     [initTrigger.current, vrc.config]
   );

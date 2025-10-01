@@ -10,8 +10,6 @@ help:   # show this list
 run:  # run the application
 	@npx expo start
 
-
-
 .PHONY : gen-vrcapi gen-vrcpipe
 gen-vrcapi:  # generate the vrcapi types and clients from openapi spec
 # config on openapitools.json
@@ -26,6 +24,12 @@ gen-vrcapi:  # generate the vrcapi types and clients from openapi spec
 
 gen-vrcpipe: # generate the vrcpipe types from websocket spec
 	@npx ts-node ./src/vrchat/pipline/gen-type.ts
+
+.PHONY : migrate-generate
+migrate-generate:  # generate migration files based on schema changes
+	@npx drizzle-kit generate
+	@echo "Migration .sql files generated in src/db/migration/drizzle-kit"
+	@npx ts-node ./src/db/migration/gen-migration.ts	
 
 
 .PHONY : prebuild

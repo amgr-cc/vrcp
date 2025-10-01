@@ -1,10 +1,12 @@
 import globalStyles, { spacing } from "@/configs/styles";
 import { StyleSheet, View } from "react-native";
 import BaseListView from "./BaseListView";
-import { PipelineMessage } from "@/vrchat/pipline/type";
+import { PipelineContent, PipelineMessage } from "@/vrchat/pipline/type";
 import { dateToShortDatetime } from "@/libs/date";
-import { parseLocationString } from "@/libs/vrchat";
+import { parseLocationString, UserLike, WorldLike } from "@/libs/vrchat";
 import { extractPipelineMessageContent } from "@/libs/funcs/extractPipelineMessageContent";
+import { useEffect, useState } from "react";
+import { useCache } from "@/contexts/CacheContext";
 
 
 
@@ -20,9 +22,10 @@ const extractTitle = (data: PipelineMessage) => {
   const timestamp = data.timestamp ? dateToShortDatetime(new Date(data.timestamp)) : "";
   return `${timestamp}  ${data.type}`
 }
-const extractSubtitles = (data: PipelineMessage) => {
-  const subtitles = extractPipelineMessageContent(data);
-  return [subtitles.join("  ")]
+const extractSubtitles = (data: PipelineMessage, user?:UserLike, world?: WorldLike) => {
+  const subtitles = extractPipelineMessageContent(data, user, world);
+  // return [subtitles.join("  ")]
+  return subtitles;
 }
 
 const ListViewPipelineMessage = ({
@@ -31,11 +34,30 @@ const ListViewPipelineMessage = ({
   onLongPress,
   ...rest
 }: Props) => {
+  const { world, user } = useCache();
+  const [subtitles, setSubtitles] = useState<string[]>(
+    extractSubtitles(message)
+  );
+  
+  useEffect(() => {
+    const content = message.content as any
+    const userId = content.userId as string ?? undefined;
+    const worldId = content.location ? parseLocationString(content.location)?.parsedLocation?.worldId : undefined;
+    Promise.all([
+      content.user?.displayName ? user.get(userId) : Promise.resolve(undefined),
+      worldId ? world.get(worldId) : Promise.resolve(undefined)
+    ])
+    .then(([u, w]) => {
+      setSubtitles(extractSubtitles(message, u, w));
+    });
+  }, [message])
+
+
   return (
     <BaseListView
       data={message}
       title={extractTitle}
-      subtitles={extractSubtitles}
+      subtitles={subtitles}
       onPress={onPress}
       onLongPress={onLongPress}
       ContainerStyle={styles.container}

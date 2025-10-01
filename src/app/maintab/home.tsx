@@ -18,22 +18,13 @@ import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function Home() {
   const theme = useTheme();
-  const { pipeline } = useVRChat();  
+  const { pipelineMessages } = useData();
   const { friends, favorites } = useData();
 
   const instances = useMemo<InstanceLike[]>(() => {
     return calcFriendsLocations(friends.data, favorites.data, true, false);
   }, [friends.data, favorites.data]);
 
-  const [feeds, setFeeds] = useState<PipelineMessage[]>([]);
-  useEffect(() => {
-    if (pipeline.lastMessage) {
-      if (feeds.find(msg => msg.timestamp == pipeline.lastMessage?.timestamp && msg.type == pipeline.lastMessage?.type)) {
-        return;
-      }
-      setFeeds((prev) => [pipeline.lastMessage!, ...prev].slice(0, 20));
-    }
-  }, [pipeline.lastMessage]);
 
   return (
     <GenericScreen>
@@ -44,7 +35,7 @@ export default function Home() {
         style={{maxHeight: "30%" }}
       >
         <FlatList
-          data={feeds}
+          data={pipelineMessages}
           keyExtractor={(item) => `${item.timestamp}-${item.type}`}
           renderItem={({ item }) => (
             <ListViewPipelineMessage message={item} style={styles.feed} />

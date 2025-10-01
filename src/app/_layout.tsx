@@ -2,6 +2,7 @@ import { darkTheme, lightTheme } from "@/configs/theme";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CacheProvider } from "@/contexts/CacheContext";
 import { DataProvider } from "@/contexts/DataContext";
+import { DBProvider } from "@/contexts/DBContext";
 import { SettingProvider } from "@/contexts/SettingContext";
 import { VRChatProvider } from "@/contexts/VRChatContext";
 import { ThemeProvider } from "@react-navigation/native";
@@ -23,6 +24,7 @@ function RootLayout() {
 export default function Root() {
   return (
     <SettingProvider>
+      <DBProvider>
       <VRChatProvider>
         <AuthProvider>
           <CacheProvider>
@@ -41,6 +43,7 @@ export default function Root() {
           </CacheProvider>
         </AuthProvider>
       </VRChatProvider>
+      </DBProvider>
     </SettingProvider>
   );
 }

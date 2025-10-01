@@ -22,12 +22,16 @@ interface NotificationOption {
   usePushNotification: boolean;
   allowedNotificationTypes: string[]; // e.g. ["friend-online" ]
 }
+interface PipelineOption {
+  keepMsgNum:  number; // how many feeds to keep, default 100
+}
 
 interface Setting {
   homeTabMode: HomeTabMode;
   searchOptions: SearchOption;
   colorOptions: ColorOption;
   notificationOptions: NotificationOption;
+  pipelineOptions: PipelineOption;
 }
 
 const defaultSettings: Setting = {
@@ -47,6 +51,9 @@ const defaultSettings: Setting = {
   notificationOptions: {
     usePushNotification: false,
     allowedNotificationTypes: [],
+  },
+  pipelineOptions: {
+    keepMsgNum: 100,
   },
 }
 

@@ -10,10 +10,12 @@ import {
 import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react";
 import { useAuth } from "./AuthContext";
 import { useVRChat } from "./VRChatContext";
-import { PipelineContent, PipelineType } from "@/vrchat/pipline/type";
+import { PipelineContent, PipelineMessage, PipelineType } from "@/vrchat/pipline/type";
 import { convertToLimitedUserFriend } from "@/libs/vrchat";
 import { useCache } from "./CacheContext";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { useSetting } from "./SettingContext";
+import Storage from "expo-sqlite/kv-store";
 
 // Store VRCAPI Data Globally
 
@@ -31,13 +33,13 @@ interface DataContextType {
   clearAll: () => Promise<void>;
 
   currentUser: DataWrapper<CurrentUser | undefined>;
-
   friends: DataWrapper<LimitedUserFriend[]>; // all friends
   worlds: DataWrapper<FavoritedWorld[]>; // favorited worlds
   avatars: DataWrapper<Avatar[]>; // favorited avatars
-
   favoriteGroups: DataWrapper<FavoriteGroup[]>;
   favorites: DataWrapper<Favorite[]>; // almost for favorited friends
+
+  pipelineMessages: PipelineMessage[]; // store pipeline messages
 }
 
 const Context = createContext<DataContextType | undefined>(undefined);
@@ -51,9 +53,11 @@ const useData = () => {
 const DataProvider: React.FC<{ children?: React.ReactNode }> = ({
   children,
 }) => {
-  const auth = useAuth();
+  const { settings } = useSetting();
   const vrc = useVRChat();
+  const auth = useAuth();
   const cache = useCache();
+  const [pipelineMessages, setPipelineMessages] = useState<PipelineMessage[]>([]); // store pipeline messages
 
   /** APIs */
   // data getters
@@ -156,6 +160,42 @@ const DataProvider: React.FC<{ children?: React.ReactNode }> = ({
   }, [auth.user]);
 
   /** Pipelines */
+  
+  useEffect(() => {
+    const msg = vrc.pipeline?.lastMessage;
+    const prevMsg = pipelineMessages.length > 0 ? pipelineMessages[0] : null;
+    if (!msg) return;
+    if (msg.timestamp === prevMsg?.timestamp && msg.type === prevMsg?.type) {
+      return; // already have this message
+    }
+    if (PipelineType.includes(msg.type as any)) {
+      applyPipeMsgToStates(msg.type, msg.content as any);
+      storeLastPipelineMessages(msg);
+    } else {
+      console.log("Pipeline unknown message:", msg.type);
+    }
+  }, [vrc.pipeline?.lastMessage]);
+
+  // restore past pipeline messages from storage
+  useEffect(() => {
+    Storage.getItem("data_lastPipeMsgs")
+    .then((v) => {
+      if (v) {
+        const msgs = JSON.parse(v) as PipelineMessage[];
+        setPipelineMessages(msgs);
+      }
+    })
+    .catch(console.error);
+  }, []);
+
+  // Store past pipeline messages
+  const storeLastPipelineMessages = async (msg: PipelineMessage) => {
+    const newMsgs = [msg, ...pipelineMessages].slice(0, settings.pipelineOptions.keepMsgNum);
+    setPipelineMessages(newMsgs);
+    Storage.setItem("data_lastPipeMsgs", JSON.stringify(newMsgs))
+    .catch(console.error);
+  };
+
   // Apply pipeline messages to update states
   const applyPipeMsgToStates = <T extends PipelineType>(
     type: T,
@@ -202,19 +242,9 @@ const DataProvider: React.FC<{ children?: React.ReactNode }> = ({
         wrappers.friends.set((prev) => prev.filter((f) => f.id !== dataFdel.userId));
         break;
       default:
-        console.log("Invalid Pipeline type:", type);
+        console.log(`got unhandled pipeline message type: ${type}`);
     }
   };
-
-  useEffect(() => {
-    const msg = vrc.pipeline?.lastMessage;
-    if (!msg) return;
-    if (PipelineType.includes(msg.type as any)) {
-      applyPipeMsgToStates(msg.type, msg.content as any);
-    } else {
-      console.log("Pipeline unknown message:", msg.type);
-    }
-  }, [vrc.pipeline?.lastMessage]);
 
   return (
     <Context.Provider
@@ -222,6 +252,7 @@ const DataProvider: React.FC<{ children?: React.ReactNode }> = ({
         fetchAll,
         clearAll,
         ...wrappers,
+        pipelineMessages
       }}
     >
       {children}
