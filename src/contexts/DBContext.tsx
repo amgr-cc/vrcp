@@ -15,6 +15,7 @@ interface TableWrapper<
   T extends SQLiteTableWithColumns<any>
 > {
   _tableName: string;
+  _table: T;
   get: (id: T["$inferSelect"]["id"]) => Promise<T["$inferSelect"] | null>;
   create: (data: SQLiteInsertValue<T>) => Promise<T["$inferSelect"]>;
   update: (id: T["$inferInsert"]["id"], data: SQLiteUpdateSetSource<T>) => Promise<T["$inferSelect"]>;
@@ -24,7 +25,8 @@ interface TableWrapper<
 interface DBContextType {
   _db: ReturnType<typeof drizzle>;
   _fileName: string;
-  _resetDB: () => Promise<void>;
+  resetDB: () => Promise<void>;
+  getDBInfo: () => Promise<{ size: number; rows: number; }>;
   users: TableWrapper<typeof usersTable>;
   worlds: TableWrapper<typeof worldsTable>;
   avatars: TableWrapper<typeof avatarsTable>;
@@ -93,12 +95,32 @@ const DBProvider: React.FC<{ children?: React.ReactNode }> = ({
       console.error("Error resetting DB:", error);
     } 
   }
+  const getDBInfo = async (): Promise<{ size: number; rows: number; }> => {
+    try {
+      const fileInfo = await FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite/" + fileName);
+      if (!fileInfo.exists || !fileInfo.size) {
+        return { size: 0, rows: 0 };
+      }
+      const size = fileInfo.size;
+      const tables = Object.values(wrappers).map(w => w._table);
+      let rows = 0;
+      for (const t of tables) {
+        const rowResult = await db.select({ count: sql<number>`COUNT(*)` }).from(t).get();
+        rows += rowResult?.count ?? 0;
+      }
+      return { size, rows };
+    } catch (error) {
+      console.error("Error getting DB info:", error);
+      return { size: 0, rows: 0 };
+    }
+  }
 
   return (
     <Context.Provider value={{
       _db: db, 
       _fileName: fileName,
-      _resetDB: resetDB,
+      resetDB,
+      getDBInfo,
       ...wrappers
     }}>
       {children}
@@ -141,7 +163,7 @@ const initTableWrapper = <
     return result.changes > 0;
   }
 
-  return { get, create, update, delete: del, _tableName: tableName ?? "" };
+  return { get, create, update, delete: del, _tableName: tableName ?? "", _table: table };
 }
 
 export { DBProvider, useDB };

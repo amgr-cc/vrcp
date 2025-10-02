@@ -2,6 +2,7 @@ import GenericModal from "@/components/layout/GenericModal";
 import LoadingIndicator from "@/components/view/LoadingIndicator";
 import globalStyles, { spacing } from "@/configs/styles";
 import { useCache } from "@/contexts/CacheContext";
+import { useDB } from "@/contexts/DBContext";
 import { Button, Text } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
 import { useEffect, useState } from "react";
@@ -15,10 +16,15 @@ interface Props {
 const DatabaseModal = ({ open, setOpen }: Props) => {
   const theme = useTheme();
   const cache = useCache();
+  const db = useDB();
 
   const [cacheInfo, setCacheInfo] = useState<{
     size: number;
     count: number;
+  }>();
+  const [databaseInfo, setDatabaseInfo] = useState<{
+    size: number;
+    rows: number;
   }>();
 
   const refleshCacheInfo = async () => {
@@ -30,13 +36,30 @@ const DatabaseModal = ({ open, setOpen }: Props) => {
     await cache.clearCache();
     refleshCacheInfo();
   }
-
   useEffect(() => {
     if (open) {
       setCacheInfo(undefined);
       refleshCacheInfo();
     }
   }, [open, cache]);
+
+  const refleshDatabaseInfo = async () => {
+    const info = await db.getDBInfo();
+    setDatabaseInfo(info);
+  }
+
+  const resetDB = async () => {
+    setDatabaseInfo(undefined);
+    await db.resetDB();
+    refleshDatabaseInfo();
+  }
+  
+  useEffect(() => {
+    if (open) {
+      setDatabaseInfo(undefined);
+      refleshDatabaseInfo();
+    }
+  }, [open, db]);
 
   return (
     <GenericModal open={open} onClose={() => setOpen(false)}>
@@ -52,13 +75,38 @@ const DatabaseModal = ({ open, setOpen }: Props) => {
       <Text style={[globalStyles.subheader, { color: theme.colors.text }]}>
         Database Backup
       </Text>
-      <View style={globalStyles.container}></View>
+      <View style={globalStyles.container}>
+        <View>
+          {databaseInfo ? (
+            <View style={styles.cacheContainer}>
+              <Text
+                style={[
+                  globalStyles.text,
+                  globalStyles.container,
+                  { color: theme.colors.text },
+                ]}
+              >
+                {`${(databaseInfo.size / (1024 * 1024)).toFixed(2)} MB, ${
+                  databaseInfo.rows
+                } Rows`}
+              </Text>
+              <Button
+                style={[globalStyles.button, { marginLeft: spacing.medium }]}
+                color={theme.colors.text}
+                onPress={resetDB}
+              >
+                Reset
+              </Button>
+            </View>
+          ) : (
+            <LoadingIndicator size={32} notext />
+          )}
+        </View>
+      </View>
       <Text style={[globalStyles.subheader, { color: theme.colors.text }]}>
         Cache Clear
       </Text>
       <View style={globalStyles.container}>
-        {/* <Text style={[globalStyles.text, {color: theme.colors.text}]}>Clear the app cache to free up space.</Text>
-          <Text style={[globalStyles.text, {color: theme.colors.text}]}>This will not delete your data.</Text> */}
         <View>
           {cacheInfo ? (
             <View style={styles.cacheContainer}>

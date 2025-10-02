@@ -33,6 +33,7 @@ const CardViewAvatarDetail = ({
       onLongPress={onLongPress}
       imageUrl={extractImageUrl}
       title={extractTitle}
+      FooterStyle={styles.footer}
       OverlapComponents={
         <>
           <View style={[styles.authorContainer, { marginRight: mgn }]}>
@@ -61,7 +62,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     left: 0,
-
     // borderColor: "red", borderStyle: "solid", borderWidth: 1,
   },
   author: {

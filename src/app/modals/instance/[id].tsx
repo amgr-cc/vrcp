@@ -27,7 +27,8 @@ import { Instance, World } from "@/vrchat/api";
 import { useTheme } from "@react-navigation/native";
 import { useLocalSearchParams } from "expo-router/build/hooks";
 import React, { useEffect, useMemo, useState } from "react";
-import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
+import { FlatList, ScrollView, StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
+import { routeToUser } from "@/libs/route";
 
 export default function InstanceDetail() {
   const { id } = useLocalSearchParams<{ id: string }>(); // must be locationStr (e.g. wrld_xxx:00000~region(jp)) 
@@ -91,7 +92,9 @@ export default function InstanceDetail() {
             <DetailItemContainer title="Users">
               <View style={styles.detailItemContent}>
                 {ownerAndFriends.map((friend) => (
-                  <UserChip key={friend.id} user={friend} textColor={getTrustRankColor(friend, true, false)} icon={friend.id === owner?.id ? "crown" : undefined} />
+                  <TouchableOpacity key={friend.id} onPress={() => routeToUser(friend.id)} activeOpacity={0.7}>
+                    <UserChip user={friend} textColor={getTrustRankColor(friend, true, false)} icon={friend.id === owner?.id ? "crown" : undefined} />
+                  </TouchableOpacity>
                 ))}
               </View>
             </DetailItemContainer>
