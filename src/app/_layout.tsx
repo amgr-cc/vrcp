@@ -41,7 +41,7 @@ export default function Root() {
   });
   return (
     <SettingProvider>
-      <DBProvider>
+      {/* <DBProvider> */}
       <VRChatProvider>
         <AuthProvider>
           <CacheProvider>
@@ -64,7 +64,7 @@ export default function Root() {
           </CacheProvider>
         </AuthProvider>
       </VRChatProvider>
-      </DBProvider>
+      {/* </DBProvider> */}
     </SettingProvider>
   );
 }

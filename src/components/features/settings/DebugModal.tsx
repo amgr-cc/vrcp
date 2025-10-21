@@ -1,6 +1,5 @@
 import GenericModal from "@/components/layout/GenericModal";
 import globalStyles, { spacing } from "@/configs/styles";
-import { useDB } from "@/contexts/DBContext";
 import { useVRChat } from "@/contexts/VRChatContext";
 import { routeToSearch } from "@/libs/route";
 import { Button, Text } from "@react-navigation/elements";

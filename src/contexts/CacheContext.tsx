@@ -83,6 +83,9 @@ const getLocalUri = async (
   return cacheRootDir + subDirName + key;
 };
 
+
+// [ToDo] use Tanstack Query for better data management?
+
 const useCache = () => {
   const context = useContext(Context);
   if (!context) throw new Error("useCache must be used within a CacheProvider");

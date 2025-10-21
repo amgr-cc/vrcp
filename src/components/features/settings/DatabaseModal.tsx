@@ -2,7 +2,6 @@ import GenericModal from "@/components/layout/GenericModal";
 import LoadingIndicator from "@/components/view/LoadingIndicator";
 import globalStyles, { spacing } from "@/configs/styles";
 import { useCache } from "@/contexts/CacheContext";
-import { useDB } from "@/contexts/DBContext";
 import { Button, Text } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
 import { useEffect, useState } from "react";
@@ -16,7 +15,7 @@ interface Props {
 const DatabaseModal = ({ open, setOpen }: Props) => {
   const theme = useTheme();
   const cache = useCache();
-  const db = useDB();
+  // const db = useDB();
 
   const [cacheInfo, setCacheInfo] = useState<{
     size: number;
@@ -37,21 +36,21 @@ const DatabaseModal = ({ open, setOpen }: Props) => {
     refleshCacheInfo();
   }
 
-  const refleshDatabaseInfo = async () => {
-    const info = await db.getDBInfo();
-    setDatabaseInfo(info);
-  }
+  // const refleshDatabaseInfo = async () => {
+  //   const info = await db.getDBInfo();
+  //   setDatabaseInfo(info);
+  // }
 
-  const resetDB = async () => {
-    setDatabaseInfo(undefined);
-    await db.resetDB();
-    refleshDatabaseInfo();
-  }
+  // const resetDB = async () => {
+  //   setDatabaseInfo(undefined);
+  //   await db.resetDB();
+  //   refleshDatabaseInfo();
+  // }
   
   useEffect(() => {
     if (open) {
-      setDatabaseInfo(undefined);
-      refleshDatabaseInfo();
+      // setDatabaseInfo(undefined);
+      // refleshDatabaseInfo();
       
       setCacheInfo(undefined);
       refleshCacheInfo();
@@ -65,7 +64,7 @@ const DatabaseModal = ({ open, setOpen }: Props) => {
       open={open}
       onClose={() => setOpen(false)}
     >
-      <Text style={[globalStyles.subheader, { color: theme.colors.text }]}>
+      {/* <Text style={[globalStyles.subheader, { color: theme.colors.text }]}>
         Database Backup
       </Text>
       <View style={globalStyles.container}>
@@ -95,7 +94,7 @@ const DatabaseModal = ({ open, setOpen }: Props) => {
             <LoadingIndicator size={32} notext />
           )}
         </View>
-      </View>
+      </View> */}
       <Text style={[globalStyles.subheader, { color: theme.colors.text }]}>
         Cache Clear
       </Text>

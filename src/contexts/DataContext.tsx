@@ -22,7 +22,6 @@ import { useQueries, useQuery } from "@tanstack/react-query";
 // Store VRCAPI Data Globally
 
 
-// [ToDo] use Tanstack Query for better data management?
 interface DataWrapper<T> {
   data: T;
   isLoading: boolean;
