@@ -44,25 +44,27 @@ export default function FriendLocations() {
               title: `Friends in Instances `, 
               data: chunkArray(instances, 2), // 2 columns
               renderItem: ({ item, index }) => (
-                <View style={styles.chunk} key={`friend-instance-chunk-${index}`}>
+                <View style={styles.chunk}>
                 {item.map((instance: InstanceLike) => (
                   <CardViewInstance key={instance.id} instance={instance} style={styles.cardView} onPress={() => routeToInstance(instance.worldId, instance.instanceId)} />
                 ))}
                 </View>
-              )
+              ),
+              keyExtractor: (item, index) => `friend-instance-chunk-${index}`
             },
             { 
               title: `Private Friends`, 
               data: chunkArray(unlocatableFriends, 3), // 3 columns
               renderItem: ({ item, index }) => (
-                <View style={styles.chunk} key={`private-friend-chunk-${index}`}>
+                <View style={styles.chunk}>
                   {item.map((friend: LimitedUserFriend) => (
-                    <TouchableOpacity style={styles.userChip} onPress={() => routeToUser(friend.id)} activeOpacity={0.7}>
-                      <UserChip key={friend.id} user={friend} />
+                    <TouchableOpacity key={friend.id} style={styles.userChip} onPress={() => routeToUser(friend.id)} activeOpacity={0.7}>
+                      <UserChip user={friend} />
                     </TouchableOpacity>
                   ))}
                 </View>
-              )
+              ),
+              keyExtractor: (item, index) => `private-friend-chunk-${index}`
             },
           ] as { 
             title: string; 

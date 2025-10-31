@@ -11,9 +11,9 @@ import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import SettingItem, { SettingItemProps } from "./components/SettingItem";
 import { ScrollView } from "react-native-gesture-handler";
-import ColorSchemaModal, { getIconName as getIconNameCS } from "./innermodals/ColorSchemaModal";
-import HomeTabModeModal, { getIconName as getIconNameHT } from "./innermodals/HomeTabModeModal";
-import CardViewColumnsModal, { getIconName as getIconNameCV } from "./innermodals/CardViewColumnsModal";
+import ColorSchemaModal, { getIconName as getIconNameCS } from "./ui_innermodals/ColorSchemaModal";
+import HomeTabModeModal, { getIconName as getIconNameHT } from "./ui_innermodals/HomeTabModeModal";
+import CardViewColumnsModal, { getIconName as getIconNameCV } from "./ui_innermodals/CardViewColumnsModal";
 
 interface Props {
   open: boolean;
@@ -110,37 +110,37 @@ const UIModal = ({ open, setOpen }: Props) => {
         },
       ]
     },
-    // {
-    //   title: "Color",
-    //   items: [
-    //     {
-    //       icon: "account",
-    //       title: "Friend Color",
-    //       description: "Select your friends color theme",
-    //       leading: <ColorSquarePreview colors={[uiOptions.user.friendColor]} />,
-    //       onPress: () => setFriendColorModal({
-    //         open: true,
-    //         defaultValue: uiOptions.user.friendColor,
-    //         onSubmit: (value) => {
-    //           saveSettings({ ...settings, uiOptions: { ...uiOptions, user: { ...uiOptions.user, friendColor: value } } });
-    //         }
-    //       }),
-    //     },
-    //     {
-    //       icon: "group",
-    //       title: "Favorite Friend Color",
-    //       description: "Select your favorite-friends color theme",
-    //       leading: <ColorSquarePreview colors={Object.values(uiOptions.user.favoriteFriendsColors)} />,
-    //       onPress: () => setFavoriteFriendsColorsModal({
-    //         open: true,
-    //         defaultValue: uiOptions.user.favoriteFriendsColors,
-    //         onSubmit: (value) => {
-    //           saveSettings({ ...settings, uiOptions: { ...uiOptions, user: { ...uiOptions.user, favoriteFriendsColors: value } } });
-    //         }
-    //       }),
-    //     },
-    //   ]
-    // },
+    {
+      title: "Color",
+      items: [
+        {
+          icon: "account",
+          title: "Friend Color",
+          description: "Select your friends color theme",
+          leading: <ColorSquarePreview colors={[uiOptions.user.friendColor]} />,
+          onPress: () => setFriendColorModal({
+            open: true,
+            defaultValue: uiOptions.user.friendColor,
+            onSubmit: (value) => {
+              saveSettings({ ...settings, uiOptions: { ...uiOptions, user: { ...uiOptions.user, friendColor: value } } });
+            }
+          }),
+        },
+        {
+          icon: "group",
+          title: "Favorite Friend Color",
+          description: "Select your favorite-friends color theme",
+          leading: <ColorSquarePreview colors={Object.values(uiOptions.user.favoriteFriendsColors)} />,
+          onPress: () => setFavoriteFriendsColorsModal({
+            open: true,
+            defaultValue: uiOptions.user.favoriteFriendsColors,
+            onSubmit: (value) => {
+              saveSettings({ ...settings, uiOptions: { ...uiOptions, user: { ...uiOptions.user, favoriteFriendsColors: value } } });
+            }
+          }),
+        },
+      ]
+    },
   ]
 
   return (

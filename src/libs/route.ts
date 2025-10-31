@@ -4,16 +4,16 @@ export const routeToSearch = (search?:string) => {
   const q = []; 
   if (search) q.push(`search=${search}`);
   if (q.length) {
-    push(`/modals/search?${q.join("&")}`);
+    push(`/other/search?${q.join("&")}`);
   } else {
-    push(`/modals/search`);
+    push(`/other/search`);
   }
 };
-export const routeToFriendLocations = () => push(`/modals/friendlocations`);
-export const routeToFeeds = () => push(`/modals/feeds`);
+export const routeToFriendLocations = () => push(`/other/friendlocations`);
+export const routeToFeeds = () => push(`/other/feeds`);
 
-export const routeToUser = (id:string) => push(`/modals/user/${id}`);
-export const routeToWorld = (id:string) => push(`/modals/world/${id}`);
-export const routeToAvatar = (id:string) => push(`/modals/avatar/${id}`);
-export const routeToGroup = (id:string) => push(`/modals/group/${id}`);
-export const routeToInstance = (wrldId:string, instId: string) => push(`/modals/instance/${wrldId}:${instId}`);
+export const routeToUser = (id:string) => push(`/other/user/${id}`);
+export const routeToWorld = (id:string) => push(`/other/world/${id}`);
+export const routeToAvatar = (id:string) => push(`/other/avatar/${id}`);
+export const routeToGroup = (id:string) => push(`/other/group/${id}`);
+export const routeToInstance = (wrldId:string, instId: string) => push(`/other/instance/${wrldId}:${instId}`);

@@ -1,7 +1,8 @@
-import AsyncStorage from "expo-sqlite/kv-store";
 import { createContext, useContext, useEffect, useState } from "react";
 import { vrcColors } from "@/configs/vrchat";
 import { mergeWithDefaults } from "@/libs/utils";
+import StorageWrapper from "@/libs/wrappers/storageWrapper";
+
 
 // provide user settings globally,
 // all data stored in async storage with prefix: "setting_"
@@ -98,12 +99,12 @@ const SettingProvider: React.FC<{ children?: React.ReactNode }> = ({
       `setting_${key}`,
       JSON.stringify(value),
     ] as [string, string]);
-    await AsyncStorage.multiSet(entries);
+    await StorageWrapper.multiSet(entries);
   };
 
   const loadSettings = async (): Promise<Setting> => {
     // Load settings from async storage
-    const storedSettings = await AsyncStorage.multiGet(
+    const storedSettings = await StorageWrapper.multiGet(
       Object.keys(defaultSettings).map(key => `setting_${key}`)
     );
     const newSettings = { ...defaultSettings };

@@ -17,7 +17,7 @@ function RootLayout() {
   return (
     <Stack initialRouteName="index" screenOptions={{ headerShown: false, gestureEnabled: true }}>
       <Stack.Screen name="maintab" options={{ headerShown: false }} />
-      <Stack.Screen name="modals" options={{ headerShown: false }} />
+      <Stack.Screen name="other" options={{ headerShown: false }} />
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="tmp" options={{ headerShown: false }} />
     </Stack>
@@ -25,15 +25,6 @@ function RootLayout() {
 }
 
 export default function Root() {
-  // const queryClient = new QueryClient();
-  // const asyncStoragePersister = createAsyncStoragePersister({
-  //   storage: AsyncStorage
-  // });
-  // persistQueryClient({
-  //   queryClient: queryClient,
-  //   persister: asyncStoragePersister,
-  //   buster: Constants.default.expoConfig?.version
-  // });
   return (
     <SettingProvider>
       {/* <DBProvider> */}

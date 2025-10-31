@@ -1,5 +1,5 @@
 
-import { Alert, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 // import * as Sharing from 'expo-sharing';
 
@@ -7,49 +7,62 @@ import * as FileSystem from 'expo-file-system';
 const isNative = Platform.OS !== 'web';
 // if native, use expo-file-system APIs
 // if web, use localStorage or IndexedDB (not implemented yet)
+class FileWrapper {
+  static async getInfoAsync(localUri: string) {
+    if (isNative) {
+      return FileSystem.getInfoAsync(localUri);
+    } else {
+      return { exists: false } as FileSystem.FileInfo;
+    }
+  };
+  static async readAsStringAsync(localUri: string) {
+    if (isNative) {
+      return FileSystem.readAsStringAsync(localUri);
+    } else {
+      return '';
+    }
+  };
+  static async writeAsStringAsync(localUri: string, content: string) {
+    if (isNative) {
+      return FileSystem.writeAsStringAsync(localUri, content);
+    } else {
+      return;
+    }
+  }
+  static async deleteAsync(localUri: string) {
+    if (isNative) {
+      return FileSystem.deleteAsync(localUri, { idempotent: true });
+    } else {
+      return;
+    }
+  }
 
-export async function getInfoAsync(localUri: string) {
-  if (isNative) {
-    return FileSystem.getInfoAsync(localUri);
-  } else {
-    return { exists: false } as FileSystem.FileInfo;
+  static async makeDirectoryAsync(localUri: string) {
+    if (isNative) {
+      return FileSystem.makeDirectoryAsync(localUri, { intermediates: true });
+    } else {
+      return;
+    }
   }
-};
-export async function readAsStringAsync(localUri: string) {
-  if (isNative) {
-    return FileSystem.readAsStringAsync(localUri);
-  } else {
-    return '';
+
+  static async downloadAsync(remoteUrl: string, localUri: string, option:any) {
+    if (isNative) {
+      return FileSystem.downloadAsync(remoteUrl, localUri, option);
+    } else {
+      return { uri: localUri, status: 404, headers: {}, mimeType: "application/octet-stream" } as FileSystem.FileSystemDownloadResult;
+    }
   }
-};
-export async function writeAsStringAsync(localUri: string, content: string) {
-  if (isNative) {
-    return FileSystem.writeAsStringAsync(localUri, content,);
-  } else {
-    return ;
+  
+  static async copyAsync(options: { from: string; to: string }) {
+    if (isNative) {
+      return FileSystem.copyAsync(options);
+    } else {
+      return;
+    }
   }
-};
-export async function deleteAsync(localUri: string) {
-  if (isNative) {
-    return FileSystem.deleteAsync(localUri, { idempotent: true });
-  } else {
-    return ;
-  }
-};
-export async function makeDirectoryAsync(localUri: string) {
-  if (isNative) {
-    return FileSystem.makeDirectoryAsync(localUri, { intermediates: true });
-  } else {
-    return ;
-  }
-};
-export async function downloadAsync(remoteUrl: string, localUri: string, option:any) {
-  if (isNative) {
-    return FileSystem.downloadAsync(remoteUrl, localUri, option);
-  } else {
-    return { uri: localUri, status: 404, headers: {}, mimeType: "application/octet-stream" } as FileSystem.FileSystemDownloadResult;
-  }
-};
+}
+
+export default FileWrapper;
 
 
 

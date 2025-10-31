@@ -20,8 +20,7 @@ import React, {
 } from "react";
 import { Image, Platform } from "react-native";
 import { useVRChat } from "./VRChatContext";
-import { useQueries } from "@tanstack/react-query";
-import { deleteAsync, downloadAsync, getInfoAsync, makeDirectoryAsync, readAsStringAsync, writeAsStringAsync } from "@/libs/file";
+import FileWrapper from "@/libs/wrappers/fileWrapper";
 
 // Image Cache in Storage
 interface Cache<T> {
@@ -101,10 +100,10 @@ const CacheProvider: React.FC<{ children?: ReactNode }> = ({ children }) => {
 
   // create cache dir if not exist
   useEffect(() => {
-    getInfoAsync(cacheRootDir)
+    FileWrapper.getInfoAsync(cacheRootDir)
       .then((dirInfo) => {
         if (!dirInfo.exists)
-          makeDirectoryAsync(cacheRootDir);
+          FileWrapper.makeDirectoryAsync(cacheRootDir);
       })
       .catch((error) => {
         console.error("Error creating cache directory:", error);
@@ -147,8 +146,8 @@ const CacheProvider: React.FC<{ children?: ReactNode }> = ({ children }) => {
 
   const clearCache = async () => {
     // delete all files in cache root-dir and recreate it
-    await deleteAsync(cacheRootDir);
-    await makeDirectoryAsync(cacheRootDir);
+    await FileWrapper.deleteAsync(cacheRootDir);
+    await FileWrapper.makeDirectoryAsync(cacheRootDir);
     // re-initiate all cache wrappers (with creating sub directories)
     initTrigger.current += 1;
   };
@@ -233,9 +232,9 @@ function useCacheWrapper<T = any, M extends CacheMode = any>(
 
   const get = async (id: string, opt: CacheOption, forceFetch: boolean = false): Promise<T> => {
     const localUri = await getLocalUri(id, subDir, opt.encrypt);
-    const fileInfo = await getInfoAsync(localUri);
+    const fileInfo = await FileWrapper.getInfoAsync(localUri);
     if (fileInfo.exists) {
-      const fileContent = await readAsStringAsync(localUri);
+      const fileContent = await FileWrapper.readAsStringAsync(localUri);
       const cache: Cache<T> = JSON.parse(fileContent);
       if (
         !forceFetch &&
@@ -251,7 +250,7 @@ function useCacheWrapper<T = any, M extends CacheMode = any>(
         opt.expiration > 0 ? new Date(Date.now() + opt.expiration).toISOString() : "",
       value: data,
     };
-    await writeAsStringAsync(localUri, JSON.stringify(newCache));
+    await FileWrapper.writeAsStringAsync(localUri, JSON.stringify(newCache));
     return data;
   };
   const set = async (id: string, data: T, opt: CacheOption) => {
@@ -261,11 +260,11 @@ function useCacheWrapper<T = any, M extends CacheMode = any>(
         opt.expiration > 0 ? new Date(Date.now() + opt.expiration).toISOString() : "",
       value: data,
     };
-    await writeAsStringAsync(localUri, JSON.stringify(newCache));
+    await FileWrapper.writeAsStringAsync(localUri, JSON.stringify(newCache));
   };
   const del = async (id: string, opt: CacheOption,) => {
     const localUri = await getLocalUri(id, subDir, opt.encrypt);
-    await deleteAsync(localUri);
+    await FileWrapper.deleteAsync(localUri);
   };
    
   // return based on mode
@@ -291,10 +290,10 @@ const imageCacheSubDir = "images/"; // must end with /
 function initCachedImage() {
   if (!isNative) return;
   // create sub-directory for images
-  getInfoAsync(cacheRootDir + imageCacheSubDir)
+  FileWrapper.getInfoAsync(cacheRootDir + imageCacheSubDir)
     .then((dirInfo) => {
       if (!dirInfo.exists)
-        makeDirectoryAsync(cacheRootDir + imageCacheSubDir);
+        FileWrapper.makeDirectoryAsync(cacheRootDir + imageCacheSubDir);
     })
     .catch((error) => {
       console.error(
@@ -306,20 +305,22 @@ function initCachedImage() {
 
 async function downloadImageToCache (remoteUri: string): Promise<string | undefined> {
   if (!isNative) return;
+  let eBuf = "";
   try {
+    if (!remoteUri || remoteUri.length === 0) return;
     if (remoteUri.startsWith("file://")) return remoteUri; // local file, no need to cache
     const localUri = await getLocalUri(remoteUri, imageCacheSubDir, true);
-    const fileInfo = await getInfoAsync(localUri);
+    const fileInfo = await FileWrapper.getInfoAsync(localUri);
     if (fileInfo.exists) {
       return localUri
     } else {
-      const { uri } = await downloadAsync(remoteUri, localUri, {
+      const { uri } = await FileWrapper.downloadAsync(remoteUri, localUri, {
         headers: {'User-Agent': getUserAgent()},
       });
       return uri;
     }
   } catch (error) {
-    console.log("Error loading image:", remoteUri);
+    console.log("Error loading image:", remoteUri, error);
   }
 };
 

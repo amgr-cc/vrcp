@@ -11,18 +11,18 @@ import MenuButtonForHeader from '@/components/layout/MenuButtonForHeader';
 
 const { Navigator } = createStackNavigator();
 
-const JsStack = withLayoutContext<
-  StackNavigationOptions,
-  typeof Navigator,
-  StackNavigationState<ParamListBase>,
-  StackNavigationEventMap
->(Navigator);
+// const JsStack = withLayoutContext<
+//   StackNavigationOptions,
+//   typeof Navigator,
+//   StackNavigationState<ParamListBase>,
+//   StackNavigationEventMap
+// >(Navigator);
 
-const ModalStack = Platform.OS === 'ios' ? Stack : JsStack;
+// const ModalStack = Platform.OS === 'ios' ? Stack : JsStack;
 
 export default function ModalLayout() {
   return (
-    <ModalStack
+    <Stack
       screenOptions={{ 
         presentation: 'modal',
         // headerShown: false, // 必要に応じてヘッダーの表示を制御
@@ -30,39 +30,39 @@ export default function ModalLayout() {
         headerRight: MenuButtonForHeader,
       }} 
     >
-      <ModalStack.Screen
+      <Stack.Screen
         name="user/[id]"
         options={{title: "User" }}
       />
-      <ModalStack.Screen
+      <Stack.Screen
         name="world/[id]"
         options={{title: "World" }}
       />
-      <ModalStack.Screen
+      <Stack.Screen
         name="instance/[id]"
         options={{title: "Instance" }}
       /> 
-      <ModalStack.Screen
+      <Stack.Screen
         name="avatar/[id]"
         options={{title: "Avatar" }}
       />
-      <ModalStack.Screen
+      <Stack.Screen
         name="group/[id]"
         options={{title: "Group" }}
       />
 
-      <ModalStack.Screen
+      <Stack.Screen
         name="feeds"
         options={{title: "Feeds" }}
       />
-      <ModalStack.Screen
+      <Stack.Screen
         name="friendlocations"
         options={{title: "FriendLocations" }}
       />
-      <ModalStack.Screen
+      <Stack.Screen
         name="search"
         options={{title: "Search" }}
       />
-    </ModalStack>
+    </Stack>
   );
 }

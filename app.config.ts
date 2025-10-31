@@ -61,6 +61,7 @@ export default ({ config }: ConfigContext) => ({
       "expo-router",
       "expo-secure-store",
       "expo-sqlite",
+      "expo-font",
       [
         "expo-splash-screen",
         {

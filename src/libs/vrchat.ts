@@ -18,37 +18,59 @@ type MinInstance = Pick< Instance, "id" | "instanceId" | "worldId" | "name" | "n
 // get ImageUrls from user 
 
 export function getUserIconUrl(user: UserLike, highRes = false): string {
-  if (user.userIcon?.length) {
+  if (user.userIcon) {
     return user.userIcon;
   }
-  if (user.profilePicOverride?.length) {
-    return user.profilePicOverride;
+  if (highRes) {
+    if (user.profilePicOverride) {
+      return user.profilePicOverride;
+    } else if ("profilePicOverrideThumbnail" in user && user.profilePicOverrideThumbnail) {
+      return user.profilePicOverrideThumbnail;
+    } 
+    if (user.currentAvatarImageUrl) {
+      return user.currentAvatarImageUrl;
+    } else if (user.currentAvatarThumbnailImageUrl) {
+      return user.currentAvatarThumbnailImageUrl;
+    }
+  } else {
+    if ("profilePicOverrideThumbnail" in user && user.profilePicOverrideThumbnail) {
+      return user.profilePicOverrideThumbnail;
+    } else if (user.profilePicOverride) {
+      return user.profilePicOverride;
+    }
+    if (user.currentAvatarThumbnailImageUrl) {
+      return user.currentAvatarThumbnailImageUrl;
+    } else if (user.currentAvatarImageUrl) {
+      return user.currentAvatarImageUrl;
+    }
   }
-  return highRes
-  ? (
-    user.currentAvatarImageUrl.length 
-    ? user.currentAvatarImageUrl 
-    : user.currentAvatarThumbnailImageUrl ?? ""
-  ) : (
-    user.currentAvatarThumbnailImageUrl?.length 
-    ? user.currentAvatarThumbnailImageUrl 
-    : user.currentAvatarImageUrl
-  );
+  return "www";
 }
 export function getUserProfilePicUrl(user: UserLike, highRes = false): string {
-  if (user.profilePicOverride?.length) {
-    return user.profilePicOverride;
+  if (highRes) {
+    if (user.profilePicOverride) {
+      return user.profilePicOverride;
+    } else if ("profilePicOverrideThumbnail" in user && user.profilePicOverrideThumbnail) {
+      return user.profilePicOverrideThumbnail;
+    } 
+    if (user.currentAvatarImageUrl) {
+      return user.currentAvatarImageUrl;
+    } else if (user.currentAvatarThumbnailImageUrl) {
+      return user.currentAvatarThumbnailImageUrl;
+    }
+  } else {
+    if ("profilePicOverrideThumbnail" in user && user.profilePicOverrideThumbnail) {
+      return user.profilePicOverrideThumbnail;
+    } else if (user.profilePicOverride) {
+      return user.profilePicOverride;
+    }
+    if (user.currentAvatarThumbnailImageUrl) {
+      return user.currentAvatarThumbnailImageUrl;
+    } else if (user.currentAvatarImageUrl) {
+      return user.currentAvatarImageUrl;
+    }
   }
-  return highRes
-  ? (
-    user.currentAvatarImageUrl.length 
-    ? user.currentAvatarImageUrl 
-    : user.currentAvatarThumbnailImageUrl ?? ""
-  ) : (
-    user.currentAvatarThumbnailImageUrl?.length 
-    ? user.currentAvatarThumbnailImageUrl 
-    : user.currentAvatarImageUrl
-  );
+  return "www";
 }
 
 // parse location string

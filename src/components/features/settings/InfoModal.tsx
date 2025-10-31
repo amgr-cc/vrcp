@@ -3,7 +3,10 @@ import globalStyles, { spacing } from "@/configs/styles";
 import { Button, Text } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
 import Constants from "expo-constants";
+import { useState } from "react";
 import { Platform, View } from "react-native";
+import TermOfServiceModal from "./info_innermodals/TermOfServiceModal";
+
 
 interface Props {
   open: boolean;
@@ -12,6 +15,7 @@ interface Props {
 
 const InfoModal = ({ open, setOpen }: Props) => {
   const theme = useTheme();
+  const [ termOfServiceModal, setTermOfServiceModal ] = useState<boolean>(false);
 
   const devInfo = {
     version: Constants.expoConfig?.version,
@@ -26,6 +30,14 @@ const InfoModal = ({ open, setOpen }: Props) => {
     node_env: process.env.NODE_ENV,
   };
 
+  const buttonItems = [
+    {
+      title: "Terms of Service",
+      onPress: () => setTermOfServiceModal(true),
+      flex: 1,
+    },
+  ];
+
   return (
     <GenericModal
       title="App Information"
@@ -33,6 +45,7 @@ const InfoModal = ({ open, setOpen }: Props) => {
       size="large"
       open={open}
       onClose={() => setOpen(false)}
+      buttonItems={buttonItems}
     >
 
       <Text style={[globalStyles.text, { color: theme.colors.text }]}>
@@ -40,6 +53,12 @@ const InfoModal = ({ open, setOpen }: Props) => {
           .map(([key, value]) => `${key}:   ${value}`)
           .join("\n")}
       </Text>
+
+      {/* Modal */}
+      <TermOfServiceModal
+        open={termOfServiceModal}
+        setOpen={setTermOfServiceModal}
+      />
 
     </GenericModal>
   );
