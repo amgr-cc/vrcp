@@ -126,11 +126,11 @@ const CacheProvider: React.FC<{ children?: ReactNode }> = ({ children }) => {
     (await vrc.avatarsApi.getAvatar({ avatarId: id })).data;
 
 
-  // Initialize caches (called when clear cache and on mount)
-  useEffect(() => {
-    // for images
-    initCachedImage();
-  }, [initTrigger.current]);
+  // // Initialize caches (called when clear cache and on mount)
+  // useEffect(() => {
+  //   // for images
+  //   initCachedImage();
+  // }, [initTrigger.current]);
   const wrappers = useMemo(
     () => ({
       // only used for DataContext, use useData(),currentUser instaead of this, 
@@ -284,46 +284,46 @@ function useCacheWrapper<T = any, M extends CacheMode = any>(
   }
 }
 
-// Cached Image Component, use this instead of Default Image Component,
-// cache dir "images/" is used for this component
-const imageCacheSubDir = "images/"; // must end with /
+// // Cached Image Component, use this instead of Default Image Component,
+// // cache dir "images/" is used for this component
+// const imageCacheSubDir = "images/"; // must end with /
 
-function initCachedImage() {
-  if (!isNative) return;
-  // create sub-directory for images
-  FileWrapper.getInfoAsync(cacheRootDir + imageCacheSubDir)
-    .then((dirInfo) => {
-      if (!dirInfo.exists)
-        FileWrapper.makeDirectoryAsync(cacheRootDir + imageCacheSubDir);
-    })
-    .catch((error) => {
-      console.error(
-        `Error creating cache sub-dir: ${cacheRootDir + imageCacheSubDir}`,
-        error
-      );
-    });
-}
+// function initCachedImage() {
+//   if (!isNative) return;
+//   // create sub-directory for images
+//   FileWrapper.getInfoAsync(cacheRootDir + imageCacheSubDir)
+//     .then((dirInfo) => {
+//       if (!dirInfo.exists)
+//         FileWrapper.makeDirectoryAsync(cacheRootDir + imageCacheSubDir);
+//     })
+//     .catch((error) => {
+//       console.error(
+//         `Error creating cache sub-dir: ${cacheRootDir + imageCacheSubDir}`,
+//         error
+//       );
+//     });
+// }
 
-async function downloadImageToCache (remoteUri: string): Promise<string | undefined> {
-  if (!isNative) return;
-  let eBuf = "";
-  try {
-    if (!remoteUri || remoteUri.length === 0) return;
-    if (remoteUri.startsWith("file://")) return remoteUri; // local file, no need to cache
-    const localUri = await getLocalUri(remoteUri, imageCacheSubDir, true);
-    const fileInfo = await FileWrapper.getInfoAsync(localUri);
-    if (fileInfo.exists) {
-      return localUri
-    } else {
-      const { uri } = await FileWrapper.downloadAsync(remoteUri, localUri, {
-        headers: {'User-Agent': getUserAgent()},
-      });
-      return uri;
-    }
-  } catch (error) {
-    console.log("Error loading image:", remoteUri, error);
-  }
-};
+// async function downloadImageToCache (remoteUri: string): Promise<string | undefined> {
+//   if (!isNative) return;
+//   let eBuf = "";
+//   try {
+//     if (!remoteUri || remoteUri.length === 0) return;
+//     if (remoteUri.startsWith("file://")) return remoteUri; // local file, no need to cache
+//     const localUri = await getLocalUri(remoteUri, imageCacheSubDir, true);
+//     const fileInfo = await FileWrapper.getInfoAsync(localUri);
+//     if (fileInfo.exists) {
+//       return localUri
+//     } else {
+//       const { uri } = await FileWrapper.downloadAsync(remoteUri, localUri, {
+//         headers: {'User-Agent': getUserAgent()},
+//       });
+//       return uri;
+//     }
+//   } catch (error) {
+//     console.log("Error loading image:", remoteUri, error);
+//   }
+// };
 
 // const CachedImage = ({
 //   src: remoteUri,
@@ -387,11 +387,14 @@ const CachedImage = ({
 
   return (
     <ExpoImage
-      source={{ uri: remoteUri }}
+      source={{ 
+        uri: remoteUri,
+        headers: {'User-Agent': getUserAgent()},
+      }}
       style={[{ contentFit: "cover" }, rest.style]}
       {...omitObject(rest, "style")}
     />
   );
 };
 
-export { CachedImage, downloadImageToCache, CacheProvider, useCache };
+export { CachedImage, CacheProvider, useCache };
