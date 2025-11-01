@@ -44,7 +44,7 @@ const ListViewPipelineMessage = ({
     const userId = content.userId as string ?? undefined;
     const worldId = content.location ? parseLocationString(content.location)?.parsedLocation?.worldId : undefined;
     Promise.all([
-      content.user?.displayName ? user.get(userId) : Promise.resolve(undefined),
+      !content.user?.displayName ? user.get(userId) : Promise.resolve(undefined),
       worldId ? world.get(worldId) : Promise.resolve(undefined)
     ])
     .then(([u, w]) => {

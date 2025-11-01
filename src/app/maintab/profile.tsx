@@ -41,7 +41,7 @@ export default function Profile() {
       onPress: () => setOpenChangeBio(true),
     },
     {
-      icon: "link-edit",
+      icon: "clipboard-edit-outline",
       title: "Edit Bio Links",
       onPress: () => setOpenChangeBioLinks(true),
     },

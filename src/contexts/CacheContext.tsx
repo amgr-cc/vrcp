@@ -19,6 +19,7 @@ import React, {
   useState,
 } from "react";
 import { Image, Platform } from "react-native";
+import { Image as ExpoImage } from "expo-image";
 import { useVRChat } from "./VRChatContext";
 import FileWrapper from "@/libs/wrappers/fileWrapper";
 
@@ -324,6 +325,56 @@ async function downloadImageToCache (remoteUri: string): Promise<string | undefi
   }
 };
 
+// const CachedImage = ({
+//   src: remoteUri,
+//   localUriRef,
+//   ...rest
+// }: {
+//   src: string;
+//   localUriRef?: React.RefObject<string | null>; // to get current local-uri
+//   [key: string]: any;
+// }) => {
+//   const [src, setSrc] = useState<string | undefined>();
+//   const load = async () => {
+//     if (!isNative) return;
+//     const localUri = await downloadImageToCache(remoteUri);
+//     if (localUri) {
+//       setSrc(localUri);
+//       if (localUriRef) localUriRef.current = localUri;
+//     } else {
+//       setSrc(remoteUri); // fallback to remote uri
+//       if (localUriRef) localUriRef.current = null;
+//     }
+//   };
+//   useEffect(() => {
+//     if (!isNative) return; // no caching on web
+//     if (remoteUri.length > 0) load();
+//   }, [remoteUri]);
+
+//   if (isNative) {
+//     return (
+//       <Image
+//         source={{ uri: src }}
+//         progressiveRenderingEnabled={true}
+//         style={[{ resizeMode: "cover" }, rest.style]}
+//         {...omitObject(rest, "style")}
+//       />
+//     );
+//   } else {
+//     // on web, use default Image component
+//     return (
+//       <Image
+//         source={{ uri: remoteUri }}
+//         style={[{ resizeMode: "cover" }, rest.style]}
+//         {...omitObject(rest, "style")}
+//       />
+//     );
+//   }
+// };
+
+
+/** use ExpoImage , Custom Cache is used for only EnhancedImageViewing */
+
 const CachedImage = ({
   src: remoteUri,
   localUriRef,
@@ -333,42 +384,14 @@ const CachedImage = ({
   localUriRef?: React.RefObject<string | null>; // to get current local-uri
   [key: string]: any;
 }) => {
-  const [src, setSrc] = useState<string | undefined>();
-  const load = async () => {
-    if (!isNative) return;
-    const localUri = await downloadImageToCache(remoteUri);
-    if (localUri) {
-      setSrc(localUri);
-      if (localUriRef) localUriRef.current = localUri;
-    } else {
-      setSrc(remoteUri); // fallback to remote uri
-      if (localUriRef) localUriRef.current = null;
-    }
-  };
-  useEffect(() => {
-    if (!isNative) return; // no caching on web
-    if (remoteUri.length > 0) load();
-  }, [remoteUri]);
 
-  if (isNative) {
-    return (
-      <Image
-        source={{ uri: src }}
-        progressiveRenderingEnabled={true}
-        style={[{ resizeMode: "cover" }, rest.style]}
-        {...omitObject(rest, "style")}
-      />
-    );
-  } else {
-    // on web, use default Image component
-    return (
-      <Image
-        source={{ uri: remoteUri }}
-        style={[{ resizeMode: "cover" }, rest.style]}
-        {...omitObject(rest, "style")}
-      />
-    );
-  }
+  return (
+    <ExpoImage
+      source={{ uri: remoteUri }}
+      style={[{ contentFit: "cover" }, rest.style]}
+      {...omitObject(rest, "style")}
+    />
+  );
 };
 
 export { CachedImage, downloadImageToCache, CacheProvider, useCache };

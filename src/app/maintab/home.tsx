@@ -26,9 +26,8 @@ export default function Home() {
   const { friends, favorites } = useData();
 
   const instances = useMemo<InstanceLike[]>(() => {
-    return calcFriendsLocations(friends.data, favorites.data, true, false);
+      return calcFriendsLocations(friends.data, favorites.data, true, false);
   }, [friends.data, favorites.data]);
-
 
 
   const FeedArea = ({style}: {style?: any}) => {

@@ -22,6 +22,7 @@ interface SettingItem {
   title: string;
   description: string;
   onPress: () => void;
+  iconColor?: string;
 }
 
 export default function Settings() {
@@ -89,6 +90,7 @@ export default function Settings() {
         title: "Logout",
         description: "Log out from this app",
         onPress: () => setOpenLogout(true),
+        iconColor: theme.colors.error,
       },
     ],
   };
@@ -111,7 +113,7 @@ export default function Settings() {
               ]}
               onPress={item.onPress}
             >
-              <IconSymbol name={item.icon} size={fontSize.large * 1.5} />
+              <IconSymbol name={item.icon} color={item.iconColor} size={fontSize.large * 1.5} />
               <View style={styles.listItemLabel}>
                 <Text
                   style={[globalStyles.subheader, { color: theme.colors.text }]}
