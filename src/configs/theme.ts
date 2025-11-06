@@ -14,6 +14,7 @@ const lightTheme = {
     error: "#ff2020ff",
     success: "#70ff50ff",
     warning: "#ffcc00ff",
+    info: "#3a72a3ff",
 
     // text colors
     text: "#000000ff",
@@ -35,7 +36,8 @@ const darkTheme = {
     error: "#ff2020ff",
     success: "#70ff50ff",
     warning: "#ffcc00ff",
-    
+    info: "#3a72a3ff",
+
     // text colors
     text: "#ffffffff",
     subText: "#9f9f9fff",

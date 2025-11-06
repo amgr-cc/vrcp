@@ -16,6 +16,7 @@ import { navigate } from "expo-router/build/global-state/routing";
 import InfoModal from "@/components/features/settings/InfoModal";
 import { ScrollView } from "react-native-gesture-handler";
 import FeedbackModal from "@/components/features/settings/FeedbackModal";
+import { useToast } from "@/contexts/ToastContext";
 
 interface SettingItem {
   icon: SupportedIconNames;
@@ -35,6 +36,8 @@ export default function Settings() {
   const [openDatabase, setOpenDatabase] = useState(false);
   const [openUI, setOpenUI] = useState(false);
 
+  const { showToast } = useToast();
+
   const settingContents: Record<string, SettingItem[]> = {
     general: [
       {
@@ -53,7 +56,9 @@ export default function Settings() {
         icon: "notifications",
         title: "Notifications",
         description: "Manage Push Notifications",
-        onPress: () => {},
+        onPress: () => {
+          showToast("info", "test", `${new Date().getTime()}`);
+        },
       },
     ],
     other: [

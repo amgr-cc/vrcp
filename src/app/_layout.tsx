@@ -14,6 +14,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useMemo } from "react";
+import { ToastProvider } from "@/contexts/ToastContext";
 
 function RootLayout() {
   return (
@@ -47,8 +48,10 @@ export default function Root() {
                       <ThemeProvider
                         value={theme}
                       >
-                        <RootLayout />
-                        <StatusBar style="auto" />
+                        <ToastProvider>
+                          <RootLayout />
+                          <StatusBar style="auto" />
+                        </ToastProvider>
                       </ThemeProvider>
                     </GestureHandlerRootView>
                   {/* </SafeAreaView> */}
