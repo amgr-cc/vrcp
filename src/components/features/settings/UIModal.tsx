@@ -37,7 +37,11 @@ const UIModal = ({ open, setOpen }: Props) => {
   const { uiOptions } = settings;
 
   const [colorSchemaModal, setColorSchemaModal] = useState<InnerModalOption<typeof uiOptions.theme.colorSchema>>({open: false});
-  const [homeTabModeModal, setHomeTabModeModal] = useState<InnerModalOption<typeof uiOptions.layouts.homeTabMode>>({open: false});
+  const [homeTabModeModal, setHomeTabModeModal] = useState<InnerModalOption<{
+    top?: typeof uiOptions.layouts.homeTabTopVariant;
+    bottom?: typeof uiOptions.layouts.homeTabBottomVariant;
+    sepPos?: typeof uiOptions.layouts.homeTabSeparatePos;
+  }>>({open: false});
   const [cardViewColumnsModal, setCardViewColumnsModal] = useState<InnerModalOption<typeof uiOptions.layouts.cardViewColumns>>({open: false});
   const [friendColorModal, setFriendColorModal] = useState<InnerModalOption<typeof uiOptions.user.friendColor>>({open: false});
   const [favoriteFriendsColorsModal, setFavoriteFriendsColorsModal] = useState<InnerModalOption<typeof uiOptions.user.favoriteFriendsColors>>({open: false});
@@ -76,16 +80,31 @@ const UIModal = ({ open, setOpen }: Props) => {
           description: "Select layout modes for the home tab",
           leading: (
             <IconSymbol
-              name={getIconNameHT(uiOptions.layouts.homeTabMode)}
+              name={getIconNameHT(uiOptions.layouts.homeTabTopVariant)}
               size={32}
               color={theme.colors.text}
             />
           ),
           onPress: () => setHomeTabModeModal({
             open: true,
-            defaultValue: uiOptions.layouts.homeTabMode,
+            defaultValue: {
+              top: uiOptions.layouts.homeTabTopVariant,
+              bottom:  uiOptions.layouts.homeTabBottomVariant,
+              sepPos: uiOptions.layouts.homeTabSeparatePos,
+            },
             onSubmit: (value) => {
-              saveSettings({ ...settings, uiOptions: { ...uiOptions, layouts: { ...uiOptions.layouts, homeTabMode: value } } });
+              saveSettings({ 
+                ...settings, 
+                uiOptions: { 
+                  ...uiOptions, 
+                  layouts: { 
+                    ...uiOptions.layouts, 
+                    homeTabTopVariant: value.top ?? uiOptions.layouts.homeTabTopVariant, 
+                    homeTabBottomVariant: value.bottom ?? uiOptions.layouts.homeTabBottomVariant, 
+                    homeTabSeparatePos: value.sepPos ?? uiOptions.layouts.homeTabSeparatePos, 
+                  } 
+                } 
+              });
             }
           }),
         },

@@ -11,6 +11,7 @@ export const routeToSearch = (search?:string) => {
 };
 export const routeToFriendLocations = () => push(`/other/friendlocations`);
 export const routeToFeeds = () => push(`/other/feeds`);
+export const routeToEvents = () => push(`/other/events`);
 
 export const routeToUser = (id:string) => push(`/other/user/${id}`);
 export const routeToWorld = (id:string) => push(`/other/world/${id}`);

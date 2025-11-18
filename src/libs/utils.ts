@@ -63,12 +63,12 @@ export function getUserAgent (): string {
 }
 
 // color
-export function getTintedColor (hexColor: string): string {
+export function getTintedColor (hexColor: string, tintFactor: number = 0.60): string {
   const r = parseInt(hexColor.slice(1, 3), 16);
   const g = parseInt(hexColor.slice(3, 5), 16);
   const b = parseInt(hexColor.slice(5, 7), 16);
   const a = hexColor.length == 9 ? parseInt(hexColor.slice(7, 9), 16) : 255;
-  const newAlpha = Math.floor(a * 0.2);
+  const newAlpha = Math.floor(tintFactor * a);
   const newHex = `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}${newAlpha.toString(16).padStart(2, "0")}`;
   return newHex;
 }

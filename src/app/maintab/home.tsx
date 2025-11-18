@@ -7,46 +7,58 @@ import { useData } from "@/contexts/DataContext";
 import { useVRChat } from "@/contexts/VRChatContext";
 import SeeMoreContainer from "@/components/features/home/SeeMoreContainer";
 import { calcFriendsLocations } from "@/libs/funcs/calcFriendLocations";
-import { routeToFeeds, routeToFriendLocations, routeToInstance, routeToWorld } from "@/libs/route";
+import { routeToEvents, routeToFeeds, routeToFriendLocations, routeToInstance, routeToWorld } from "@/libs/route";
 import { InstanceLike } from "@/libs/vrchat";
 import { PipelineMessage } from "@/vrchat/pipline/type";
-import { useTheme } from "@react-navigation/native";
+import { useLocale, useTheme } from "@react-navigation/native";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
+import { FlatList, RefreshControl, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { Setting, useSetting } from "@/contexts/SettingContext";
 import { CalendarEvent, PaginatedCalendarEventList } from "@/vrchat/api";
 import { useToast } from "@/contexts/ToastContext";
 import { extractErrMsg } from "@/libs/utils";
+import { formatToDateStr, formatToTimeStr } from "@/libs/date";
+import { useAuth } from "@/contexts/AuthContext";
+import MonthlyCalendarView from "@/components/view/calendarView/MonthlyColendarView";
 
 export default function Home() {
   const theme = useTheme();
   const { settings } = useSetting();
-  const { homeTabMode, cardViewColumns } = settings.uiOptions.layouts;
- 
+  const { homeTabTopVariant, homeTabBottomVariant, homeTabSeparatePos, cardViewColumns } = settings.uiOptions.layouts;
+  
+  if (homeTabTopVariant === homeTabBottomVariant || homeTabSeparatePos <= 0 || homeTabSeparatePos >= 100) {
+    const singleVariant = homeTabTopVariant ?? homeTabBottomVariant;
+    return (
+      <GenericScreen>
+        {singleVariant === 'feeds' ? (
+          <FeedArea />
+        ) : singleVariant === 'friend-locations' ? (
+          <FriendLocationArea />
+        ) : singleVariant === 'events' ? (
+          <EventsArea />
+        ) : null}
+      </GenericScreen>
+    );
+  }
+
   return (
     <GenericScreen>
-      { homeTabMode === "feeds" ? (
-        <>
-          <FeedArea />
-        </>
-      ) : homeTabMode === "calendar" ? (
-        <>
-          <CalendarArea />
-        </>
-      ) : homeTabMode === "friend-locations" ? (
-        <>
-          <FriendLocationArea />
-        </>
-      ) : ( // default mode
-        <>
-          <FeedArea
-            style={styles.area30}
-          />
-          <FriendLocationArea
-            style={styles.area70}
-          />
-        </>
-      )}
+      {homeTabTopVariant === 'feeds' ? (
+        <FeedArea style={{ maxHeight: `${homeTabSeparatePos}%` }} />
+      ) : homeTabTopVariant === 'friend-locations' ? (
+        <FriendLocationArea style={{ maxHeight: `${homeTabSeparatePos}%` }} />
+      ) : homeTabTopVariant === 'events' ? (
+        <EventsArea style={{ maxHeight: `${homeTabSeparatePos}%` }} />
+      ) : null}
+  
+      {homeTabBottomVariant === 'feeds' ? (
+        <FeedArea style={{ maxHeight: `${100 - homeTabSeparatePos}%` }} />
+      ) : homeTabBottomVariant === 'friend-locations' ? (
+        <FriendLocationArea style={{ maxHeight: `${100 - homeTabSeparatePos}%` }} />
+      ) : homeTabBottomVariant === 'events' ? (
+        <EventsArea style={{ maxHeight: `${100 - homeTabSeparatePos}%` }} />
+      ) : null}
+
     </GenericScreen>
   );
 }
@@ -116,55 +128,106 @@ const FriendLocationArea = memo(({ style }: { style?: any }) => {
   );
 });
 
-const CalendarArea = memo(({ style }: {
+const EventsArea = memo(({ style }: {
   style?: any
 }) => {
+  const auth = useAuth();
   const theme = useTheme();
   const vrc = useVRChat();
   const { showToast } = useToast();
-  const [ events, setEvents ] = useState<CalendarEvent[]>([]);
+  const eventsRef = useRef<CalendarEvent[]>([]);
+  const [ todayEvents, setTodayEvents ] = useState<CalendarEvent[]>([]);
   const offset = useRef(0);
   const fetchingRef = useRef(false);
-  const npr = 100;
+  const [isLoading, setIsLoading] = useState(false);
+  const npr = 60;
+
+  const getDateKey = (date: Date) => {
+    const res = formatToDateStr(date);
+    return res;
+  }
+
   const fetchEvents = async () => {
     fetchingRef.current = true;
+    setIsLoading(true);
     try {
-      const res = await vrc.calendarApi.getCalendarEvents({
-        date: new Date().toISOString(), // month only affects the returned events
-        n: npr,
-        offset: offset.current,
-      });
-      const paginated: PaginatedCalendarEventList = res.data;
-      if (paginated.results) {
-        setEvents(prev => [...prev, ...paginated.results ?? []]);
-      }
-      if (paginated.hasNext && (paginated.totalCount ?? 0 > offset.current + npr)) {
-        offset.current += npr;
-        void fetchEvents();
-      } else {
-        fetchingRef.current = false;
+      while (fetchingRef.current) {
+        const res = await vrc.calendarApi.getCalendarEvents({
+          date: new Date().toISOString(), // month only affects the returned events
+          n: npr,
+          offset: offset.current,
+        });
+        const paginated: PaginatedCalendarEventList = res.data;
+        if (paginated.results) {
+          eventsRef.current = [...eventsRef.current, ...paginated.results ?? []];
+        }
+        if (paginated.hasNext && (paginated.totalCount ?? 0 > offset.current + npr)) {
+          offset.current += npr;
+        } else {
+          setTodayEvents(eventsRef.current.filter(event => getDateKey(new Date(event.startsAt ?? "")) === getDateKey(new Date()))); // update grouped events
+          fetchingRef.current = false;
+          setIsLoading(false);
+        }
       }
     } catch (e) {
       fetchingRef.current = false;
+      setIsLoading(false);
       showToast("error", "Error fetching calendar events", extractErrMsg(e));
     }
   };
 
   const reload = () => {
-    setEvents([]);
+    eventsRef.current = [];
     offset.current = 0;
     void fetchEvents();
   };
+
+  useEffect(() => {
+    reload();
+  },[auth.user]);
+
+  const renderItem = useCallback(({ item }: { item: CalendarEvent }) => {
+    return (
+      <View key={item.id} style={{ backgroundColor: theme.colors.card, padding: spacing.small, margin: spacing.small, borderRadius: 8 }}>
+        <View style={{ paddingHorizontal: spacing.small, flexDirection: "row", gap: spacing.small, alignItems: "center" }}>
+          <Text style={{ color: theme.colors.text, marginTop: spacing.mini }}>
+            {`${item.startsAt ? formatToTimeStr(item.startsAt) : "N/A"} ~ ${item.endsAt ? formatToTimeStr(item.endsAt) : "N/A"}`}
+          </Text>
+          <View style={{ flex: 1 }} >
+            <Text numberOfLines={1} style={{ color: theme.colors.text, fontSize: 16, fontWeight: "bold" }}>{item.title}</Text>
+          </View>
+        </View>
+        <Text numberOfLines={3} style={{ color: theme.colors.subText, marginTop: spacing.mini, marginLeft: spacing.small }}>
+          {item.description}
+        </Text>
+      </View>
+    );
+  }, []);
+  
+  const emptyComponent = useCallback(() => (
+    <View style={{ alignItems: "center", marginTop: spacing.large }}>
+      <Text style={{ color: theme.colors.text }}>No events available.</Text>
+    </View>
+  ), [theme.colors.text]);
+
   return (
-    <>
-    {events.map((event) => (
-      <Text key={event.id} style={{ color: theme.colors.text, marginBottom: spacing.mini }}>
-        {event.category}{event.type}:{event.title} - {new Date(event.startsAt ?? "").toLocaleString()} to {new Date(event.endsAt ?? "").toLocaleString()}
-      </Text>
-    ))}
-    </>  
+    <SeeMoreContainer
+      title="Events Today"
+      onPress={() => routeToEvents()}
+      style={style}
+    >
+      <FlatList
+        data={todayEvents}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        ListEmptyComponent={emptyComponent}
+        numColumns={2}
+        onRefresh={reload}
+        refreshing={isLoading}
+      />
+    </SeeMoreContainer>
   );
-} );
+});
 
 
 const styles = StyleSheet.create({
@@ -172,12 +235,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: spacing.mini,
     // borderStyle:"dotted", borderColor:"red",borderWidth:1
-  },
-  area30: {
-    maxHeight: "30%"
-  },
-  area70: {
-    maxHeight: "70%"
   },
   feed: {
     width: "100%",

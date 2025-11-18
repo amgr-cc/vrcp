@@ -7,10 +7,13 @@ import StorageWrapper from "@/libs/wrappers/storageWrapper";
 // provide user settings globally,
 // all data stored in async storage with prefix: "setting_"
 
+type HomeTabVariant = "friend-locations" | "feeds" | "events";
 //
 interface UIOption { // layout, color schema
   layouts: {
-    homeTabMode: "default" | "friend-locations" | "feeds" | "calendar";
+    homeTabTopVariant: HomeTabVariant; // which variant to show on top in Home Tab
+    homeTabBottomVariant: HomeTabVariant; // which variant to show on bottom in home tab
+    homeTabSeparatePos: number; // percentage position to separate top and bottom in home tab, 0-100 
     cardViewColumns: number; // integer, number of columns in card view
   };
   theme: {
@@ -44,7 +47,9 @@ export interface Setting {
 const defaultSettings: Setting = {
   uiOptions: {
     layouts: {
-      homeTabMode: "default",
+      homeTabTopVariant: "events",
+      homeTabBottomVariant: "friend-locations",
+      homeTabSeparatePos: 30,
       cardViewColumns: 2,
     },
     theme: {

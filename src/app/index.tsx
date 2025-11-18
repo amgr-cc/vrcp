@@ -20,10 +20,13 @@ import {
   TextInput,
   View,
 } from "react-native";
+import * as Clipboard from 'expo-clipboard';
+import { useToast } from "@/contexts/ToastContext";
 
 // login screen
 export default function Login() {
   const theme = useTheme();
+  const { showToast } = useToast();
   const auth = useAuth();
   const usernameRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
@@ -99,6 +102,18 @@ export default function Login() {
     } else {
       Alert.alert("2FA verification error", "please try again later");
     }
+  };
+
+  const handleAutoFillTFA = async () => {
+    try {
+      const code = await Clipboard.getStringAsync();
+      if (/^\d{6}$/.test(code)) {
+        setTFACode(code);
+        showToast("info", "code pasted from clipboard");
+      }
+    } catch (err) {
+      console.log("Auto-fill TFA code failed:", err);
+    };
   };
 
   const logoAnim = useRef(new Animated.Value(0)).current; //
@@ -258,6 +273,7 @@ export default function Login() {
             placeholderTextColor={theme.colors.subText}
             value={TFACode}
             onChangeText={setTFACode}
+            onFocus={handleAutoFillTFA}
           />
         </GenericModal>
 

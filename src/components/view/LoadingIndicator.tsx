@@ -29,7 +29,7 @@ const LoadingIndicator = ({
 
 const styles = StyleSheet.create({
   container: {
-    zIndex: 1,
+    zIndex: 10,
     top: 0,
     left: 0,
     right: 0,
