@@ -7,7 +7,7 @@
 >
   
   <style>
-    <!-- svg { background: gray } -->
+    svg { background: white }
     #bubble {
       #bubble-outline { fill: black }
       #bubble-base { fill: white }

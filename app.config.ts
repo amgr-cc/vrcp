@@ -12,10 +12,30 @@ const appName: ProfileSwitch<string> = {
   preview: "VRCP-pre",
   production: "VRCP"
 }
-const appIcon: ProfileSwitch<string> = {
-  development: "./src/assets/images/icon-dev.png",
-  preview: "./src/assets/images/icon.png",
-  production: "./src/assets/images/icon.png"
+const appIcons: ProfileSwitch<{
+  appIcon: string,
+  foregroundImage: string,
+  backgroundImage: string,
+  monochromeImage: string,
+}> = {
+  development: {
+    appIcon: "./src/assets/images/icon-dev.png",
+    foregroundImage: "./src/assets/images/adaptive-icon-fg.png",
+    backgroundImage: "./src/assets/images/adaptive-icon-bg-dev.png",
+    monochromeImage: "./src/assets/images/adaptive-icon-mono.png",
+  },
+  preview: {
+    appIcon: "./src/assets/images/icon.png",
+    foregroundImage: "./src/assets/images/adaptive-icon-fg.png",
+    backgroundImage: "./src/assets/images/adaptive-icon-bg.png",
+    monochromeImage: "./src/assets/images/adaptive-icon-mono.png",
+  },
+  production: {
+    appIcon: "./src/assets/images/icon.png",
+    foregroundImage: "./src/assets/images/adaptive-icon-fg.png",
+    backgroundImage: "./src/assets/images/adaptive-icon-bg.png",
+    monochromeImage: "./src/assets/images/adaptive-icon-mono.png",
+  }
 }
 const contact: ProfileSwitch<string> = {
   development: "dev@ktrn.dev",
@@ -30,7 +50,7 @@ export default ({ config }: ConfigContext) => ({
     slug: "vrcp",
     version: "0.0.1",
     orientation: "portrait",
-    icon: appIcon[profile],
+    icon: appIcons[profile].appIcon,
     scheme: "vrcp", // This is used for deep linking (ex. schema://internal/link)
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
@@ -50,9 +70,9 @@ export default ({ config }: ConfigContext) => ({
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: "./src/assets/images/adaptive-icon-fg.png",
-        backgroundImage: "./src/assets/images/adaptive-icon-bg.png",
-        monochromeImage: "./src/assets/images/adaptive-icon-mono.png",
+        foregroundImage: appIcons[profile].foregroundImage,
+        backgroundImage: appIcons[profile].backgroundImage,
+        monochromeImage: appIcons[profile].monochromeImage,
       },
       edgeToEdgeEnabled: true,
       package: appIdentifier[profile],
