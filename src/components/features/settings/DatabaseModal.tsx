@@ -99,7 +99,7 @@ const DatabaseModal = ({ open, setOpen }: Props) => {
         </View>
       </View> */}
       <Text style={[globalStyles.subheader, { color: theme.colors.text }]}>
-        {t("components.databaseModal.groupLabel_storage")}
+        {t("components.databaseModal.groupLabel_cache")}
       </Text>
       <View style={globalStyles.container}>
         <View>

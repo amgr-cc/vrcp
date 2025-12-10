@@ -320,7 +320,7 @@
           "selectedLabel_feeds": "Feeds of Friends",
           "option_friendLocations": "Locations",
           "selectedLabel_friendLocations": "Friend Locations",
-          "maybe_requireRestart": "It may require restart app\nto take effect."
+          "selectedLabel_sepPos": "higher separate position value makes upper area larger."
         },
         "cardViewColumns": {
           "button_apply": "Apply",
@@ -333,9 +333,9 @@
     },
     "databaseModal": {
       "title": "Database Settings",
-      "groupLabel_storage": "Storage",
-      "cache_size_and_count_one": "CacheSize: {{size}} MB ({{count}} item)",
-      "cache_size_and_count_other": "CacheSize: {{size}} MB ({{count}} items)",
+      "groupLabel_cache": "Cache",
+      "cache_size_and_count_one": "{{size}} MB ({{count}} item)",
+      "cache_size_and_count_other": "{{size}} MB ({{count}} items)",
       "button_clearCache": "Clear Cache"
     },
     "aboutModal": {
@@ -370,7 +370,7 @@
       "button_cancel": "Cancel",
       "button_send": "Send Feedback",
       "placeholder_email": "Your email",
-      "placeholder_message": "Enter your feedback here...",
+      "placeholder_message": "Enter content here...",
       "type_feedback": "Feedback",
       "type_bug": "Bug Report",
       "type_request": "Feature Request"

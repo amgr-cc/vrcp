@@ -7,6 +7,7 @@ import { fontSize, radius, spacing } from "@/configs/styles";
 import { Setting } from "@/contexts/SettingContext";
 import { Text } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
+import { Slider } from '@miblanchard/react-native-slider'; // ← ここが変わった
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
@@ -46,6 +47,7 @@ const HomeTabLayoutModal = ({ open, setOpen, defaultValue, onSubmit }: Props) =>
     bottom: defaultValue?.bottom || 'friend-locations',
     sepPos: defaultValue?.sepPos || 30,
   });
+  const [ lastOpelated , setLastOpelated ] = useState<"top" | "bottom" | "sepPos" | undefined>(undefined);
 
     
   const getButtonText = (v: HomeTopVariant | HomeBottomVariant): string => {
@@ -76,7 +78,11 @@ const HomeTabLayoutModal = ({ open, setOpen, defaultValue, onSubmit }: Props) =>
     {
       // use button as text display only
       type: "text",
-      title: getTextLabel(selectedValue.top ?? "events"),
+      title: lastOpelated === "top" 
+        ? getTextLabel(selectedValue.top ?? "events") 
+        : lastOpelated === "bottom"
+        ? getTextLabel(selectedValue.bottom ?? "feeds")
+        : t("components.uiModal.innerModals.homeTabLayout.selectedLabel_sepPos"),
       flex: 1,
     },
     {
@@ -162,8 +168,32 @@ const HomeTabLayoutModal = ({ open, setOpen, defaultValue, onSubmit }: Props) =>
           <View style={styles.sepPosContainer}>  
             <Text style={{ color: theme.colors.subText, textAlign: "center" }}>
               {t("components.uiModal.innerModals.homeTabLayout.section_separatePos")}
-              : {selectedValue.sepPos ?? 30}%
             </Text>
+            <View style={styles.sliderContainer}>
+              {/* ヘッダー部分: ラベルと現在の%値を横並び表示 */}
+              <Text style={{ color: theme.colors.text }}>
+                {Math.round(selectedValue.sepPos)}%
+              </Text>
+              {/* スライダー本体 */}
+              <View style={styles.slider}>
+                <Slider
+                  minimumValue={0}
+                  maximumValue={100}
+                  step={10}
+                  value={[selectedValue.sepPos]}
+                  onValueChange={(val) => {
+                    setSelectedValue(prev => ({
+                      ...prev,
+                      sepPos: val[0],
+                    }));
+                  }}
+                  // 色設定
+                  minimumTrackTintColor={theme.colors.primary} // 左側のバーの色
+                  maximumTrackTintColor={theme.colors.border}  // 右側のバーの色
+                  thumbTintColor={theme.colors.primary}        // ツマミの色
+                />
+              </View>
+            </View>
           </View>
         </View>
       </GenericModal>
@@ -177,16 +207,15 @@ const styles = StyleSheet.create({
     // innermodal styles
   container: {
     display: "flex",
-    flexDirection: "row",
+    // flexDirection: "row",
     justifyContent: "space-between",
     gap: spacing.medium,
   },
   variantsContainer: {
-    width: "75%",
-    gap: spacing.medium,
+    gap: spacing.medium
   },
   sepPosContainer:{
-    width: "20%",
+    alignItems: "center",
   },
   iconButtonContainer: {
     display: "flex",
@@ -202,7 +231,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: radius.small,
   },
-  icon: {},
+  sliderContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: spacing.medium,
+    gap: spacing.medium,
+  },
+  slider: {
+    width: '80%',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+  },
 });
 
 

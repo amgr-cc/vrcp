@@ -29,8 +29,8 @@ export default function Home() {
   const { settings } = useSetting();
   const { homeTabTopVariant, homeTabBottomVariant, homeTabSeparatePos, cardViewColumns } = settings.uiOptions.layouts;
   
-  if (homeTabTopVariant === homeTabBottomVariant || homeTabSeparatePos <= 0 || homeTabSeparatePos >= 100) {
-    const singleVariant = homeTabTopVariant ?? homeTabBottomVariant;
+  if ( homeTabSeparatePos <= 0 || homeTabSeparatePos >= 100) {
+    const singleVariant = homeTabSeparatePos >= 100 ? homeTabTopVariant : homeTabBottomVariant;
     return (
       <GenericScreen>
         {singleVariant === 'feeds' ? (

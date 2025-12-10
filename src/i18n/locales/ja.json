@@ -67,7 +67,7 @@
       "itemLabel_ui": "UI設定",
       "itemDescription_ui": "UIの外観や動作をカスタマイズします。",
       "itemLabel_database": "データベース",
-      "itemDescription_database": "データベースの設定やストレージを管理します。",
+      "itemDescription_database": "データベースやキャッシュを管理します。",
       "itemLabel_notifications": "通知",
       "itemDescription_notifications": "プッシュ通知やアラートを管理します。",
       "groupLabel_other": "その他",
@@ -212,5 +212,156 @@
       "linksModal_emailLinkText": "メールアドレスの確認"
     }
   },
-  "components": {}
+  "components": {
+    "releaseNote": {
+      "title": "リリースノート",
+      "button_close": "閉じる"
+    },
+    "jsonDataModal": {
+      "button_close": "閉じる",
+      "button_copy": "クリップボードにコピー"
+    },
+    "changeAvatarModal": {
+      "button_confirm": "アバターを変更",
+      "button_cancel": "キャンセル",
+      "confirm_text": "本当にアバターを '{{avatarName}}' に変更しますか？"
+    },
+    "changeFriendModal": {
+      "button_confirm_remove": "フレンド解除",
+      "button_confirm_send": "フレンドリクエスト送信",
+      "button_confirm_cancel": "フレンドリクエスト取り消し",
+      "button_cancel": "キャンセル",
+      "confirm_text_remove": "本当に '{{userName}}' をフレンドから解除しますか？",
+      "confirm_text_send": "本当に '{{userName}}' にフレンドリクエストを送信しますか？",
+      "confirm_text_cancel": "本当に '{{userName}}' へのフレンドリクエストを取り消しますか？"
+    },
+    "changeNoteModal": {
+      "button_save": "メモを保存",
+      "button_cancel": "キャンセル",
+      "placeholder": "メモを入力..."
+    },
+    "changeFavoriteModal": {
+      "button_save": "お気に入りグループに保存",
+      "button_cancel": "キャンセル",
+      "button_unselect": "お気に入り解除"
+    },
+    "changeBioModal": {
+      "button_save": "自己紹介を保存",
+      "button_cancel": "キャンセル",
+      "placeholder": "自己紹介を入力..."
+    },
+    "changeBioLinksModal": {
+      "button_save": "リンクを保存",
+      "button_cancel": "キャンセル",
+      "placeholder": "URLを追加 (例: https://example.com)"
+    },
+    "changeStatusModal": {
+      "button_save": "ステータスを保存",
+      "button_cancel": "キャンセル",
+      "placeholder": "ステータスを入力..."
+    },
+    "eventDetailModal": {
+      "eventTime_sameDay": "{{start, yyyy年MM月dd日 HH:mm}} ~ {{end, HH:mm}}",
+      "eventTime_differentDay": "{{start, yyyy年MM月dd日 HH:mm}} ~ {{end, yyyy年MM月dd日 HH:mm}}"
+    },
+
+
+    "uiModal": {
+      "title": "UI設定",
+      "groupLabel_appearance": "外観",
+      "itemLabel_theme": "テーマ",
+      "itemDescription_theme": "アプリのライト/ダークテーマを選択します。",
+      "itemLabel_friendColor": "フレンドの色",
+      "itemDescription_friendColor": "フレンドのカラーテーマを選択します。",
+      "itemLabel_favoriteFriendsColors": "お気に入りフレンドの色",
+      "itemDescription_favoriteFriendsColors": "お気に入りフレンドのカラーテーマを選択します。",
+      "groupLabel_layouts": "レイアウト",
+      "itemLabel_homeTabLayout": "ホーム画面レイアウト",
+      "itemDescription_homeTabLayout": "ホーム画面でデフォルト表示する機能を選択します。",
+      "itemLabel_cardViewColumns": "カード表示の列数",
+      "itemDescription_cardViewColumns": "カード表示時の列数を選択します。",
+      "groupLabel_others": "その他",
+      "itemLabel_language": "言語",
+      "itemDescription_language": "アプリの言語を選択します。",
+      "innerModals": {
+        "theme": {
+          "title": "テーマを選択",
+          "button_apply": "適用",
+          "option_light": "ライト",
+          "option_dark": "ダーク",
+          "option_system": "システム",
+          "maybe_requireRestart": "アプリの再起動が必要な場合があります。"
+        },
+        "friendColor": {},
+        "favoriteFriendsColors": {},
+        "homeTabLayout": {
+          "button_apply": "適用",
+          "section_top": "上部エリア",
+          "section_bottom": "下部エリア",
+          "section_separatePos": "分割位置",
+          "option_events": "イベント",
+          "selectedLabel_events": "今日のイベント",
+          "option_feeds": "フィード",
+          "selectedLabel_feeds": "フレンドのフィード",
+          "option_friendLocations": "インスタンス",
+          "selectedLabel_friendLocations": "フレンドのインスタンス",
+          "selectedLabel_sepPos": "分割位置の値が大きいほど\n上部エリアが大きくなります。"
+        },
+        "cardViewColumns": {
+          "button_apply": "適用",
+          "option_1_columns": "1列",
+          "option_2_columns": "2列",
+          "option_3_columns": "3列",
+          "maybe_requireRestart": "アプリの再起動が必要な場合があります。"
+        }
+      }
+    },
+    "databaseModal": {
+      "title": "データベース設定",
+      "groupLabel_cache": "キャッシュ",
+      "cache_size_and_count_one": "{{size}} MB ({{count}} 項目)",
+      "cache_size_and_count_other": "{{size}} MB ({{count}} 項目)",
+      "button_clearCache": "キャッシュを削除"
+    },
+    "aboutModal": {
+      "title": "アプリ情報",
+      "button_termOfService": "利用規約",
+      "button_privacyPolicy": "プライバシーポリシー",
+      "button_Licenses": "オープンソースライセンス",
+      "button_ChangeLog": "更新履歴",
+      "innerModals": {
+        "termOfService": {
+          "title": "利用規約"
+        },
+        "privacyPolicy": {
+          "title": "プライバシーポリシー"
+        },
+        "licenses": {
+          "title": "オープンソースライセンス",
+          "link_to_repos": "Repository ↗"
+        },
+        "changeLog": {
+          "title": "更新履歴",
+          "format_version": "Ver {{version}}",
+          "format_date": "{{date, yyyy年MM月dd日}}"
+        }
+      }
+    },
+    "developmentModal": {
+      "title": "開発機能"
+    },
+    "feedbackModal": {
+      "title": "フィードバックを送信",
+      "button_cancel": "キャンセル",
+      "button_send": "送信",
+      "placeholder_email": "メールアドレス",
+      "placeholder_message": "内容を入力...",
+      "type_feedback": "フィードバック",
+      "type_bug": "バグ報告",
+      "type_request": "機能リクエスト"
+    },
+    "notificationModal": {
+      "title": "通知設定"
+    }
+  }
 }
