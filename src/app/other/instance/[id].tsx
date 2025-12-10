@@ -12,7 +12,6 @@ import { fontSize, navigationBarHeight, radius, spacing } from "@/configs/styles
 import { CachedImage, useCache } from "@/contexts/CacheContext";
 import { useData } from "@/contexts/DataContext";
 import { useVRChat } from "@/contexts/VRChatContext";
-import { formatToDateTimeStr } from "@/libs/date";
 import { extractErrMsg } from "@/libs/utils";
 import {
   getAuthorTags,

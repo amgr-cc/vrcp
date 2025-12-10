@@ -18,8 +18,11 @@
       "label": "ホーム",
       "see_more": "もっと見る",
       "events_area": "今日のイベント",
+      "no_events": "イベントがありません。",
       "feeds_area": "フィード",
-      "friendlocations_area": "フレンドインスタンス"
+      "no_feeds": "フィードがありません。",
+      "friendlocations_area": "フレンドインスタンス",
+      "no_friendlocations": "フレンドインスタンスがありません。"
     },
     "friends": {
       "label": "フレンド",

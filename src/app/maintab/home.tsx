@@ -81,9 +81,9 @@ const FeedArea = memo(({style}: { style?: any }) => {
   ), []);
   const emptyComponent = useCallback(() => (
     <View style={{ alignItems: "center", marginTop: spacing.large }}>
-      <Text style={{ color: theme.colors.text }}>No feeds available.</Text>
+      <Text style={{ color: theme.colors.text }}>{t("pages.home.no_feeds")}</Text>
     </View>
-  ), [theme.colors.text]);
+  ), [theme.colors.text, t]);
   return (
     <SeeMoreContainer
       title={t("pages.home.feeds_area")}
@@ -115,9 +115,9 @@ const FriendLocationArea = memo(({ style }: { style?: any }) => {
   ), []);
   const emptyComponent = useCallback(() => (
     <View style={{ alignItems: "center", marginTop: spacing.large }}>
-      <Text style={{ color: theme.colors.text }}>No friends online in instances.</Text>
+      <Text style={{ color: theme.colors.text }}>{t("pages.home.no_friendlocations")}</Text>
     </View>
-  ), [theme.colors.text]);
+  ), [theme.colors.text, t]);
   return (
     <SeeMoreContainer
       title={t("pages.home.friendlocations_area")}
@@ -211,9 +211,9 @@ const EventsArea = memo(({ style }: {
   
   const emptyComponent = useCallback(() => (
     <View style={{ alignItems: "center", marginTop: spacing.large }}>
-      <Text style={{ color: theme.colors.text }}>No events available.</Text>
+      <Text style={{ color: theme.colors.text }}>{t("pages.home.no_events")}</Text>
     </View>
-  ), [theme.colors.text]);
+  ), [theme.colors.text, t]);
 
   return (
     <SeeMoreContainer

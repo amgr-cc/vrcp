@@ -7,7 +7,7 @@ import { spacing } from "@/configs/styles";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
 import { useVRChat } from "@/contexts/VRChatContext";
-import { formatToDateStr, formatToTimeStr, getDayOfWeekStr } from "@/libs/date";
+import { formatToDateStr } from "@/libs/date";
 import { extractErrMsg } from "@/libs/utils";
 import { CalendarEvent, PaginatedCalendarEventList } from "@/vrchat/api";
 import { Text } from "@react-navigation/elements";

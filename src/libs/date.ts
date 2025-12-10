@@ -27,12 +27,6 @@ export function formatToTimeStr(timestamp: string | Date): string {
   });
 }
 ////
-
-export function getDayOfWeekStr(date: Date): string {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  return days[date.getDay()];
-}
-
 export function isSameDate(date1: Date, date2: Date): boolean {
   const str1 = date1.toLocaleDateString([], { year: "numeric", month: "2-digit", day: "2-digit"});
   const str2 = date2.toLocaleDateString([], { year: "numeric", month: "2-digit", day: "2-digit"});

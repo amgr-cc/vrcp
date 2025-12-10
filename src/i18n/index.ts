@@ -5,8 +5,8 @@ import { Storage } from "expo-sqlite/kv-store";
 import { format, Locale } from 'date-fns';
 
 // 翻訳ファイルをインポート
-import ja_translate from './translations/ja.json';
-import en_translate from './translations/en.json';
+import ja_translate from './locales/ja.json';
+import en_translate from './locales/en.json';
 // date-fnsのロケールをインポート
 import { enUS, ja } from 'date-fns/locale';
 

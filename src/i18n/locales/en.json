@@ -18,8 +18,11 @@
       "label": "Home",
       "see_more" : "See More",
       "events_area": "Events Today",
+      "no_events": "No events available.",
       "feeds_area": "Feeds",
-      "friendlocations_area": "Friend Locations"
+      "no_feeds": "No feeds available.",
+      "friendlocations_area": "Friend Locations",
+      "no_friendlocations": "No friend locations available."
     },
     "friends": {
       "label": "Friends",

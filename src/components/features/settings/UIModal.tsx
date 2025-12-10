@@ -14,7 +14,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import ColorSchemaModal, { getIconName as getIconNameCS } from "./ui_innermodals/ColorSchemaModal";
 import HomeTabModeModal, { getIconName as getIconNameHT } from "./ui_innermodals/HomeTabModeModal";
 import CardViewColumnsModal, { getIconName as getIconNameCV } from "./ui_innermodals/CardViewColumnsModal";
-import { getUserLanguage, setUserLanguage } from "@/configs/i18n";
+import { getUserLanguage, setUserLanguage } from "@/i18n";
 
 interface Props {
   open: boolean;

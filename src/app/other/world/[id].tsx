@@ -9,7 +9,6 @@ import SelectGroupButton from "@/components/view/SelectGroupButton";
 import { fontSize, navigationBarHeight, radius, spacing } from "@/configs/styles";
 import { useCache } from "@/contexts/CacheContext";
 import { useVRChat } from "@/contexts/VRChatContext";
-import { formatToDateTimeStr } from "@/libs/date";
 import { extractErrMsg } from "@/libs/utils";
 import {
   getAuthorTags,
@@ -197,10 +196,10 @@ export default function WorldDetail() {
                   >{t("pages.detail_world.section_info_visits", { visits: world.visits })}</Text>
                   <Text
                     style={{ color: theme.colors.text }}
-                  >{t("pages.detail_world.section_info_updated", { date: formatToDateTimeStr(world.updated_at) })}</Text>
+                  >{t("pages.detail_world.section_info_updated", { date: new Date(world.updated_at )})}</Text>
                   <Text
                     style={{ color: theme.colors.text }}
-                  >{t("pages.detail_world.section_info_created", { date: formatToDateTimeStr(world.created_at) })}</Text>
+                  >{t("pages.detail_world.section_info_created", { date: new Date(world.created_at )})}</Text>
                 </View>
               </DetailItemContainer>
 
