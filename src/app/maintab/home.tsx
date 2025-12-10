@@ -21,6 +21,7 @@ import { formatToDateStr, formatToTimeStr } from "@/libs/date";
 import { useAuth } from "@/contexts/AuthContext";
 import ListViewEvent from "@/components/view/item-ListView/ListViewEvent";
 import EventDetailModal from "@/components/features/events/EventDetailModal";
+import ReleaseNote from "@/components/features/home/ReleaseNote";
 
 export default function Home() {
   const theme = useTheme();
@@ -38,6 +39,8 @@ export default function Home() {
         ) : singleVariant === 'events' ? (
           <EventsArea />
         ) : null}
+
+        <ReleaseNote />
       </GenericScreen>
     );
   }
@@ -60,6 +63,8 @@ export default function Home() {
         <EventsArea style={{ maxHeight: `${100 - homeTabSeparatePos}%` }} />
       ) : null}
 
+
+      <ReleaseNote />
     </GenericScreen>
   );
 }

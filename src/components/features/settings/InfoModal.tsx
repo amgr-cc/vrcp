@@ -8,6 +8,7 @@ import { Platform, View } from "react-native";
 import TermOfServiceModal from "./info_innermodals/TermOfServiceModal";
 import PrivacyPolicyModal from "./info_innermodals/PrivacyPolicyModal";
 import LicenseModal from "./info_innermodals/LicenseModal";
+import ChangeLogModal from "./info_innermodals/ChangeLogModal";
 
 
 interface Props {
@@ -20,6 +21,7 @@ const InfoModal = ({ open, setOpen }: Props) => {
   const [ termOfServiceModal, setTermOfServiceModal ] = useState<boolean>(false);
   const [ privacyPolicyModal, setPrivacyPolicyModal ] = useState<boolean>(false);
   const [ licenseModal, setLicenseModal ] = useState<boolean>(false);
+  const [ changeLogModal, setChangeLogModal ] = useState<boolean>(false);
 
   const devInfo = {
     version: Constants.expoConfig?.version,
@@ -48,6 +50,11 @@ const InfoModal = ({ open, setOpen }: Props) => {
     {
       title: "Licenses",
       onPress: () => setLicenseModal(true),
+      flex: 1,
+    },
+    {
+      title: "ChangeLog",
+      onPress: () => setChangeLogModal(true),
       flex: 1,
     },
   ];
@@ -90,6 +97,10 @@ const InfoModal = ({ open, setOpen }: Props) => {
       <LicenseModal
         open={licenseModal}
         setOpen={setLicenseModal}
+      />
+      <ChangeLogModal
+        open={changeLogModal}
+        setOpen={setChangeLogModal}
       />
 
     </GenericModal>

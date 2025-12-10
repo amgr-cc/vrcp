@@ -1,4 +1,7 @@
 import Constants from "expo-constants";
+import { Storage } from "expo-sqlite/kv-store";
+import rawVersions from '@/../versions.json'; 
+import { store } from "expo-router/build/global-state/router-store";
 
 
 // object 
@@ -71,4 +74,20 @@ export function getTintedColor (hexColor: string, tintFactor: number = 0.60): st
   const newAlpha = Math.floor(tintFactor * a);
   const newHex = `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}${newAlpha.toString(16).padStart(2, "0")}`;
   return newHex;
+}
+
+// appVersion
+export function isNewVersion(): boolean {
+  // e.g. "1.0.0:2025-12-25"
+  const storedVersionKey = Storage.getItemSync("releasenote_lastversionkey");
+  const currentVersion = rawVersions.versions?.[0];
+  if (!storedVersionKey || !currentVersion) return false;
+  const currentVersionKey = `${currentVersion.nativeVersion}:${currentVersion.updates?.[0].date}`;
+  return storedVersionKey !== currentVersionKey;
+} 
+export function updateStoredVersion(): void {
+  const currentVersion = rawVersions.versions?.[0];
+  if (!currentVersion) return;
+  const currentVersionKey = `${currentVersion.nativeVersion}:${currentVersion.updates?.[0].date}`;
+  Storage.setItemSync("releasenote_lastversionkey", currentVersionKey);
 }
