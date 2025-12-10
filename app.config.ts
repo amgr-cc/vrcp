@@ -2,6 +2,10 @@ import { ConfigContext } from "@expo/config";
 
 interface ProfileSwitch<T = any> {development: T; preview: T; production: T;}
 
+// Injected via CI/CD pipeline
+// extracted from versions.json in the workflow and passed as env variable
+const appVersion = process.env.APP_VERSION || "0.0.1";
+
 const appIdentifier: ProfileSwitch<string> = {
   development: "dev.ktrn.vrcp.dev",
   preview: "dev.ktrn.vrcp.pre",
@@ -48,15 +52,21 @@ const profile = (process.env.BUILD_PROFILE || "development") as keyof ProfileSwi
 export default ({ config }: ConfigContext) => ({
     name: appName[profile],
     slug: "vrcp",
-    version: "0.0.1",
+    version: appVersion,
     orientation: "portrait",
     icon: appIcons[profile].appIcon,
     scheme: "vrcp", // This is used for deep linking (ex. schema://internal/link)
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     owner: "ktrn-dev",
+    updates: { // configure EAS Update
+      url: "https://u.expo.dev/5dcb6ea7-b710-4155-9dc5-e4c5a9ce160d"
+    },
+    runtimeVersion: { 
+      policy: "appVersion"
+    },
     extra: {
-      vrcmm: {// custom constants accessible via Constants.expoConfig.extra.vrcmm
+      vrcp: {// custom constants accessible via Constants.expoConfig.extra.vrcp
         buildProfile: profile,
         contact: contact[profile],  
       },

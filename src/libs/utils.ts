@@ -56,9 +56,9 @@ export function extractErrMsg (error: any): string {
 
 // user agent
 export function getUserAgent (): string {
-  const name = Constants.expoConfig?.slug + Constants.expoConfig?.extra?.vrcmm?.buildProfile;
+  const name = Constants.expoConfig?.slug + Constants.expoConfig?.extra?.vrcp?.buildProfile;
   const version = Constants.expoConfig?.version || "0.0.0-dev";
-  const contact = Constants.expoConfig?.extra?.vrcmm?.contact || "dev@ktrn.dev";
+  const contact = Constants.expoConfig?.extra?.vrcp?.contact || "dev@ktrn.dev";
   return `${name}/${version} ${contact}`;
 }
 

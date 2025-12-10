@@ -81,7 +81,7 @@ export default function Settings() {
         description: "send your feedback to developer",
         onPress: () => setOpenFeedback(true),
       },
-      ...(Constants.expoConfig?.extra?.vrcmm.buildProfile == "development" ? [
+      ...(Constants.expoConfig?.extra?.vrcp.buildProfile == "development" ? [
         {
           icon: "routes" as SupportedIconNames,
           title: "sitemap",

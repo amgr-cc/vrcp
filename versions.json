@@ -1,0 +1,13 @@
+{
+  "versions": [
+    {
+      "nativeVersion": "1.0.0",
+      "updates": [
+        {
+          "date": "2025-12-25",
+          "message": "initial release"
+        }
+      ]
+    }
+  ]
+}

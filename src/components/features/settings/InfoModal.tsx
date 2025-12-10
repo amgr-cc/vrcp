@@ -30,7 +30,7 @@ const InfoModal = ({ open, setOpen }: Props) => {
       android: Constants.expoConfig?.android?.package,
       ios: Constants.expoConfig?.ios?.bundleIdentifier,
     }),
-    // expoBuildProfile: Constants.expoConfig?.extra?.vrcmm?.buildProfile,
+    // expoBuildProfile: Constants.expoConfig?.extra?.vrcp?.buildProfile,
     // node_env: process.env.NODE_ENV,
   };
 

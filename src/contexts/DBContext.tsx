@@ -43,7 +43,7 @@ const useDB = () => {
 const DBProvider: React.FC<{ children?: React.ReactNode }> = ({
   children
 }) => {
-  const fileName = Constants.expoConfig?.extra?.vrcmm?.buildProfile !== "production" ? "vrcmm-dev.db" : "vrcmm.db";
+  const fileName = "vrcp.db";
   const expoDB = sqlite.openDatabaseSync(fileName, undefined, sqlite.defaultDatabaseDirectory);
   const db = drizzle(expoDB);
 

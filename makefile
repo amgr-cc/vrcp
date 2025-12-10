@@ -12,7 +12,7 @@ run:  # run the application
 
 .PHONY : gen-oss
 gen-oss:  # generate open source software notice
-	@npx license-checker-rseidelsohn --json --out ./src/assets/licenses.json --start . --direct --unknown --excludePrivatePackages
+	@npx license-checker --production --json --out ./src/assets/licenses.json --start . --unknown --excludePrivatePackages
 
 .PHONY : gen-vrcapi gen-vrcpipe
 gen-vrcapi:  # generate the vrcapi types and clients from openapi spec
@@ -27,27 +27,37 @@ gen-vrcapi:  # generate the vrcapi types and clients from openapi spec
 	@rm -f ./src/vrchat/openapi.yaml
 
 gen-vrcpipe: # generate the vrcpipe types from websocket spec
-	@npx ts-node ./src/vrchat/pipline/gen-type.ts
+	@npx tsx ./src/vrchat/pipline/gen-type.ts
 
-.PHONY : migrate-generate
-migrate-generate:  # generate migration files based on schema changes
+.PHONY : migrate/generate
+migrate/generate:  # generate migration files based on schema changes
 	@npx drizzle-kit generate
 	@echo "Migration .sql files generated in src/db/migration/drizzle-kit"
-	@npx ts-node ./src/db/migration/gen-migration.ts	
+	@npx tsx ./src/db/migration/gen-migration.ts	
 
+.PHONY : version-bump/ota version-bump/major version-bump/minor version-bump/patch
+version-bump/major:  # generate draft of versions.json with major bump
+	@npx tsx ./tools/version-bump.ts native major
+version-bump/minor:  # generate draft of versions.json with minor bump
+	@npx tsx ./tools/version-bump.ts native minor
+version-bump/patch:  # generate draft of versions.json with patch bump
+	@npx tsx ./tools/version-bump.ts native patch 
+version-bump/ota:  # generate draft of versions.json with OTA bump
+	@npx tsx ./tools/version-bump.ts ota
 
 .PHONY : prebuild
 prebuild: # pre build tasks
 	@npx expo prebuild --clean
 
-.PHONY : build-dev build-pre submit
-build-dev:  # build the application for development-client
+.PHONY : build/dev build/pre
+build/dev:  # build the application for development-client
 	@eas build --profile development --platform android
-build-pre:  # build the application for preview
+build/pre:  # build the application for preview
 	@eas build --profile preview --platform android
-build-submit:  # submit the application for store
-	@eas build --profile production --platform android --submit
-
+# build/prod:  # build the application for production (apk)
+# 	@eas build --profile prod-apk --platform android
+# build/submit:  # submit the production application (aab) for store
+# 	@eas build --profile production --platform android --submit
 
 
 .PHONY: lint 

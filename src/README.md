@@ -1,7 +1,5 @@
 
 #### run development
-- run `make gen-plugins` to configure custom native module plugins
-- run `make prebuild` to generate native codes
 - run `make build-dev` to build dev-app apk 
 - install dev-app to your device from built apk
 - run `make run` to start dev-server
@@ -14,7 +12,9 @@
 - run `make build-submit` to build prod-app aab and submit to store
 - publish from store page  
 
+### update oss-licenses
+- run `make gen-oss` to generate assets/licenses.json 
 
-### when vrcapi updated
+### how apply update of vrchat-api
 - run `make gen-vrcapi` to generate vrcapi-client-code
 - run `make gen-vrcpipe` to generate vrcapi-pipeline-type-code

@@ -137,7 +137,7 @@ export default function Login() {
     }).start();
   };
   const onLongPressLogo = () => {
-    // if (Constants.expoConfig?.extra?.vrcmm.buildProfile === "development") {
+    // if (Constants.expoConfig?.extra?.vrcp.buildProfile === "development") {
     //   navigate("/_sitemap"); // navigate to sitemap on logo press (for debug)
     //   return;
     // }

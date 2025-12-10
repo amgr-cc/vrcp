@@ -1,0 +1,81 @@
+name: Build and Release APK
+
+on:
+  # # on push with tag (e.g., v1.0.0)
+  # push:
+  #   tags:
+  #     - 'v*'
+
+  # manual execution
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup EAS
+        run: npm install -g eas-cli
+
+      - name: Extract Release Notes
+        id: extract_notes
+        run: |
+          # extract native version from versions.json (latest one) 
+          NATIVE_VER=$(jq -r '.versions[0].nativeVersion' versions.json)
+          
+          # extract release notes from versions.json
+          # format: "- 2025-12-22: message"
+          NOTES=$(jq -r '.versions[0].updates[] | "- " + .date + ": " + .message' versions.json)
+          
+          echo "NATIVE_VER=$NATIVE_VER" >> $GITHUB_ENV
+          
+          # Create release body
+          {
+            echo 'RELEASE_BODY<<EOF'
+            echo "## Ver $NATIVE_VER"
+            echo ""
+            echo "### Updates in this version"
+            echo "$NOTES"
+            echo ""
+            echo "📅 Built at: $(date +'%Y-%m-%d')"
+            echo 'EOF'
+          } >> $GITHUB_ENV
+
+      # Build APK with EAS (prod-apk profile)
+      - name: Build APK with EAS
+        env:
+          # APP_VERSION is used in app.config.js to set the version
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          APP_VERSION: ${{ env.NATIVE_VER }} 
+        run: |
+          FILENAME="vrcp-${{ env.NATIVE_VER }}.apk"
+          # Build APK and output to specific filename
+          eas build --platform android --profile prod-apk --non-interactive --output "./$FILENAME"
+
+      # Upload APK as artifact
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ format('v{0}', env.NATIVE_VER) }}
+          name: VRCP ${{ env.NATIVE_VER }}
+          body: ${{ env.RELEASE_BODY }}
+          files: ./vrcp-${{ env.NATIVE_VER }}.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
