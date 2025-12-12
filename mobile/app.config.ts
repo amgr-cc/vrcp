@@ -9,7 +9,7 @@ const appVersion = process.env.APP_VERSION || "0.0.1";
 const appIdentifier: ProfileSwitch<string> = {
   development: "dev.ktrn.vrcp.dev",
   preview: "dev.ktrn.vrcp.pre",
-  production: "dev.ktrn.vrcp"
+  production: "dev.ktrn.vrcp.mobile"
 }
 const appName: ProfileSwitch<string> = {
   development: "VRCP-dev",

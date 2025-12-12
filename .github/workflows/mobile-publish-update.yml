@@ -1,4 +1,4 @@
-name: Publish EAS Update
+name: mobile - Publish Update
 
 on:
   # # on changes to versions.json in main branch
@@ -15,6 +15,9 @@ jobs:
   update:
     name: EAS Update
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./mobile
     
     steps:
       - name: Checkout code

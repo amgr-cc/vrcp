@@ -1,4 +1,4 @@
-name: Build and Release APK
+name: mobile - Build and Release
 
 on:
   # # on push with tag (e.g., v1.0.0)
@@ -13,6 +13,10 @@ jobs:
   build:
     name: Build and Release
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./mobile
+
     permissions:
       contents: write
 
