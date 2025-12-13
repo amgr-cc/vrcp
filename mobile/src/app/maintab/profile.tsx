@@ -25,7 +25,7 @@ import { MenuItem } from "@/components/layout/type";
 import ChangeBioModal from "@/components/features/profile/ChangeBioModal";
 import ChangeBioLinksModal from "@/components/features/profile/ChangeBioLinksModal";
 import JsonDataModal from "@/components/features/detail/JsonDataModal";
-import { routeToAvatar } from "@/libs/route";
+import { routeToAvatar, routeToFavorites, routeToResources } from "@/libs/route";
 import { useTranslation } from "react-i18next";
 
 export default function Profile() {
@@ -60,7 +60,17 @@ export default function Profile() {
     },
     {
       icon: "hanger",
-      title: t("pages.profile.menuLabel_open_current_avatar"),
+      title: t("pages.profile.menuLabel_route_resources"),
+      onPress: () => routeToResources(),
+    },
+    {
+      icon: "hanger",
+      title: t("pages.profile.menuLabel_route_favorites"),
+      onPress: () => routeToFavorites(),
+    },
+    {
+      icon: "hanger",
+      title: t("pages.profile.menuLabel_route_current_avatar"),
       onPress: () => currentUser.data?.currentAvatar && routeToAvatar(currentUser.data.currentAvatar),
     },
     { 

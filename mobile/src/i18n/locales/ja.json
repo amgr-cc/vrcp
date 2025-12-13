@@ -10,7 +10,8 @@
       "loading": "読み込み中...",
       "failed_to_fetch": "{{item}}の取得に失敗しました。",
       "failed_to_update": "{{item}}の更新に失敗しました。",
-      "no_data": "データがありません。"
+      "no_data": "データがありません。",
+      "invalid": "無効な値"
     }
   },
   "pages": {
@@ -31,28 +32,14 @@
       "tabLabel_active": "アクティブ",
       "tabLabel_offline": "オフライン"
     },
-    "favorites": {
-      "label": "お気に入り",
-      "tabLabel_worlds": "ワールド",
-      "tabLabel_friends": "フレンド",
-      "tabLabel_avatars": "アバター",
-      "no_favoritegroup_selected": "グループが選択されていません。"
-    },
-    "resources": {
-      "label": "リソース",
-      "tabLabel_avatars": "アバター",
-      "tabLabel_worlds": "ワールド",
-      "tabLabel_prints": "プリント",
-      "no_avatars": "アバターがありません。",
-      "no_worlds": "ワールドがありません。",
-      "no_prints": "プリントがありません。"
-    },
     "profile": {
       "label": "プロフィール",
       "menuLabel_edit_bio": "自己紹介を編集",
       "menuLabel_edit_bio_links": "リンクを編集",
       "menuLabel_change_status": "ステータスを変更",
-      "menuLabel_open_current_avatar": "現在のアバターを開く",
+      "menuLabel_route_current_avatar": "現在のアバター",
+      "menuLabel_route_favorites": "お気に入り",
+      "menuLabel_route_resources": "マイリソース",
       "menuLabel_json": "JSONデータ",
       "sectionLabel_bio": "自己紹介",
       "sectionLabel_bio_links": "リンク",
@@ -79,7 +66,11 @@
       "itemDescription_feedback": "開発者にフィードバックを送信します。",
       "groupLabel_account": "アカウント",
       "itemLabel_logout": "ログアウト",
-      "itemDescription_logout": "このアプリからログアウトします。"
+      "itemDescription_logout": "このアプリからログアウトします。",
+
+      "logout_dialog_text": "ログアウトしてもよろしいですか？",
+      "logout_dialog_confirm": "ログアウト",
+      "logout_dialog_cancel": "キャンセル"
     },
     "detail_user": {
       "label": "ユーザー詳細",
@@ -156,12 +147,30 @@
       "menuLabel_json": "JSONデータ",
       "sectionLabel_info": "情報"
     },
+
     "search": {
       "label": "検索結果",
       "searchbox_placeholder": "ワールド、グループ、ユーザーを検索",
       "no_worlds_found": "'{{search}}' に一致するワールドは見つかりませんでした。",
       "no_groups_found": "'{{search}}' に一致するグループは見つかりませんでした。",
       "no_users_found": "'{{search}}' に一致するユーザーは見つかりませんでした。"
+    },
+    
+    "favorites": {
+      "label": "お気に入り",
+      "tabLabel_worlds": "ワールド",
+      "tabLabel_friends": "フレンド",
+      "tabLabel_avatars": "アバター",
+      "no_favoritegroup_selected": "グループが選択されていません。"
+    },
+    "resources": {
+      "label": "リソース",
+      "tabLabel_avatars": "アバター",
+      "tabLabel_worlds": "ワールド",
+      "tabLabel_prints": "プリント",
+      "no_avatars": "アバターがありません。",
+      "no_worlds": "ワールドがありません。",
+      "no_prints": "プリントがありません。"
     },
     "events": {
       "label": "イベント",
@@ -193,7 +202,7 @@
       "save_credentials": "ユーザー名とパスワードを保存",
       "button_login": "ログイン",
       "button_links": "ログインできない場合",
-      "tfa_modal_text_totp": "認証アプリの2要素認証コードを入力してください。",
+      "tfa_modal_text_totp": "認証アプリのコードを入力してください。",
       "tfa_modal_text_email": "メールに2要素認証コードが送信されました。入力してください。",
       "button_tfa_verify": "認証",
       "button_tfa_close": "閉じる",

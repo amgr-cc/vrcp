@@ -7,7 +7,7 @@ import { useData } from "@/contexts/DataContext";
 import { useVRChat } from "@/contexts/VRChatContext";
 import SeeMoreContainer from "@/components/features/home/SeeMoreContainer";
 import { calcFriendsLocations } from "@/libs/funcs/calcFriendLocations";
-import { routeToEvents, routeToFeeds, routeToFriendLocations, routeToInstance, routeToWorld } from "@/libs/route";
+import { routeToEvents, routeToFriendLocations, routeToInstance, routeToWorld } from "@/libs/route";
 import { InstanceLike } from "@/libs/vrchat";
 import { PipelineMessage } from "@/vrchat/pipline/type";
 import { useLocale, useTheme } from "@react-navigation/native";
@@ -87,7 +87,7 @@ const FeedArea = memo(({style}: { style?: any }) => {
   return (
     <SeeMoreContainer
       title={t("pages.home.feeds_area")}
-      onPress={() => routeToFeeds()}
+      // onPress={() => push('/maintab/feeds')}
       style={style}
     >
       <FlatList

@@ -10,7 +10,7 @@ import { StyleSheet, View } from "react-native";
 
 interface Props {
   title: string;
-  onPress: () => void;
+  onPress?: () => void;
   children: React.ReactNode;
   [key: string]: any;
 }
@@ -23,12 +23,14 @@ const SeeMoreContainer = ({ title, onPress, children, ...rest }: Props) => {
       <View style={[styles.card, {backgroundColor: theme.colors.paper}]} >
         <View style={styles.header}>
           <Text style={globalStyles.subheader}>{title}</Text>
-          <Button 
-            onPress={onPress} 
-            variant="plain"
-          >
-            {t("pages.home.see_more") + "  >"}
-          </Button>
+          {onPress && (
+            <Button 
+              onPress={onPress} 
+              variant="plain"
+            >
+              {t("pages.home.see_more") + "  >"}
+            </Button>
+          )}
         </View>
         <View style={styles.children}>
           {children}

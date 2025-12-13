@@ -3,7 +3,6 @@
   viewBox="0 0 512 512" 
   fill="none" 
   xmlns="http://www.w3.org/2000/svg"
-  xmlns:xlink="http://www.w3.org/1999/xlink" 
 >
   
   <style>
@@ -18,6 +17,7 @@
       #phone-speaker { fill: white }
     }
     #text-vrcp { 
+      visibility: hidden;
       fill: black; 
       stroke: white;
     }
@@ -53,5 +53,22 @@
       VRCP
     </text>
   </g>
-  
+
+    <rect
+      x="286" y="116"
+      width="120" height="60"
+      rx="15" ry="15"
+      fill="red"
+    />
+    <text 
+      x="346" y="146" 
+      font-family="Arial, sans-serif" 
+      font-size="60" 
+      font-weight="bold"
+      fill="white" 
+      text-anchor="middle" 
+      dominant-baseline="central"
+    >
+      dev
+    </text>  
 </svg>

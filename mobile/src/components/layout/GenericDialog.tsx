@@ -48,17 +48,17 @@ Props) => {
           <View style={styles.dialogButtonsContainer}>
             <Button
               style={styles.dialogButton}
-              onPress={onConfirm}
-              color={colorConfirm ?? theme.colors.primary}
-            >
-              {confirmTitle ?? "Confirm"}
-            </Button>
-            <Button
-              style={styles.dialogButton}
               onPress={onCancel}
               color={colorCancel ?? theme.colors.text}
             >
               {cancelTitle ?? "Cancel"}
+            </Button>
+            <Button
+              style={styles.dialogButton}
+              onPress={onConfirm}
+              color={colorConfirm ?? theme.colors.primary}
+            >
+              {confirmTitle ?? "Confirm"}
             </Button>
           </View>
         </View>

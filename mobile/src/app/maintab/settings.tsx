@@ -147,15 +147,15 @@ export default function Settings() {
       {/* dialog and modals */}
       <GenericDialog
         open={openLogout}
-        message="Are you sure you want to log out?"
+        message={t("pages.settings.logout_dialog_text")}
         onConfirm={() => {
           auth.logout();
           setOpenLogout(false);
         }}
         onCancel={() => setOpenLogout(false)}
         colorConfirm={theme.colors.error}
-        confirmTitle="Logout"
-        cancelTitle="Cancel"
+        confirmTitle={t("pages.settings.logout_dialog_confirm")}
+        cancelTitle={t("pages.settings.logout_dialog_cancel")}
       />
       <DatabaseModal open={openDatabase} setOpen={setOpenDatabase} />
       <UIModal open={openUI} setOpen={setOpenUI} />

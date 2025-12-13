@@ -54,19 +54,24 @@ export default function ModalLayout() {
       />
 
       <Stack.Screen
+        name="favorites"
+        options={{title: t("pages.favorites.label") }}
+      />
+      <Stack.Screen
+        name="resources"
+        options={{title: t("pages.resources.label") }}
+      />
+      <Stack.Screen
         name="events"
-        options={{title: t("pages.events.label"), headerRight: undefined }}
-      /><Stack.Screen
-        name="feeds"
-        options={{title: t("pages.feeds.label"), headerRight: undefined }}
+        options={{title: t("pages.events.label"), headerRight: undefined }} // no menu button
       />
       <Stack.Screen
         name="friendlocations"
-        options={{title: t("pages.friendlocations.label"), headerRight: undefined }}
+        options={{title: t("pages.friendlocations.label"), headerRight: undefined }} // no menu button
       />
       <Stack.Screen
         name="search"
-        options={{title: t("pages.search.label"), headerRight: undefined }}
+        options={{title: t("pages.search.label"), headerRight: undefined }} // no menu button
       />
     </Stack>
   );

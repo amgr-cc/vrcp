@@ -10,7 +10,8 @@
       "loading": "Loading...",
       "failed_to_fetch": "failed to fetch {{item}}.",
       "failed_to_update": "failed to update {{item}}.",
-      "no_data": "No data available."
+      "no_data": "No data available.",
+      "invalid": "Invalid value"
     }
   },
   "pages": {
@@ -31,28 +32,14 @@
       "tabLabel_active": "Active",
       "tabLabel_offline": "Offline"
     },
-    "favorites": {
-      "label": "Favorites",
-      "tabLabel_worlds": "Worlds",
-      "tabLabel_friends": "Friends",
-      "tabLabel_avatars": "Avatars",
-      "no_favoritegroup_selected": "No favorite group selected."
-    },
-    "resources": {
-      "label": "Resources",
-      "tabLabel_avatars": "Avatars",
-      "tabLabel_worlds": "Worlds",
-      "tabLabel_prints": "Prints",
-      "no_avatars": "No avatars available.",
-      "no_worlds": "No worlds available.",
-      "no_prints": "No prints available."
-    },
     "profile": {
       "label": "Profile",
       "menuLabel_edit_bio" : "Edit Bio",
       "menuLabel_edit_bio_links" : "Edit Bio Links",
       "menuLabel_change_status" : "Change Status",
-      "menuLabel_open_current_avatar" : "Open Current Avatar",
+      "menuLabel_route_resources" : "My Resources",
+      "menuLabel_route_favorites" : "My Favorites",
+      "menuLabel_route_current_avatar" : "Current Avatar",
       "menuLabel_json" : "Raw JSON Data",
       "sectionLabel_bio" : "Bio",
       "sectionLabel_bio_links" : "Links",
@@ -79,7 +66,11 @@
       "itemDescription_feedback": "Send your feedback to the developer.",
       "groupLabel_account": "Account",
       "itemLabel_logout": "Logout",
-      "itemDescription_logout": "Logout from this app."
+      "itemDescription_logout": "Logout from this app.",
+
+      "logout_dialog_text": "Are you sure you want to logout?",
+      "logout_dialog_confirm": "Logout",
+      "logout_dialog_cancel": "Cancel"
     },
 
 
@@ -168,6 +159,23 @@
       "no_worlds_found": "No worlds found for '{{search}}'.",
       "no_groups_found": "No groups found for '{{search}}'.",
       "no_users_found": "No users found for '{{search}}'."
+    },
+    
+    "favorites": {
+      "label": "Favorites",
+      "tabLabel_worlds": "Worlds",
+      "tabLabel_friends": "Friends",
+      "tabLabel_avatars": "Avatars",
+      "no_favoritegroup_selected": "No favorite group selected."
+    },
+    "resources": {
+      "label": "Resources",
+      "tabLabel_avatars": "Avatars",
+      "tabLabel_worlds": "Worlds",
+      "tabLabel_prints": "Prints",
+      "no_avatars": "No avatars available.",
+      "no_worlds": "No worlds available.",
+      "no_prints": "No prints available."
     },
     "events": {
       "label": "Events",

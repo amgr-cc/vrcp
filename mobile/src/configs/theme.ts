@@ -11,7 +11,8 @@ const lightTheme = {
   colors: {
     ...DefaultTheme.colors,
     primary: "#11acd2ff",
-    error: "#ac3535ff",
+    secondary: "#5fffbfff",
+    error: "#ff5555ff",
     success: "#51a63dff",
     warning: "#fadb61ff",
     info: "#4385bfff",
@@ -33,7 +34,8 @@ const darkTheme = {
   colors: {
     ...DarkTheme.colors,
     primary: "#19c6ffff",
-    error: "#ac3535ff",
+    secondary: "#5fffbfff",
+    error: "#ff5555ff",
     success: "#51a63dff",
     warning: "#fadb61ff",
     info: "#4385bfff",

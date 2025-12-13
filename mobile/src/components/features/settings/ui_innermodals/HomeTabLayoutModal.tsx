@@ -61,7 +61,7 @@ const HomeTabLayoutModal = ({ open, setOpen, defaultValue, onSubmit }: Props) =>
     if (v === 'friend-locations') return t("components.uiModal.innerModals.homeTabLayout.selectedLabel_friendLocations");
     if (v === 'feeds') return t("components.uiModal.innerModals.homeTabLayout.selectedLabel_feeds");
     if (v === 'events') return t("components.uiModal.innerModals.homeTabLayout.selectedLabel_events");
-    return t("components.uiModal.innerModals.homeTabLayout.maybe_requireRestart");
+    return "";
   }
 
   useEffect(() => {
@@ -82,7 +82,9 @@ const HomeTabLayoutModal = ({ open, setOpen, defaultValue, onSubmit }: Props) =>
         ? getTextLabel(selectedValue.top ?? "events") 
         : lastOpelated === "bottom"
         ? getTextLabel(selectedValue.bottom ?? "feeds")
-        : t("components.uiModal.innerModals.homeTabLayout.selectedLabel_sepPos"),
+        : lastOpelated === "sepPos"
+        ? t("components.uiModal.innerModals.homeTabLayout.selectedLabel_sepPos")
+        : "",
       flex: 1,
     },
     {
@@ -120,6 +122,7 @@ const HomeTabLayoutModal = ({ open, setOpen, defaultValue, onSubmit }: Props) =>
                         ...prev,
                         top: value as HomeTopVariant,
                       }));
+                      setLastOpelated("top");
                     }}
                   >
                     <IconSymbol
@@ -142,12 +145,13 @@ const HomeTabLayoutModal = ({ open, setOpen, defaultValue, onSubmit }: Props) =>
                 {['friend-locations', 'feeds', 'events' ].map((value) => (
                   <TouchableOpacity
                     key={`color-schema-option-${value}`}
-                    style={[styles.item, { borderColor: value === selectedValue.bottom ? theme.colors.primary : theme.colors.border }]}
+                    style={[styles.item, { borderColor: value === selectedValue.bottom ? theme.colors.secondary : theme.colors.border }]}
                     onPress={() => {
                       setSelectedValue(prev => ({
                         ...prev,
                         bottom: value as HomeBottomVariant,
                       }));
+                      setLastOpelated("bottom");
                     }}
                   >
                     <IconSymbol
@@ -186,11 +190,12 @@ const HomeTabLayoutModal = ({ open, setOpen, defaultValue, onSubmit }: Props) =>
                       ...prev,
                       sepPos: val[0],
                     }));
+                    setLastOpelated("sepPos");
                   }}
                   // 色設定
                   minimumTrackTintColor={theme.colors.primary} // 左側のバーの色
-                  maximumTrackTintColor={theme.colors.border}  // 右側のバーの色
-                  thumbTintColor={theme.colors.primary}        // ツマミの色
+                  maximumTrackTintColor={theme.colors.secondary}  // 右側のバーの色
+                  thumbTintColor={theme.colors.text}        // ツマミの色
                 />
               </View>
             </View>
