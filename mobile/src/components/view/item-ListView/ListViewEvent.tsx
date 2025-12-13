@@ -37,11 +37,11 @@ const ListViewEvent = ({
       subtitles={extractSubtitles}
       onPress={onPress}
       onLongPress={onLongPress}
-      ContainerStyle={styles.container}
+      ContainerStyle={[styles.container, !event.imageUrl && {marginLeft:0}]}
       TitleStyle={styles.title}
       SubtitleStyle={styles.subtitle}
       OverlapComponents={
-        <CachedImage src={event.imageUrl ?? ""} style={styles.image} />
+        event.imageUrl ? <CachedImage src={event.imageUrl} style={styles.image} /> : null
       }
       {...rest}
     />

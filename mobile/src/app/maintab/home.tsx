@@ -17,12 +17,12 @@ import { Setting, useSetting } from "@/contexts/SettingContext";
 import { CalendarEvent, PaginatedCalendarEventList } from "@/vrchat/api";
 import { useToast } from "@/contexts/ToastContext";
 import { extractErrMsg } from "@/libs/utils";
-import { formatToDateStr, formatToTimeStr } from "@/libs/date";
 import { useAuth } from "@/contexts/AuthContext";
 import ListViewEvent from "@/components/view/item-ListView/ListViewEvent";
 import EventDetailModal from "@/components/features/events/EventDetailModal";
 import ReleaseNote from "@/components/features/home/ReleaseNote";
 import { useTranslation } from "react-i18next";
+import { isSameDay } from "date-fns";
 
 export default function Home() {
   const theme = useTheme();
@@ -155,11 +155,6 @@ const EventsArea = memo(({ style }: {
   const [ eventDetailModal, setEventDetailModal ] = useState<{ open: boolean; event: CalendarEvent | null }>({ open: false, event: null });
 
 
-  const getDateKey = (date: Date) => {
-    const res = formatToDateStr(date);
-    return res;
-  }
-
   const fetchEvents = async () => {
     fetchingRef.current = true;
     setIsLoading(true);
@@ -181,7 +176,7 @@ const EventsArea = memo(({ style }: {
         if (paginated.hasNext && (paginated.totalCount ?? 0 > offset.current + npr)) {
           offset.current += npr;
         } else {
-          setTodayEvents(eventsRef.current.filter(event => getDateKey(new Date(event.startsAt ?? "")) === getDateKey(new Date()))); // update grouped events
+          setTodayEvents(eventsRef.current.filter(event => isSameDay(new Date(event.startsAt ?? ""), new Date()))); // update grouped events
           fetchingRef.current = false;
           setIsLoading(false);
         }

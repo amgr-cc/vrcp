@@ -7,11 +7,11 @@ import { CachedImage } from "@/contexts/CacheContext";
 import { useData } from "@/contexts/DataContext";
 import { useToast } from "@/contexts/ToastContext";
 import { useVRChat } from "@/contexts/VRChatContext";
-import { formatToDateStr, formatToDateTimeStr, formatToTimeStr, isSameDate } from "@/libs/date";
 import { getStatusColor } from "@/libs/vrchat";
 import { CalendarEvent, UserStatus } from "@/vrchat/api";
 import { Button, Text } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
+import { isSameDay } from "date-fns";
 import { date } from "drizzle-orm/mysql-core";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -38,16 +38,18 @@ const EventDetailModal = ({ event, open, setOpen }: Props) => {
       {isLoading && <LoadingIndicator absolute />}
       {event && (
         <View style={[styles.container]}>
-          <CachedImage src={event.imageUrl ?? ""} style={styles.image} />
+          { event.imageUrl &&
+            <CachedImage src={event.imageUrl} style={styles.image} /> 
+          }
           <Text style={[styles.dateText, { color: theme.colors.text }]}>
             {event.startsAt && event.endsAt && (
-              isSameDate(new Date(event.startsAt), new Date(event.endsAt))
+              isSameDay(new Date(event.startsAt), new Date(event.endsAt))
               ? t("components.eventDetailModal.eventTime_sameDay", {start: new Date(event.startsAt), end: new Date(event.endsAt)})
               : t("components.eventDetailModal.eventTime_differentDay", {start: new Date(event.startsAt), end: new Date(event.endsAt)})
             )}
           </Text>
           <Text style={[styles.titleText, { color: theme.colors.text }]}>{event.title}</Text>
-          <ScrollView style={styles.descripContainer}>
+          <ScrollView style={styles.descriptionContainer}>
             <Text style={[styles.descriptionText, { color: theme.colors.subText }]}>{event.description}</Text> 
           </ScrollView>
         </View> 
@@ -57,8 +59,7 @@ const EventDetailModal = ({ event, open, setOpen }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-  },
+  container: {},
   image: {
     width: "100%",
     aspectRatio: 16 / 9,
@@ -76,9 +77,9 @@ const styles = StyleSheet.create({
     marginTop: spacing.medium,
     fontSize: fontSize.small,
   },
-  descripContainer: {
-    maxHeight: 300,
-    height: 100,
+  descriptionContainer: {
+    minHeight: 100,
+    maxHeight: 250,
     marginTop: spacing.medium,
   },
   

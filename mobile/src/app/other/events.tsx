@@ -3,18 +3,20 @@ import GenericScreen from "@/components/layout/GenericScreen";
 import MonthlyCalendarView from "@/components/view/calendarView/MonthlyColendarView";
 import ListViewEvent from "@/components/view/item-ListView/ListViewEvent";
 import LoadingIndicator from "@/components/view/LoadingIndicator";
-import { spacing } from "@/configs/styles";
+import { navigationBarHeight, spacing } from "@/configs/styles";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
 import { useVRChat } from "@/contexts/VRChatContext";
-import { formatToDateStr } from "@/libs/date";
+import { getDateKey, restoreDateKey } from "@/libs/date";
 import { extractErrMsg } from "@/libs/utils";
 import { CalendarEvent, PaginatedCalendarEventList } from "@/vrchat/api";
 import { Text } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
+import { isSameMonth, set } from "date-fns";
+import { se } from "date-fns/locale";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, RefreshControl, ScrollView, StyleSheet, View } from "react-native";
+import { FlatList, RefreshControl, ScrollView, SectionList, StyleSheet, View, ViewToken } from "react-native";
 
 
 
@@ -24,22 +26,18 @@ export default function Events () {
   const vrc = useVRChat();
   const { t } = useTranslation();
   const { showToast } = useToast();
-  const [selectedMonth, setSelectedMonth] = useState<Date>(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const eventsRef = useRef<CalendarEvent[]>([]);
+  const today = new Date();
+  const [selectedDate, setSelectedDate] = useState<Date>(today);
+  const [selectedMonth, setSelectedMonth] = useState<Date>(today);
+  const sectionListRef = useRef<SectionList<CalendarEvent, { key: string, data: CalendarEvent[] }>>(null);
   const [ eventsByDate, setEventsByDate ] = useState<Record<string, CalendarEvent[]>>({});
   const offset = useRef(0);
-  const fetchingRef = useRef(false);
+  const eventsRef = useRef<CalendarEvent[]>([]); // all fetched events
+  const fetchingRef = useRef(false); // to all fetch
   const [isLoading, setIsLoading] = useState(false);
   const npr = 60;
-  const isReadyRef = useRef(false);
 
   const [ eventDetailModal, setEventDetailModal ] = useState<{ open: boolean; event: CalendarEvent | null }>({ open: false, event: null });
-
-  const getDateKey = (date: Date) => {
-    const res = formatToDateStr(date);
-    return res;
-  }
 
   const groupEventsByDate = (events: CalendarEvent[]) => {
     const grouped: Record<string, CalendarEvent[]> = {};
@@ -58,7 +56,7 @@ export default function Events () {
     setIsLoading(true);
     try {
       // adjust to UTC to avoid timezone issues
-      const targetMonth = new Date(selectedMonth.getTime())
+      const targetMonth = new Date(selectedMonth.getTime());
       targetMonth.setMinutes(targetMonth.getMinutes() - targetMonth.getTimezoneOffset());
 
       while (fetchingRef.current) {
@@ -76,7 +74,6 @@ export default function Events () {
         } else {
           setEventsByDate(groupEventsByDate(eventsRef.current)); // update grouped events
           fetchingRef.current = false;
-          isReadyRef.current = true;
           setIsLoading(false);
         }
       }
@@ -97,29 +94,59 @@ export default function Events () {
     reload();
   },[auth.user, selectedMonth]);
 
-  const selectedDateEvents = useMemo<CalendarEvent[]>(() => {
-    const dateKey = getDateKey(selectedDate);
-    return eventsByDate[dateKey] || [];
-  }, [selectedDate]);
-  useEffect(() => {
-    if (isReadyRef.current) {
-      console.log("Reset selected date to today");
-      setSelectedDate(new Date());
+  
+  const sections = useMemo(() => {
+    const res = Object.entries(eventsByDate)
+      .filter(([key, _]) => (isSameMonth(restoreDateKey(key), selectedMonth)))
+      .map(([key, events]) => ({
+      data: events,
+      key: key,
+    }))
+    return res;
+  }, [eventsByDate]);
+
+  const viewabilityConfig = useRef({
+    itemVisiblePercentThreshold: 50, // アイテムが50%見えたら「表示された」とみなす
+    minimumViewTime: 100, // ちらつき防止のため少し待機
+  }).current;
+
+  const onViewableItemsChanged = useRef(({ viewableItems, changed }: { viewableItems: ViewToken[], changed: ViewToken[] }) => {
+    const changedDate = changed.filter(item => item.isViewable).map(item => restoreDateKey(item.section?.key ?? ""));
+    if (changedDate.length > 0) {
+      console.log("Visible dates changed:", changedDate);
     }
-  }, [isReadyRef.current]);
+  }).current;
+
+  const onSelectDate = (date: Date) => {
+    setSelectedDate(date);
+    // Find the section index (first section with after or equal date)
+    const dateKey = getDateKey(date);
+    const sectionIndex = sections.findIndex(section => section.key >= dateKey);
+    if (sectionIndex !== -1) {
+      setTimeout(() => {
+        sectionListRef.current?.scrollToLocation({
+          sectionIndex,
+          itemIndex: 0,
+          animated: true,
+        });
+      }, 100);
+    }
+  };
 
   const renderDateContent = useCallback((date: Date) => {
-    const dateKey = getDateKey(date);
-    const events = eventsByDate[dateKey] || [];
-    if (events.length > 0) {
-      return (
-        <Text style={{ fontSize: 10, color: theme.colors.warning, paddingHorizontal: spacing.mini }}>
-          {t("pages.events.calendar_date_event_count", { count: events.length })}
-        </Text>
-      );
+    if (isSameMonth(date, selectedMonth)) {
+      const dateKey = getDateKey(date);
+      const events = eventsByDate[dateKey] || [];
+      if (events.length > 0) {
+        return (
+          <Text style={{ fontSize: 10, color: theme.colors.warning, paddingHorizontal: spacing.mini }}>
+            {t("pages.events.calendar_date_event_count", { count: events.length })}
+          </Text>
+        );
+      }
     }
     return null;
-  }, [eventsByDate])
+  }, [eventsByDate]);
 
   const renderItem = useCallback(({ item }: { item: CalendarEvent }) => {
     return (
@@ -127,35 +154,46 @@ export default function Events () {
     );
   }, []);
   
+  const renderSectionHeader = useCallback(({section}: { section: { key: string; data: CalendarEvent[] } }) => (
+    <View >
+      <Text style={[styles.sectionHeader, { color: (section.key === getDateKey(selectedDate)) ? theme.colors.primary : theme.colors.text }]}>
+        {t("pages.events.selected_month_events_day_label", { date: restoreDateKey(section.key ?? "") })}
+      </Text>
+    </View>
+  ), [selectedDate]);
+
   const emptyComponent = useCallback(() => (
     <View style={{ alignItems: "center", marginTop: spacing.large }}>
       <Text style={{ color: theme.colors.text }}>{t("pages.events.no_events")}</Text>
     </View>
   ), [theme.colors.text, t]);
 
+
   return (
     <GenericScreen>
       <View>
         {isLoading && <LoadingIndicator absolute />}
         <MonthlyCalendarView
-          initialDate={selectedDate}
-          onSelectDate={setSelectedDate}
+          initialDate={today}
+          onSelectDate={onSelectDate}
           onChangeMonth={setSelectedMonth}
           renderDateContent={renderDateContent}
         />
       </View>
       <Text style={[{ marginTop: spacing.medium, marginLeft: spacing.small, color: theme.colors.text, fontWeight: "bold", fontSize: 16 }]}>
-        {t("pages.events.selected_date_events", { date: selectedDate })}
+        {t("pages.events.selected_month_events", { date: selectedMonth })}
       </Text>
       
-      <FlatList
-        data={selectedDateEvents}
-        keyExtractor={(item) => item.id}
+      <SectionList
+        sections={sections}
+        renderSectionHeader={renderSectionHeader}
         renderItem={renderItem}
+        keyExtractor={(item) => item.id}
         ListEmptyComponent={emptyComponent}
-        numColumns={1}
-        // onRefresh={reload}
-        // refreshing={isLoading}
+        viewabilityConfig={viewabilityConfig}
+        onViewableItemsChanged={onViewableItemsChanged}
+        ref={sectionListRef}
+        contentContainerStyle={styles.scrollViewContentContainer}
       />
 
       <EventDetailModal event={eventDetailModal.event} open={eventDetailModal.open} setOpen={(v) => setEventDetailModal((prev) => ({ ...prev, open: v }))} />
@@ -166,5 +204,13 @@ export default function Events () {
 const styles = StyleSheet.create({
   listview: {
     width: "100%",
-  }
+  },
+  sectionHeader: {
+    paddingTop: spacing.medium,
+    paddingBottom: spacing.mini,
+    fontWeight: "bold"
+  },
+  scrollViewContentContainer: {
+    paddingBottom: navigationBarHeight,
+  },
 });

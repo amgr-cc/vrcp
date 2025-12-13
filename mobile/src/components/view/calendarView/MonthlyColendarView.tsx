@@ -1,9 +1,9 @@
 import { TouchableOpacity } from "@/components/CustomElements";
 import { fontSize, spacing } from "@/configs/styles";
-import { isSameDate } from "@/libs/date";
 import { getTintedColor } from "@/libs/utils";
 import { Button, Text } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
+import { isSameDay } from "date-fns";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
@@ -68,7 +68,7 @@ const MonthlyCalendarView = ({
   }
 
   const getDateColor = (date: Date) => {
-    if (isSameDate(date, today)) {
+    if (isSameDay(date, today)) {
       return theme.colors.primary;
     }
     let dateColor = theme.colors.text;
@@ -107,7 +107,7 @@ const MonthlyCalendarView = ({
       {calendarWeeks.map((week, weekIndex) => (
         <View key={weekIndex} style={[styles.weekContainer, { height: `${100 / calendarWeeks.length}%` }]}>
           {week.map((date, dateIndex) => (
-            <TouchableOpacity style={[styles.border, styles.dateContainer, isSameDate(date, selectedDate) ? styles.selectedDate : null]} onPress={() => handleTapDate(date)} key={dateIndex} >
+            <TouchableOpacity style={[styles.border, styles.dateContainer, isSameDay(date, selectedDate) ? styles.selectedDate : null]} onPress={() => handleTapDate(date)} key={dateIndex} >
               <Text style={[styles.dateNumber, {color: getDateColor(date) }]}>{date.getDate()}</Text>
               {renderDateContent ? renderDateContent(date) : null}
             </TouchableOpacity>

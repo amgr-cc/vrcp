@@ -183,7 +183,8 @@
       "calendar_month_label": "{{date, yyyy MMMM}}",
       "calendar_date_event_count_one": "{{count}} event",
       "calendar_date_event_count_other": "{{count}} events",
-      "selected_date_events": "Events on {{date, yyyy/MM/dd}}"
+      "selected_month_events": "Events on {{date, yyyy/MM}}",
+      "selected_month_events_day_label": "{{date, do (EEE)}}"
     },
     "friendlocations": {
       "label": "Friend Locations",

@@ -178,7 +178,8 @@
       "calendar_month_label": "{{date, yyyy年MM月}}",
       "calendar_date_event_count_one": "{{count}} 件",
       "calendar_date_event_count_other": "{{count}} 件",
-      "selected_date_events": "{{date, yyyy年MM月dd日}} のイベント"
+      "selected_month_events": "{{date, yyyy年MM月}} のイベント",
+      "selected_month_events_day_label": "{{date, dd日 (EEE)}}"
     },
     "friendlocations": {
       "label": "フレンドインスタンス",
