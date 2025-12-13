@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
   },
   flatlistInner: {
     paddingTop: spacing.medium,
-    paddingBottom: navigationBarHeight
   },
   feed: {
     width: "100%",

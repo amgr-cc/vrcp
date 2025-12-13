@@ -2,7 +2,7 @@ import GenericScreen from "@/components/layout/GenericScreen";
 import CardViewAvatar from "@/components/view/item-CardView/CardViewAvatar";
 import CardViewWorld from "@/components/view/item-CardView/CardViewWorld";
 import LoadingIndicator from "@/components/view/LoadingIndicator";
-import { spacing } from "@/configs/styles";
+import { navigationBarHeight, spacing } from "@/configs/styles";
 import { useVRChat } from "@/contexts/VRChatContext";
 import { extractErrMsg } from "@/libs/utils";
 import { routeToAvatar, routeToWorld } from "@/libs/route";
@@ -131,6 +131,7 @@ const AvatarsTab = memo(() => {
         onEndReachedThreshold={0.5}
         onRefresh={reload}
         refreshing={isLoading}
+        contentContainerStyle={styles.scrollContentContainer}
       />
     </View>
   );
@@ -214,6 +215,7 @@ const WorldsTab = memo(() => {
         onEndReachedThreshold={0.5}
         onRefresh={reload}
         refreshing={isLoading}
+        contentContainerStyle={styles.scrollContentContainer}
       />
     </View>
   );
@@ -299,6 +301,7 @@ const PrintsTab = memo(() => {
         onEndReachedThreshold={0.5}
         onRefresh={reload}
         refreshing={isLoading}
+        contentContainerStyle={styles.scrollContentContainer}
       />
       
       {/* dialog and modals */}
@@ -315,5 +318,8 @@ const styles = StyleSheet.create({
   cardView: {
     padding: spacing.small,
     width: "50%",
+  },
+  scrollContentContainer: {
+    paddingBottom: navigationBarHeight,
   },
 });
