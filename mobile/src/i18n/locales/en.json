@@ -23,7 +23,11 @@
       "feeds_area": "Feeds",
       "no_feeds": "No feeds available.",
       "friendlocations_area": "Friend Locations",
-      "no_friendlocations": "No friend locations available."
+      "no_friendlocations": "No friend locations available.",
+      "friendLocation": {
+        "more_friends_count_one": "+ {{count}} more friend",
+        "more_friends_count_other": "+ {{count}} more friends"
+      }
     },
     "friends": {
       "label": "Friends",
@@ -295,7 +299,6 @@
       "itemDescription_friendColor": "Select your friends color theme.",
       "itemLabel_favoriteFriendsColors": "Favorite Friend Colors",
       "itemDescription_favoriteFriendsColors": "Select your favorite-friends color theme.",
-      "groupLabel_layouts": "Layouts",
       "itemLabel_homeTabLayout": "Home Tab Layout",
       "itemDescription_homeTabLayout": "Select which tab to show by default on the Home page.",
       "itemLabel_cardViewColumns": "Card View Columns",

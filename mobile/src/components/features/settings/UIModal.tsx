@@ -80,37 +80,6 @@ const UIModal = ({ open, setOpen }: Props) => {
           }),
         },
         {
-          icon: "account",
-          title: t("components.uiModal.itemLabel_friendColor"),
-          description: t("components.uiModal.itemDescription_friendColor"),
-          leading: <ColorSquarePreview colors={[uiOptions.user.friendColor]} />,
-          onPress: () => setFriendColorModal({
-            open: true,
-            defaultValue: uiOptions.user.friendColor,
-            onSubmit: (value) => {
-              saveSettings({ ...settings, uiOptions: { ...uiOptions, user: { ...uiOptions.user, friendColor: value } } });
-            }
-          }),
-        },
-        {
-          icon: "group",
-          title: t("components.uiModal.itemLabel_favoriteFriendsColors"),
-          description: t("components.uiModal.itemDescription_favoriteFriendsColors"),
-          leading: <ColorSquarePreview colors={Object.values(uiOptions.user.favoriteFriendsColors)} />,
-          onPress: () => setFavoriteFriendsColorsModal({
-            open: true,
-            defaultValue: uiOptions.user.favoriteFriendsColors,
-            onSubmit: (value) => {
-              saveSettings({ ...settings, uiOptions: { ...uiOptions, user: { ...uiOptions.user, favoriteFriendsColors: value } } });
-            }
-          }),
-        },
-      ]
-    },
-    {
-      title: t("components.uiModal.groupLabel_layouts"),
-      items: [
-        {
           icon: "page-layout-body",
           title: t("components.uiModal.itemLabel_homeTabLayout"),
           description: t("components.uiModal.itemDescription_homeTabLayout"),
@@ -163,6 +132,32 @@ const UIModal = ({ open, setOpen }: Props) => {
             }
           }),
         },
+        // {
+        //   icon: "account",
+        //   title: t("components.uiModal.itemLabel_friendColor"),
+        //   description: t("components.uiModal.itemDescription_friendColor"),
+        //   leading: <ColorSquarePreview colors={[uiOptions.user.friendColor]} />,
+        //   onPress: () => setFriendColorModal({
+        //     open: true,
+        //     defaultValue: uiOptions.user.friendColor,
+        //     onSubmit: (value) => {
+        //       saveSettings({ ...settings, uiOptions: { ...uiOptions, user: { ...uiOptions.user, friendColor: value } } });
+        //     }
+        //   }),
+        // },
+        // {
+        //   icon: "group",
+        //   title: t("components.uiModal.itemLabel_favoriteFriendsColors"),
+        //   description: t("components.uiModal.itemDescription_favoriteFriendsColors"),
+        //   leading: <ColorSquarePreview colors={Object.values(uiOptions.user.favoriteFriendsColors)} />,
+        //   onPress: () => setFavoriteFriendsColorsModal({
+        //     open: true,
+        //     defaultValue: uiOptions.user.favoriteFriendsColors,
+        //     onSubmit: (value) => {
+        //       saveSettings({ ...settings, uiOptions: { ...uiOptions, user: { ...uiOptions.user, favoriteFriendsColors: value } } });
+        //     }
+        //   }),
+        // },
       ]
     },
     {

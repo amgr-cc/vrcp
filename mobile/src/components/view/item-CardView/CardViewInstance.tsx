@@ -1,12 +1,14 @@
 import { fontSize, spacing } from "@/configs/styles";
 import { LimitedUserInstance } from "@/vrchat/api";
 import React, { useEffect, useMemo, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import BaseCardView from "./BaseCardView";
 import { getInstanceType, InstanceLike, parseInstanceId, parseLocationString, UserLike, WorldLike } from "@/libs/vrchat";
 import { useCache } from "@/contexts/CacheContext";
 import UserChip from "../chip-badge/UserChip";
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 
 interface Props {
@@ -32,6 +34,8 @@ const extractTitle = (data: InstanceLike) => { // <instanceName> <worldName>
 
 const CardViewInstance = ({ instance, onPress, onLongPress, ...rest }: Props) => {
   const cache = useCache();
+  const theme = useTheme();
+  const { t } = useTranslation();
   const [imageUrl, setImageUrl] = useState<string>(
     extractImageUrl(instance)
   );
@@ -61,7 +65,7 @@ const CardViewInstance = ({ instance, onPress, onLongPress, ...rest }: Props) =>
         friends.push(user);
       }
     });
-    return friends;
+    return friends
   }, [instance.users]);
 
   useEffect(() => {
@@ -88,9 +92,12 @@ const CardViewInstance = ({ instance, onPress, onLongPress, ...rest }: Props) =>
             style={styles.gradient}
           />
           <View style={styles.friendsContainer}>
-            {friends.map((friend)=> (
-              <UserChip key={friend.id} user={friend} size={fontSize.large * 1.2} textSize={fontSize.medium} style={styles.chip}/>
+            {friends.slice(0, 3).map((friend)=> (
+              <UserChip key={friend.id} user={friend} size={fontSize.large * 1.2} textSize={fontSize.medium}/>
             ))}
+            {friends.length > 3 &&
+              <Text style={[styles.moreText, { color: theme.colors.text }]}>{t("pages.home.friendLocation.more_friends_count", { count: friends.length - 3 })}</Text>
+            }
           </View>
         </>
       }
@@ -121,8 +128,9 @@ const styles = StyleSheet.create({
     aspectRatio: 1.5,
     resizeMode: "cover",
   },
-  chip: {
-    marginVertical: spacing.mini ,
+  moreText: {
+    fontSize: fontSize.small,
+    marginLeft: spacing.medium,
   },
 });
  

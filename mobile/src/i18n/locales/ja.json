@@ -23,7 +23,11 @@
       "feeds_area": "フィード",
       "no_feeds": "フィードがありません。",
       "friendlocations_area": "フレンドインスタンス",
-      "no_friendlocations": "フレンドインスタンスがありません。"
+      "no_friendlocations": "フレンドインスタンスがありません。",
+      "friendLocation": {
+        "more_friends_count_one": "+ 他 {{count}} 人のフレンド",
+        "more_friends_count_other": "+ 他 {{count}} 人のフレンド"
+      }
     },
     "friends": {
       "label": "フレンド",
@@ -134,8 +138,8 @@
       "sectionLabel_ownerAndWorld": "オーナー & ワールド",
       "sectionLabel_World": "ワールド",
       "sectionLabel_users": "ユーザー",
-      "section_users_more_user_count_one": "+ 他 {{count}} 人",
-      "section_users_more_user_count_other": "+ 他 {{count}} 人",
+      "section_users_more_user_count_one": "+ 他 {{count}} 人のユーザー",
+      "section_users_more_user_count_other": "+ 他 {{count}} 人のユーザー",
       "sectionLabel_platform": "プラットフォーム",
       "sectionLabel_tags": "タグ",
       "sectionLabel_info": "情報",
@@ -285,7 +289,6 @@
       "itemDescription_friendColor": "フレンドのカラーテーマを選択します。",
       "itemLabel_favoriteFriendsColors": "お気に入りフレンドの色",
       "itemDescription_favoriteFriendsColors": "お気に入りフレンドのカラーテーマを選択します。",
-      "groupLabel_layouts": "レイアウト",
       "itemLabel_homeTabLayout": "ホーム画面レイアウト",
       "itemDescription_homeTabLayout": "ホーム画面でデフォルト表示する機能を選択します。",
       "itemLabel_cardViewColumns": "カード表示の列数",
