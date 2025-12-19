@@ -1,0 +1,48 @@
+name: desktop - Publish Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'Build Workflow Run ID (Optional)'
+        required: false
+
+jobs:
+  release:
+    name: Publish to GitHub Releases
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download Artifacts
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: desktop-build.yml
+          name: desktop-build-artifacts
+          run_id: ${{ inputs.run_id }}
+          path: ./assets
+
+      - name: Load Version Info
+        id: info
+        run: |
+          VERSION=$(cat ./assets/version.txt)
+          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
+          
+          # exeファイルのパスを取得
+          EXE_PATH=$(find ./assets -name "*.exe")
+          echo "EXE_PATH=$EXE_PATH" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: desktop-v${{ env.APP_VERSION }}
+          name: Desktop App v${{ env.APP_VERSION }}
+          body: "Windows Installer for v${{ env.APP_VERSION }}"
+          files: ${{ env.EXE_PATH }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
