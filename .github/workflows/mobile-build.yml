@@ -1,20 +1,19 @@
-name: mobile - Build On Cloud
+name: mobile - Build APK
 
 on:
   workflow_dispatch:
 
 jobs:
   build:
-    name: Build APK on EAS Cloud
+    name: Build APK
     runs-on: ubuntu-latest
-    environment:
-      name: production
+    environment: production # prod 環境変数 
     defaults:
       run:
         working-directory: ./mobile
 
     permissions:
-      contents: read
+      contents: read # ビルドするだけなのでreadで十分
 
     steps:
       - name: Checkout code
@@ -25,7 +24,13 @@ jobs:
         with:
           node-version: 22
           cache: 'npm'
-          cache-dependency-path: mobile/package-lock.json
+          cache-dependency-path: ./mobile/package-lock.json
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Install dependencies
         run: npm ci
@@ -36,56 +41,40 @@ jobs:
       - name: Extract Release Info
         id: extract_info
         run: |
+          # バージョンとリリースノートを抽出
           NATIVE_VER=$(jq -r '.versions[0].nativeVersion' versions.json)
           NOTES=$(jq -r '.versions[0].updates[] | "- " + .date + ": " + .message' versions.json)
           
+          # 環境変数にセット (ビルドステップ用)
           echo "NATIVE_VER=$NATIVE_VER" >> $GITHUB_ENV
           
+          # 次のワークフローに渡すためにファイルに保存
           mkdir -p build_assets
           echo "$NATIVE_VER" > build_assets/version.txt
           
+          # リリース本文を作成してファイルに保存
           echo "## Ver $NATIVE_VER" > build_assets/body.txt
           echo "" >> build_assets/body.txt
           echo "### Updates in this version" >> build_assets/body.txt
           echo "$NOTES" >> build_assets/body.txt
           echo "" >> build_assets/body.txt
-          echo "📅 Built at: $(date +'%Y-%m-%d')" >> build_assets/body.txt
+          echo "Built at: $(date +'%Y-%m-%d')" >> build_assets/body.txt
 
-      - name: Build on Cloud & Download
+      - name: Build APK with EAS
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           APP_VERSION: ${{ env.NATIVE_VER }}
-          
+
           EXPO_PUBLIC_DISCORD_WEBHOOK_URL: ${{ secrets.EXPO_PUBLIC_DISCORD_WEBHOOK_URL }}
         run: |
           FILENAME="vrcp-${{ env.NATIVE_VER }}.apk"
+          # APKをビルドして build_assets フォルダに出力
+          eas build --platform android --profile prod-apk --non-interactive --local --output "./build_assets/$FILENAME"
 
-          # 1. クラウドビルドを開始し、JSONで結果を受け取る
-          #    --no-wait: コマンドはすぐ終了させてIDだけもらう
-          echo "Triggering cloud build..."
-          eas build --platform android --profile prod-apk --non-interactive --no-wait --json > build_info.json
-          
-          # JSONからビルドIDを抽出
-          BUILD_ID=$(jq -r '.[0].id' build_info.json)
-          echo "Build ID: $BUILD_ID"
-
-          # 2. ビルドが終わるまで待機する
-          echo "Waiting for build to finish..."
-          eas build:wait --id $BUILD_ID
-
-          # 3. 完了したビルド情報を取得して、APKのURLを抜き出す
-          echo "Fetching download URL..."
-          eas build:view --id $BUILD_ID --json > build_result.json
-          APK_URL=$(jq -r '.artifacts.buildUrl' build_result.json)
-          
-          echo "URL: $APK_URL"
-          # 4. URLからファイルをダウンロードして保存
-          echo "Downloading APK..."
-          curl -L -o "./build_assets/$FILENAME" "$APK_URL"
-
+      # APKとメタデータ(バージョン情報など)をアーティファクトとしてアップロード
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: mobile-build-artifacts
           path: ./mobile/build_assets/
-          retention-days: 3
+          retention-days: 3 # 確認用なので保存期間は短めでOK
