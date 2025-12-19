@@ -49,13 +49,13 @@ version-bump/ota:  # generate draft of versions.json with OTA bump
 prebuild: # pre build tasks
 	@npx expo prebuild --clean
 
-.PHONY : build/dev build/pre
+.PHONY : build/dev build/pre build/prod
 build/dev:  # build the application for development-client
 	@eas build --profile development --platform android
 build/pre:  # build the application for preview
 	@eas build --profile preview --platform android
-# build/prod:  # build the application for production (apk)
-# 	@eas build --profile prod-apk --platform android
+build/prod:  # build the application for production (apk)
+	@eas build --profile prod-apk --platform android
 # build/submit:  # submit the production application (aab) for store
 # 	@eas build --profile production --platform android --submit
 
