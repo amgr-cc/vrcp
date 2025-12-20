@@ -2,7 +2,7 @@
 
 use specta_typescript::Typescript;
 // desktopクレートから関数をインポート
-use desktop_lib::create_specta_builder; 
+use vrcp_lib::create_specta_builder; 
 
 fn main() {
     println!("🚀 Generating bindings...");
