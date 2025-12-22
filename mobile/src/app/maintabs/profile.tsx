@@ -46,7 +46,8 @@ export default function Profile() {
       onPress: () => setOpenChangeBio(true),
     },
     {
-      icon: "clipboard-edit-outline",
+      icon: "circle-edit-outline",
+      // icon: "clipboard-edit-outline",
       title: t("pages.profile.menuLabel_edit_bio_links"),
       onPress: () => setOpenChangeBioLinks(true),
     },
@@ -59,12 +60,12 @@ export default function Profile() {
       type: "divider"
     },
     {
-      icon: "hanger",
+      icon: "cloud-upload",
       title: t("pages.profile.menuLabel_route_resources"),
       onPress: () => routeToResources(),
     },
     {
-      icon: "hanger",
+      icon: "star",
       title: t("pages.profile.menuLabel_route_favorites"),
       onPress: () => routeToFavorites(),
     },

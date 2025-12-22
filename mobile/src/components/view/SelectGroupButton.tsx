@@ -52,30 +52,25 @@ const SelectGroupButton = <T extends unknown>({
       {data.map((item, idx) => {
         const displayname = _nameExtractor(item, idx);
         return (
-          <TouchableEx key={_keyExtractor(item, idx)} onPress={() => onChange(item)}>
+          <TouchableEx
+            key={_keyExtractor(item, idx)}
+            onPress={() => onChange(item)}
+            style={[
+              styles.textContainer,
+              {
+                width: `${95 / data.length}%`,
+                backgroundColor: theme.colors.card,
+                borderColor: _isEqual(value, item) ? theme.colors.primary : theme.colors.card,
+                borderWidth: 1,
+              },
+            ]}
+          >
             <Text
               style={[
                 styles.text,
                 {
-                  width: `${100 / data.length}%`,
-                  ...(_isEqual(value, item)
-                    ? {
-                        borderColor: theme.colors.primary,
-                        borderWidth: 2,
-                        color: theme.colors.primary,
-                      }
-                    : {
-                        borderColor: theme.colors.card,
-                        borderWidth: 2,
-                        backgroundColor: theme.colors.card,
-                        color: theme.colors.text,
-                      }),
-                  ...(!displayname
-                    ? {
-                        color: theme.colors.subText,
-                        fontStyle: "italic",
-                      }
-                    : {}),
+                  color: displayname ? theme.colors.text : theme.colors.subText,
+                  fontStyle: displayname ? "normal" : "italic",
                 },
               ]}
               numberOfLines={1}
@@ -95,15 +90,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     overflow: "hidden",
   },
-  text: {
-    flex: 1,
-    textAlign: "center",
-    margin: spacing.mini,
+  textContainer: {
+    // margin: spacing.mini,
     paddingVertical: spacing.mini,
     paddingHorizontal: spacing.small,
+    borderRadius: spacing.medium,
+  },
+  text: {
+    textAlign: "center",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    borderRadius: spacing.medium,
   },
 });
 

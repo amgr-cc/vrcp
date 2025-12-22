@@ -25,6 +25,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useToast } from "@/contexts/ToastContext";
 import { useTranslation } from "react-i18next";
+import LoadingIndicator from "@/components/view/LoadingIndicator";
 
 export default function Search() {
   const vrc = useVRChat();
@@ -41,16 +42,18 @@ export default function Search() {
     setSearch(search);
   };
 
-  
+
   // Worlds Tab (search)
   const ResultWorldsTab = () => {
     const [worlds, setWorlds] = useState<LimitedWorld[]>([]);
     const offset = useRef(0);
     const fetchingRef = useRef(false);
+    const [ isLoading, setIsLoading ] = useState(false);
     const fetchWorlds = async () => {
       try {
         if (fetchingRef.current) return; // Prevent multiple simultaneous fetches
         fetchingRef.current = true;
+        setIsLoading(true);
         const res = await new WorldsApi(vrc.config).searchWorlds({
           sort: SortOption.Magic,
           n: limit,
@@ -63,6 +66,7 @@ export default function Search() {
         showToast("error", "Error searching worlds", extractErrMsg(error));
       } finally {
         fetchingRef.current = false;
+        setIsLoading(false);
       }
     };
     useEffect(() => {
@@ -79,22 +83,25 @@ export default function Search() {
     ), [search, t, theme.colors.text]);
 
     return (
-      <FlatList
-        data={worlds}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <CardViewWorld
-            world={item}
-            style={styles.cardView}
-            onPress={() => routeToWorld(item.id)}
-          />
-        )}
-        ListEmptyComponent={emptyComponent}
-        numColumns={2}
-        onEndReached={fetchWorlds}
-        onEndReachedThreshold={0.3}
-        contentContainerStyle={styles.listInner}
-      />
+      <>
+        { isLoading && <LoadingIndicator absolute /> }
+        <FlatList
+          data={worlds}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <CardViewWorld
+              world={item}
+              style={styles.cardView}
+              onPress={() => routeToWorld(item.id)}
+            />
+          )}
+          ListEmptyComponent={emptyComponent}
+          numColumns={2}
+          onEndReached={fetchWorlds}
+          onEndReachedThreshold={0.3}
+          contentContainerStyle={styles.listInner}
+        />
+      </>
     );
   };
 
@@ -103,10 +110,12 @@ export default function Search() {
     const [users, setUsers] = useState<LimitedUserSearch[]>([]);
     const offset = useRef(0);
     const fetchingRef = useRef(false);
+    const [ isLoading, setIsLoading ] = useState(false);
     const fetchUsers = async () => {
       try {
         if (fetchingRef.current) return;
         fetchingRef.current = true;
+        setIsLoading(true);
         const res = await new UsersApi(vrc.config).searchUsers({
           n: limit,
           offset: offset.current,
@@ -118,6 +127,7 @@ export default function Search() {
         showToast("error", "Error searching users", extractErrMsg(error));
       } finally {
         fetchingRef.current = false;
+        setIsLoading(false);
       }
     };
     useEffect(() => {
@@ -133,22 +143,25 @@ export default function Search() {
       </View>
     ), [search, t, theme.colors.text]);
     return (
-      <FlatList
-        data={users}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <CardViewUser
-            user={item}
-            style={styles.cardView}
-            onPress={() => routeToUser(item.id)}
-          />
-        )}
-        ListEmptyComponent={emptyComponent}
-        numColumns={2}
-        onEndReached={fetchUsers}
-        onEndReachedThreshold={0.3}
-        contentContainerStyle={styles.listInner}
-      />
+      <>
+        { isLoading && <LoadingIndicator absolute /> }
+        <FlatList
+          data={users}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <CardViewUser
+              user={item}
+              style={styles.cardView}
+              onPress={() => routeToUser(item.id)}
+            />
+          )}
+          ListEmptyComponent={emptyComponent}
+          numColumns={2}
+          onEndReached={fetchUsers}
+          onEndReachedThreshold={0.3}
+          contentContainerStyle={styles.listInner}
+        />
+      </>
     );
   };
 
@@ -157,12 +170,13 @@ export default function Search() {
     const [groups, setGroups] = useState<LimitedGroup[]>([]);
     const offset = useRef(0);
     const fetchingRef = useRef(false);
+    const [ isLoading, setIsLoading ] = useState(false);
 
     const fetchGroups = async () => {
       try {
         if (fetchingRef.current) return;
         fetchingRef.current = true;
-
+        setIsLoading(true);
         const res = await new GroupsApi(vrc.config).searchGroups({
           n: limit,
           offset: offset.current,
@@ -174,6 +188,7 @@ export default function Search() {
         showToast("error", "Error searching groups", extractErrMsg(error));
       } finally {
         fetchingRef.current = false;
+        setIsLoading(false);
       }
     };
     useEffect(() => {
@@ -190,22 +205,25 @@ export default function Search() {
     ), [search, t, theme.colors.text]);
 
     return (
-      <FlatList
-        data={groups}
-        keyExtractor={(item, index) => item.id || `unknown-${index}`}
-        renderItem={({ item }) => (
-          <CardViewGroup
-            group={item}
-            style={styles.cardView}
-            onPress={() => routeToGroup(item.id ?? "")}
-          />
-        )}
-        ListEmptyComponent={emptyComponent}
-        numColumns={2}
-        onEndReached={fetchGroups}
-        onEndReachedThreshold={0.3}
-        contentContainerStyle={styles.listInner}
-      />
+      <>
+        { isLoading && <LoadingIndicator absolute /> }
+        <FlatList
+          data={groups}
+          keyExtractor={(item, index) => item.id || `unknown-${index}`}
+          renderItem={({ item }) => (
+            <CardViewGroup
+              group={item}
+              style={styles.cardView}
+              onPress={() => routeToGroup(item.id ?? "")}
+            />
+          )}
+          ListEmptyComponent={emptyComponent}
+          numColumns={2}
+          onEndReached={fetchGroups}
+          onEndReachedThreshold={0.3}
+          contentContainerStyle={styles.listInner}
+        />
+      </>
     );
   };
 

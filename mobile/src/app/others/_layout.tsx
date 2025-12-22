@@ -17,11 +17,11 @@ export default function ModalLayout() {
       {/* Profile > menus */}
       <Stack.Screen
         name="favorites"
-        options={{title: t("pages.favorites.label") }}
+        options={{title: t("pages.favorites.label"), headerRight: undefined }}
       />
       <Stack.Screen
         name="resources"
-        options={{title: t("pages.resources.label") }}
+        options={{title: t("pages.resources.label"), headerRight: undefined }}
       />
 
       {/* Other > tabs */}

@@ -4,7 +4,7 @@ import CardViewUser from "@/components/view/item-CardView/CardViewUser";
 import CardViewWorld from "@/components/view/item-CardView/CardViewWorld";
 import LoadingIndicator from "@/components/view/LoadingIndicator";
 import SelectGroupButton from "@/components/view/SelectGroupButton";
-import { spacing } from "@/configs/styles";
+import { navigationBarHeight, spacing } from "@/configs/styles";
 import { useData } from "@/contexts/DataContext";
 import { useVRChat } from "@/contexts/VRChatContext";
 import { extractErrMsg } from "@/libs/utils";
@@ -57,8 +57,8 @@ export default function Favorites() {
 
     const favWorldMap = useMemo(
       () => new Map(favorites.data
-        .filter((fvrt) => selectedGroup && 
-          fvrt.type === "world" && 
+        .filter((fvrt) => selectedGroup &&
+          fvrt.type === "world" &&
           fvrt.tags.includes(selectedGroup.name)
         )
         .map((fvrt) => [fvrt.favoriteId, true])
@@ -107,6 +107,7 @@ export default function Favorites() {
             numColumns={2}
             refreshing={isLoading}
             onRefresh={refresh}
+            contentContainerStyle={styles.scrollContentContainer}
           />
         ) : (
           <Text>{t("pages.favorites.no_favoritegroup_selected")}</Text>
@@ -121,11 +122,11 @@ export default function Favorites() {
     );
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    
+
     const favFriendMap = useMemo(
       () => new Map(favorites.data
-        .filter((fvrt) => selectedGroup && 
-          fvrt.type === "friend" && 
+        .filter((fvrt) => selectedGroup &&
+          fvrt.type === "friend" &&
           fvrt.tags.includes(selectedGroup.name)
         )
         .map((fvrt) => [fvrt.favoriteId, true])
@@ -174,6 +175,7 @@ export default function Favorites() {
             numColumns={2}
             onRefresh={refresh}
             refreshing={isLoading}
+            contentContainerStyle={styles.scrollContentContainer}
           />
         ) : (
           <Text>{t("pages.favorites.no_favoritegroup_selected")}</Text>
@@ -191,8 +193,8 @@ export default function Favorites() {
 
     const favAvatarMap = useMemo(
       () => new Map(favorites.data
-        .filter((fvrt) => selectedGroup && 
-          fvrt.type === "avatar" && 
+        .filter((fvrt) => selectedGroup &&
+          fvrt.type === "avatar" &&
           fvrt.tags.includes(selectedGroup.name)
         )
         .map((fvrt) => [fvrt.favoriteId, true])
@@ -241,6 +243,7 @@ export default function Favorites() {
             numColumns={2}
             refreshing={isLoading}
             onRefresh={refresh}
+            contentContainerStyle={styles.scrollContentContainer}
           />
         ) : (
           <Text>{t("pages.favorites.no_favoritegroup_selected")}</Text>
@@ -284,5 +287,8 @@ const styles = StyleSheet.create({
   selectGroupButton: {
     padding: spacing.small,
     marginTop: spacing.medium,
+  },
+  scrollContentContainer: {
+    paddingBottom: navigationBarHeight,
   },
 });
