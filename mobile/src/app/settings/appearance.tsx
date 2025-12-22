@@ -43,7 +43,7 @@ export default function AppearanceSettings() {
     });
   }, []);
 
-  const sectionItems: SettingItemListContents = [
+  const listContents: SettingItemListContents = [
     {
       title: t("pages.setting_appearance.groupLabel_appearance"),
       items: [
@@ -172,7 +172,7 @@ export default function AppearanceSettings() {
 
   return (
     <GenericScreen scrollable >
-      <SettingItemList contents={sectionItems} />
+      <SettingItemList contents={listContents} />
 
 
       {/* inner Modals for each setting Items */}

@@ -25,14 +25,15 @@ const SettingItemList = ({
   return (
     <View {...rest}>
       {contents.map((grp) => (
-        <View key={grp.title} style={styles.categoryContainer}>
-          <Text style={[globalStyles.header, { color: theme.colors.text }]}>
+        <View key={grp.title} style={styles.groupContainer}>
+          <Text style={[styles.groupHeader, { color: theme.colors.text }]}>
             {grp.title}
           </Text>
           {grp.items.map((item, index) => (
             <SettingItem
               key={index}
               {...item}
+              style={[styles.listItemContainer, { borderBottomColor: theme.colors.border }, item.style]}
             />
           ))}
         </View>
@@ -44,18 +45,16 @@ const SettingItemList = ({
 
 
 const styles = StyleSheet.create({
-  categoryContainer: {
+  groupHeader: {
+    fontSize: fontSize.medium,
+    fontWeight: "bold"
+  },
+  groupContainer: {
     padding: spacing.medium,
+    gap: spacing.small,
   },
   listItemContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    padding: spacing.medium,
-
-    borderWidth: 1,
-    borderStyle: "solid",
+    borderBottomWidth: 1
   },
   listItemLabel: {
     marginLeft: spacing.medium,

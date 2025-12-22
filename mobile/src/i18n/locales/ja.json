@@ -78,13 +78,10 @@
       "groupLabel_account": "アカウント",
       "itemLabel_logout": "ログアウト",
       "itemDescription_logout": "このアプリからログアウトします。",
-
       "logout_dialog_text": "ログアウトしてもよろしいですか？",
       "logout_dialog_confirm": "ログアウト",
       "logout_dialog_cancel": "キャンセル"
     },
-
-
     "setting_appearance": {
       "label": "表示設定",
       "groupLabel_appearance": "外観",
@@ -103,7 +100,6 @@
       "itemDescription_language": "アプリの言語を選択します。",
       "innerModals": {
         "theme": {
-          "label": "テーマを選択",
           "button_apply": "適用",
           "option_light": "ライト",
           "option_dark": "ダーク",
@@ -144,9 +140,6 @@
     "setting_notifications": {
       "label": "通知設定"
     },
-
-
-
     "detail_user": {
       "label": "ユーザー詳細",
       "menuLabel_friend_remove": "フレンド解除",
@@ -222,7 +215,6 @@
       "menuLabel_json": "JSONデータ",
       "sectionLabel_info": "情報"
     },
-
     "search": {
       "label": "検索結果",
       "searchbox_placeholder": "ワールド、グループ、ユーザーを検索",
@@ -230,7 +222,6 @@
       "no_groups_found": "'{{search}}' に一致するグループは見つかりませんでした。",
       "no_users_found": "'{{search}}' に一致するユーザーは見つかりませんでした。"
     },
-
     "favorites": {
       "label": "お気に入り",
       "tabLabel_worlds": "ワールド",
@@ -353,7 +344,6 @@
       "eventTime_sameDay": "{{start, yyyy年MM月dd日 HH:mm}} ~ {{end, HH:mm}}",
       "eventTime_differentDay": "{{start, yyyy年MM月dd日 HH:mm}} ~ {{end, yyyy年MM月dd日 HH:mm}}"
     },
-
     "aboutModal": {
       "label": "アプリ情報",
       "button_termsOfUse": "利用規約",
@@ -379,7 +369,12 @@
       }
     },
     "developmentModal": {
-      "label": "開発機能"
+      "label": "開発機能",
+      "itemDescription_json": "詳細ページの JSON ビューアを有効にします。",
+      "groupLabel_option": "オプション (未実装)",
+      "itemLabel_json": "JSONビューア",
+      "itemDescription_sendLogs": "開発者へのログの送信を有効にします。",
+      "itemLabel_sendLogs": "ログ送信"
     },
     "feedbackModal": {
       "label": "フィードバックを送信",

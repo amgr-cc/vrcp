@@ -17,7 +17,7 @@
   "pages": {
     "home": {
       "label": "Home",
-      "see_more" : "See More",
+      "see_more": "See More",
       "events_area": "Events Today",
       "no_events": "No events available.",
       "feeds_area": "Feeds",
@@ -38,17 +38,17 @@
     },
     "profile": {
       "label": "Profile",
-      "menuLabel_edit_bio" : "Edit Bio",
-      "menuLabel_edit_bio_links" : "Edit Bio Links",
-      "menuLabel_change_status" : "Change Status",
-      "menuLabel_route_resources" : "My Resources",
-      "menuLabel_route_favorites" : "My Favorites",
-      "menuLabel_route_current_avatar" : "Current Avatar",
-      "menuLabel_json" : "Raw JSON Data",
-      "sectionLabel_bio" : "Bio",
-      "sectionLabel_bio_links" : "Links",
-      "sectionLabel_badges" : "Badges",
-      "sectionLabel_info" : "Info",
+      "menuLabel_edit_bio": "Edit Bio",
+      "menuLabel_edit_bio_links": "Edit Bio Links",
+      "menuLabel_change_status": "Change Status",
+      "menuLabel_route_resources": "My Resources",
+      "menuLabel_route_favorites": "My Favorites",
+      "menuLabel_route_current_avatar": "Current Avatar",
+      "menuLabel_json": "Raw JSON Data",
+      "sectionLabel_bio": "Bio",
+      "sectionLabel_bio_links": "Links",
+      "sectionLabel_badges": "Badges",
+      "sectionLabel_info": "Info",
       "section_info_last_activity": "Last Activity: {{date, yyyy/MM/dd HH:mm}}",
       "section_info_joined": "Joined date: {{date, yyyy/MM/dd}}"
     },
@@ -78,13 +78,10 @@
       "groupLabel_account": "Account",
       "itemLabel_logout": "Logout",
       "itemDescription_logout": "Logout from this app.",
-
       "logout_dialog_text": "Are you sure you want to logout?",
       "logout_dialog_confirm": "Logout",
       "logout_dialog_cancel": "Cancel"
     },
-
-
     "setting_appearance": {
       "label": "Appearance Settings",
       "groupLabel_appearance": "Appearance",
@@ -103,19 +100,14 @@
       "itemDescription_language": "Select the language for the application.",
       "innerModals": {
         "theme": {
-          "title": "Select Theme",
           "button_apply": "Apply",
           "option_light": "Light",
           "option_dark": "Dark",
           "option_system": "System",
           "maybe_requireRestart": "It may require restart app\nto take effect."
         },
-        "friendColor": {
-
-        },
-        "favoriteFriendsColors": {
-
-        },
+        "friendColor": {},
+        "favoriteFriendsColors": {},
         "homeTabLayout": {
           "button_apply": "Apply",
           "section_top": "Top area",
@@ -145,10 +137,9 @@
       "cache_size_and_count_other": "{{size}} MB ({{count}} items)",
       "button_clearCache": "Clear Cache"
     },
-    "setting_notification": {
+    "setting_notifications": {
       "label": "Notification Settings"
     },
-
 
     "detail_user": {
       "label": "User Details",
@@ -160,17 +151,16 @@
       "menuLabel_note_edit": "Edit Note",
       "menuLabel_invite_request": "Request Invite",
       "menuLabel_invite_send": "Send Invite",
-      "menuLabel_json" : "Raw JSON Data",
-      "sectionLabel_location" : "Location",
-      "sectionLabel_description" : "Description",
-      "sectionLabel_note" : "Note",
-      "sectionLabel_bio" : "Bio",
-      "sectionLabel_bio_links" : "Links",
-      "sectionLabel_badges" : "Badges",
-      "sectionLabel_info" : "Info",
+      "menuLabel_json": "Raw JSON Data",
+      "sectionLabel_location": "Location",
+      "sectionLabel_description": "Description",
+      "sectionLabel_note": "Note",
+      "sectionLabel_bio": "Bio",
+      "sectionLabel_bio_links": "Links",
+      "sectionLabel_badges": "Badges",
+      "sectionLabel_info": "Info",
       "section_info_last_activity": "Last Activity: {{date, yyyy/MM/dd HH:mm}}",
       "section_info_joined": "Joined date: {{date, yyyy/MM/dd}}",
-
       "userLocation_offline": "the user is offline...",
       "userLocation_private": "the user is in a private instance...",
       "userLocation_traveling": "the user is traveling...",
@@ -182,12 +172,12 @@
       "menuLabel_favoriteGroup_edit": "Edit Favorite Group",
       "menuLabel_avatar_changeTo": "Change to this Avatar",
       "menuLabel_avatar_nowUsing": "Now Using This Avatar",
-      "menuLabel_json" : "Raw JSON Data",
-      "sectionLabel_platform" : "Platform",
-      "sectionLabel_description" : "Description",
-      "sectionLabel_tags" : "Tags",
-      "sectionLabel_author" : "Author",
-      "sectionLabel_info" : "Info"
+      "menuLabel_json": "Raw JSON Data",
+      "sectionLabel_platform": "Platform",
+      "sectionLabel_description": "Description",
+      "sectionLabel_tags": "Tags",
+      "sectionLabel_author": "Author",
+      "sectionLabel_info": "Info"
     },
     "detail_world": {
       "label": "World Details",
@@ -196,40 +186,36 @@
       "no_instances": "No instances available.",
       "menuLabel_favoriteGroup_add": "Add to Favorite Group",
       "menuLabel_favoriteGroup_edit": "Edit Favorite Group",
-      "menuLabel_json" : "Raw JSON Data",
-      "sectionLabel_platform" : "Platform",
-      "sectionLabel_description" : "Description",
-      "sectionLabel_tags" : "Tags",
-      "sectionLabel_author" : "Author",
-      "sectionLabel_info" : "Info",
+      "menuLabel_json": "Raw JSON Data",
+      "sectionLabel_platform": "Platform",
+      "sectionLabel_description": "Description",
+      "sectionLabel_tags": "Tags",
+      "sectionLabel_author": "Author",
+      "sectionLabel_info": "Info",
       "section_info_capacityAndRecommended": "Capacity: {{capacity}} | Recommended: {{recommendedCapacity}}",
       "section_info_visits": "Visits: {{visits}}",
       "section_info_updated": "Last Updated: {{date, yyyy/MM/dd}}",
       "section_info_created": "Created: {{date, yyyy/MM/dd}}"
-
-
     },
     "detail_instance": {
       "label": "Instance Details",
-      "menuLabel_json" : "Raw JSON Data",
-      "sectionLabel_ownerAndWorld" : "Owner & World",
-      "sectionLabel_World" : "World",
-      "sectionLabel_users" : "Users",
-      "section_users_more_user_count_one" : "+ {{count}} more user",
-      "section_users_more_user_count_other" : "+ {{count}} more users",
-      "sectionLabel_platform" : "Platform",
-      "sectionLabel_tags" : "Tags",
-      "sectionLabel_info" : "Info",
+      "menuLabel_json": "Raw JSON Data",
+      "sectionLabel_ownerAndWorld": "Owner & World",
+      "sectionLabel_World": "World",
+      "sectionLabel_users": "Users",
+      "section_users_more_user_count_one": "+ {{count}} more user",
+      "section_users_more_user_count_other": "+ {{count}} more users",
+      "sectionLabel_platform": "Platform",
+      "sectionLabel_tags": "Tags",
+      "sectionLabel_info": "Info",
       "section_info_capacity": "Capacity: {{capacity}}",
       "section_info_ageGated": "Age Gated: {{ageGated}}"
     },
     "detail_group": {
       "label": "Group Details",
-      "menuLabel_json" : "Raw JSON Data",
-      "sectionLabel_info" : "Info"
+      "menuLabel_json": "Raw JSON Data",
+      "sectionLabel_info": "Info"
     },
-
-
     "search": {
       "label": "Search Results",
       "searchbox_placeholder": "Search for worlds, groups, or users",
@@ -276,13 +262,10 @@
       "sectionLabel_private": "Friends in Private Instances",
       "no_friendlocations": "No friend locations available."
     },
-
-
     "login": {
       "label": "Login",
       "welcome": "Welcome to VRCP!\nLogin with your VRChat account.",
       "online_count_message": "There are {{count}} users online now on VRChat!",
-
       "username_placeholder": "Username / Email",
       "username_empty_error": "Username or email cannot be empty.",
       "password_placeholder": "Password",
@@ -296,14 +279,12 @@
       "button_tfa_verify": "Verify",
       "button_tfa_close": "Close",
       "button_links_close": "Close",
-
       "tfa_pasted": "Pasted from clipboard",
       "login_failed_error": "Login failed. Please check your credentials.",
       "tfa_failed_error": "2FA verification failed. Please try again.",
       "tfa_invalid_error": "2FA code must be 6 digits.",
       "tfa_disabled_error": "2FA is disabled. Please check your account settings.",
       "tfa_unknown_error": "Unknown 2FA error occurred. Please try again later.",
-
       "linksModal_title": "Having trouble logging in?",
       "linksModal_text1": "New to VRChat?\n",
       "linksModal_registerLinkText": "Create an account",
@@ -312,8 +293,7 @@
       "linksModal_emailLinkText": "Recover email"
     }
   },
-
-  "components" : {
+  "components": {
     "releaseNote": {
       "label": "VRCP Release Notes",
       "button_close": "Close"
@@ -365,8 +345,6 @@
       "eventTime_sameDay": "{{start, yyyy/MM/dd HH:mm}} ~ {{end, HH:mm}}",
       "eventTime_differentDay": "{{start, yyyy/MM/dd HH:mm}} ~ {{end, yyyy/MM/dd HH:mm}}"
     },
-
-
     "aboutModal": {
       "label": "App Informations",
       "button_termsOfUse": "Terms of Use",

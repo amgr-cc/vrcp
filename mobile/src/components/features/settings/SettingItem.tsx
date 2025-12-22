@@ -29,7 +29,7 @@ const SettingItem = ({
     <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
       <View style={[styles.container, rest.style]} {...omitObject(rest, 'style')}>
         <View style={styles.icon}>
-          <IconSymbol name={icon} size={fontSize.large} color={iconColor ?? theme.colors.text} />
+          <IconSymbol name={icon} size={fontSize.large * 1.3} color={iconColor ?? theme.colors.text} />
         </View>
         <View style={{ flex: 1 }}>
           <Text style={[styles.title, { color: theme.colors.text }]}>
