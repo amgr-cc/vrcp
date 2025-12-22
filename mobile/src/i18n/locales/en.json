@@ -52,11 +52,18 @@
       "section_info_last_activity": "Last Activity: {{date, yyyy/MM/dd HH:mm}}",
       "section_info_joined": "Joined date: {{date, yyyy/MM/dd}}"
     },
+    "others": {
+      "label": "Others",
+      "menuLabel_notifications": "Notification",
+      "tabLabel_feeds": "Feeds",
+      "tabLabel_events": "Events",
+      "tabLabel_notifications": "Notifications"
+    },
     "settings": {
       "label": "Settings",
       "groupLabel_general": "General",
-      "itemLabel_ui": "UI Settings",
-      "itemDescription_ui": "Customize UI appearance and behavior.",
+      "itemLabel_appearance": "Appearance Settings",
+      "itemDescription_appearance": "Customize application UI appearance.",
       "itemLabel_database": "Database",
       "itemDescription_database": "Manage database settings and storage options.",
       "itemLabel_notifications": "Notifications",
@@ -76,12 +83,70 @@
       "logout_dialog_confirm": "Logout",
       "logout_dialog_cancel": "Cancel"
     },
-    "others": {
-      "label": "Others",
-      "menuLabel_notifications": "Notification",
-      "tabLabel_feeds": "Feeds",
-      "tabLabel_events": "Events",
-      "tabLabel_notifications": "Notifications"
+
+
+    "setting_appearance": {
+      "label": "Appearance Settings",
+      "groupLabel_appearance": "Appearance",
+      "itemLabel_theme": "Theme",
+      "itemDescription_theme": "Select light or dark theme for the application.",
+      "itemLabel_friendColor": "Friend Color",
+      "itemDescription_friendColor": "Select your friends color theme.",
+      "itemLabel_favoriteFriendsColors": "Favorite Friend Colors",
+      "itemDescription_favoriteFriendsColors": "Select your favorite-friends color theme.",
+      "itemLabel_homeTabLayout": "Home Tab Layout",
+      "itemDescription_homeTabLayout": "Select which tab to show by default on the Home page.",
+      "itemLabel_cardViewColumns": "Card View Columns",
+      "itemDescription_cardViewColumns": "Select the number of columns to display in card views.",
+      "groupLabel_others": "Others",
+      "itemLabel_language": "Language",
+      "itemDescription_language": "Select the language for the application.",
+      "innerModals": {
+        "theme": {
+          "title": "Select Theme",
+          "button_apply": "Apply",
+          "option_light": "Light",
+          "option_dark": "Dark",
+          "option_system": "System",
+          "maybe_requireRestart": "It may require restart app\nto take effect."
+        },
+        "friendColor": {
+
+        },
+        "favoriteFriendsColors": {
+
+        },
+        "homeTabLayout": {
+          "button_apply": "Apply",
+          "section_top": "Top area",
+          "section_bottom": "Bottom area",
+          "section_separatePos": "Separate Position",
+          "option_events": "Events",
+          "selectedLabel_events": "Events for Today",
+          "option_feeds": "Feeds",
+          "selectedLabel_feeds": "Feeds of Friends",
+          "option_friendLocations": "Locations",
+          "selectedLabel_friendLocations": "Friend Locations",
+          "selectedLabel_sepPos": "higher separate position value makes upper area larger."
+        },
+        "cardViewColumns": {
+          "button_apply": "Apply",
+          "option_1_columns": "1 Columns",
+          "option_2_columns": "2 Columns",
+          "option_3_columns": "3 Columns",
+          "maybe_requireRestart": "It may require restart app\nto take effect."
+        }
+      }
+    },
+    "setting_database": {
+      "label": "Database Settings",
+      "groupLabel_cache": "Cache",
+      "cache_size_and_count_one": "{{size}} MB ({{count}} item)",
+      "cache_size_and_count_other": "{{size}} MB ({{count}} items)",
+      "button_clearCache": "Clear Cache"
+    },
+    "setting_notification": {
+      "label": "Notification Settings"
     },
 
 
@@ -164,6 +229,7 @@
       "sectionLabel_info" : "Info"
     },
 
+
     "search": {
       "label": "Search Results",
       "searchbox_placeholder": "Search for worlds, groups, or users",
@@ -171,7 +237,6 @@
       "no_groups_found": "No groups found for '{{search}}'.",
       "no_users_found": "No users found for '{{search}}'."
     },
-    
     "favorites": {
       "label": "Favorites",
       "tabLabel_worlds": "Worlds",
@@ -212,6 +277,7 @@
       "no_friendlocations": "No friend locations available."
     },
 
+
     "login": {
       "label": "Login",
       "welcome": "Welcome to VRCP!\nLogin with your VRChat account.",
@@ -249,7 +315,7 @@
 
   "components" : {
     "releaseNote": {
-      "title": "VRCP Release Notes",
+      "label": "VRCP Release Notes",
       "button_close": "Close"
     },
     "jsonDataModal": {
@@ -300,92 +366,33 @@
       "eventTime_differentDay": "{{start, yyyy/MM/dd HH:mm}} ~ {{end, yyyy/MM/dd HH:mm}}"
     },
 
-    "uiModal": {
-      "title": "UI Settings",
-      "groupLabel_appearance": "Appearance",
-      "itemLabel_theme": "Theme",
-      "itemDescription_theme": "Select light or dark theme for the application.",
-      "itemLabel_friendColor": "Friend Color",
-      "itemDescription_friendColor": "Select your friends color theme.",
-      "itemLabel_favoriteFriendsColors": "Favorite Friend Colors",
-      "itemDescription_favoriteFriendsColors": "Select your favorite-friends color theme.",
-      "itemLabel_homeTabLayout": "Home Tab Layout",
-      "itemDescription_homeTabLayout": "Select which tab to show by default on the Home page.",
-      "itemLabel_cardViewColumns": "Card View Columns",
-      "itemDescription_cardViewColumns": "Select the number of columns to display in card views.",
-      "groupLabel_others": "Others",
-      "itemLabel_language": "Language",
-      "itemDescription_language": "Select the language for the application.",
-      "innerModals": {
-        "theme": {
-          "title": "Select Theme",
-          "button_apply": "Apply",
-          "option_light": "Light",
-          "option_dark": "Dark",
-          "option_system": "System",
-          "maybe_requireRestart": "It may require restart app\nto take effect."
-        },
-        "friendColor": {
 
-        },
-        "favoriteFriendsColors": {
-
-        },
-        "homeTabLayout": {
-          "button_apply": "Apply",
-          "section_top": "Top area",
-          "section_bottom": "Bottom area",
-          "section_separatePos": "Separate Position",
-          "option_events": "Events",
-          "selectedLabel_events": "Events for Today",
-          "option_feeds": "Feeds",
-          "selectedLabel_feeds": "Feeds of Friends",
-          "option_friendLocations": "Locations",
-          "selectedLabel_friendLocations": "Friend Locations",
-          "selectedLabel_sepPos": "higher separate position value makes upper area larger."
-        },
-        "cardViewColumns": {
-          "button_apply": "Apply",
-          "option_1_columns": "1 Columns",
-          "option_2_columns": "2 Columns",
-          "option_3_columns": "3 Columns",
-          "maybe_requireRestart": "It may require restart app\nto take effect."
-        }
-      }
-    },
-    "databaseModal": {
-      "title": "Database Settings",
-      "groupLabel_cache": "Cache",
-      "cache_size_and_count_one": "{{size}} MB ({{count}} item)",
-      "cache_size_and_count_other": "{{size}} MB ({{count}} items)",
-      "button_clearCache": "Clear Cache"
-    },
     "aboutModal": {
-      "title": "App Informations",
-      "button_termOfService": "Terms of Service",
+      "label": "App Informations",
+      "button_termsOfUse": "Terms of Use",
       "button_privacyPolicy": "Privacy Policy",
       "button_Licenses": "Open Source Licenses",
       "button_ChangeLog": "Change Log",
       "innerModals": {
-        "termOfService": {
-          "title": "Terms of Service"
+        "termsOfUse": {
+          "label": "Terms of Use"
         },
         "privacyPolicy": {
-          "title": "Privacy Policy"
+          "label": "Privacy Policy"
         },
         "licenses": {
-          "title": "Open Source Licenses",
+          "label": "Open Source Licenses",
           "link_to_repos": "Link to Repos ↗"
         },
         "changeLog": {
-          "title": "Change Log",
+          "label": "Change Log",
           "format_version": "Ver {{version}}",
           "format_date": "{{date, yyyy/MM/dd}}"
         }
       }
     },
     "developmentModal": {
-      "title": "Developer Options",
+      "label": "Developer Options",
       "groupLabel_option": "Options (not implemented)",
       "itemLabel_json": "JSON Viewer",
       "itemDescription_json": "Enable JSON viewer for detail pages.",
@@ -393,7 +400,7 @@
       "itemDescription_sendLogs": "Enable sending logs to developer."
     },
     "feedbackModal": {
-      "title": "Send Feedback",
+      "label": "Send Feedback",
       "button_cancel": "Cancel",
       "button_send": "Send Feedback",
       "placeholder_email": "Your email",
@@ -401,9 +408,6 @@
       "type_feedback": "Feedback",
       "type_bug": "Bug Report",
       "type_request": "Feature Request"
-    },
-    "notificationModal": {
-      "title": "Notification Settings"
     }
   }
 }

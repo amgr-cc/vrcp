@@ -1,24 +1,18 @@
 import GenericDialog from "@/components/layout/GenericDialog";
 import GenericScreen from "@/components/layout/GenericScreen";
-import DatabaseModal from "@/components/features/settings/DatabaseModal";
 import DevelopmentModal from "@/components/features/settings/DevelopmentModal";
-import UIModal from "@/components/features/settings/UIModal";
-import IconSymbol from "@/components/view/icon-components/IconView";
 import { SupportedIconNames } from "@/components/view/icon-components/utils";
 import globalStyles, { fontSize, spacing } from "@/configs/styles";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@react-navigation/native";
-import Constants from "expo-constants";
 import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { router } from "expo-router";
-import { navigate } from "expo-router/build/global-state/routing";
+import { StyleSheet, Text, View } from "react-native";
 import AboutModal from "@/components/features/settings/AboutModal";
-import { ScrollView } from "react-native-gesture-handler";
 import FeedbackModal from "@/components/features/settings/FeedbackModal";
 import { useToast } from "@/contexts/ToastContext";
 import { useTranslation } from "react-i18next";
-import NotificationModal from "@/components/features/settings/NotificationModal";
+import { routeToAppearanceSettings, routeToDatabaseSettings, routeToNotificationSettings } from "@/libs/route";
+import SettingItemList from "@/components/features/settings/SettingItemList";
 
 interface SettingItem {
   icon: SupportedIconNames;
@@ -31,19 +25,17 @@ interface SettingItem {
 export default function Settings() {
   const auth = useAuth();
   const theme = useTheme();
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
   const [openLogout, setOpenLogout] = useState(false);
   const [openDevelopment, setOpenDevelopment] = useState(false);
   const [openFeedback, setOpenFeedback] = useState(false);
   const [openAbout, setOpenAbout] = useState(false);
-  const [openDatabase, setOpenDatabase] = useState(false);
-  const [openUI, setOpenUI] = useState(false);
   const [openNotification, setOpenNotification] = useState(false);
 
   const { showToast } = useToast();
 
   const settingContents: {
-    title: string; 
+    title: string;
     items: SettingItem[];
   }[] = [
     {
@@ -51,21 +43,21 @@ export default function Settings() {
       items: [
         {
           icon: "imagesearch-roller",
-          title: t("pages.settings.itemLabel_ui"),
-          description: t("pages.settings.itemDescription_ui"),
-          onPress: () => setOpenUI(true),
+          title: t("pages.settings.itemLabel_appearance"),
+          description: t("pages.settings.itemDescription_appearance"),
+          onPress: () => routeToAppearanceSettings(),
         },
         {
           icon: "view-list",
           title: t("pages.settings.itemLabel_database"),
           description: t("pages.settings.itemDescription_database"),
-          onPress: () => setOpenDatabase(true),
+          onPress: () => routeToDatabaseSettings(),
         },
         {
           icon: "notifications",
           title: t("pages.settings.itemLabel_notifications"),
           description: t("pages.settings.itemDescription_notifications"),
-          onPress: () => setOpenNotification(true),
+          onPress: () => routeToNotificationSettings(),
         },
       ],
     },
@@ -108,40 +100,7 @@ export default function Settings() {
 
   return (
     <GenericScreen scrollable>
-      <ScrollView>
-      {settingContents.map((categoryGroup) => (
-        <View key={categoryGroup.title} style={styles.categoryContainer}>
-          <Text style={[globalStyles.header, { color: theme.colors.text }]}>
-            {categoryGroup.title}
-          </Text>
-          {categoryGroup.items.map((item, index) => (
-            <TouchableOpacity
-              activeOpacity={0.7}
-              key={index}
-              style={[
-                styles.listItemContainer,
-                { borderBottomColor: theme.colors.border },
-              ]}
-              onPress={item.onPress}
-            >
-              <IconSymbol name={item.icon} color={item.iconColor} size={fontSize.large * 1.5} />
-              <View style={styles.listItemLabel}>
-                <Text
-                  style={[globalStyles.subheader, { color: theme.colors.text }]}
-                >
-                  {item.title}
-                </Text>
-                <Text
-                  style={[globalStyles.text, { color: theme.colors.subText }]}
-                >
-                  {item.description}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
-      ))}
-      </ScrollView>
+      <SettingItemList contents={settingContents} />
 
 
       {/* dialog and modals */}
@@ -157,12 +116,9 @@ export default function Settings() {
         confirmTitle={t("pages.settings.logout_dialog_confirm")}
         cancelTitle={t("pages.settings.logout_dialog_cancel")}
       />
-      <DatabaseModal open={openDatabase} setOpen={setOpenDatabase} />
-      <UIModal open={openUI} setOpen={setOpenUI} />
       <DevelopmentModal open={openDevelopment} setOpen={setOpenDevelopment} />
       <AboutModal open={openAbout} setOpen={setOpenAbout} />
       <FeedbackModal open={openFeedback} setOpen={setOpenFeedback} />
-      <NotificationModal open={openNotification} setOpen={setOpenNotification} />
 
     </GenericScreen>
   );

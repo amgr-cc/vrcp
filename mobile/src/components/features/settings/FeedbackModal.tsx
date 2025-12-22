@@ -32,7 +32,7 @@ const FeedbackModal = ({ open, setOpen }: Props) => {
     if (!email) return emailRef.current?.focus();
     if (!content) return contentRef.current?.focus();
 
-    const MsgContent = 
+    const MsgContent =
 `----------------
 **Type:** ${type}
 **Email:** ${email}
@@ -92,7 +92,7 @@ ${content}
 
   return (
     <GenericModal
-      title={t("components.feedbackModal.title")}
+      title={t("components.feedbackModal.label")}
       showCloseButton
       buttonItems={buttonItems}
       size="large"

@@ -23,7 +23,7 @@ const PrivacyPolicyModal = ({ open, setOpen }: Props) => {
   const { t } = useTranslation();
   return (
     <GenericModal
-      title={t("components.aboutModal.innerModals.privacyPolicy.title")}
+      title={t("components.aboutModal.innerModals.privacyPolicy.label")}
       showCloseButton
       size="full"
       open={open}

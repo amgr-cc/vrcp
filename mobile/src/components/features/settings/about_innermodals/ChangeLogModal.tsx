@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { View, Text, SectionList, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 
-import rawVersions from '@/../versions.json'; 
+import rawVersions from '@/../versions.json';
 import GenericModal from '@/components/layout/GenericModal';
 import { useTranslation } from 'react-i18next';
 
@@ -49,10 +49,10 @@ export default function ChangeLogModal({ open, setOpen }: Props) {
   // Individual update item
   const renderItem = ({ item, index, section }: { item: UpdateEntry, index: number, section: VersionSection }) => {
     const isLastItem = index === section.data.length - 1;
-    
+
     return (
       <View style={[
-        styles.itemContainer, 
+        styles.itemContainer,
         // Remove border for the last item in the section to look cleaner
         !isLastItem && { borderBottomWidth: 1, borderBottomColor: theme.colors.border }
       ]}>
@@ -68,7 +68,7 @@ export default function ChangeLogModal({ open, setOpen }: Props) {
 
   return (
     <GenericModal
-      title={t("components.aboutModal.innerModals.changeLog.title")}
+      title={t("components.aboutModal.innerModals.changeLog.label")}
       showCloseButton
       open={open}
       onClose={() => setOpen(false)}

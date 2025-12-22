@@ -5,11 +5,11 @@ import { useTheme } from "@react-navigation/native";
 import Constants from "expo-constants";
 import { useState } from "react";
 import { Platform, View } from "react-native";
-import TermOfServiceModal from "./about_innermodals/TermOfServiceModal";
 import PrivacyPolicyModal from "./about_innermodals/PrivacyPolicyModal";
 import LicenseModal from "./about_innermodals/LicenseModal";
 import ChangeLogModal from "./about_innermodals/ChangeLogModal";
 import { useTranslation } from "react-i18next";
+import TermsOfUseModal from "./about_innermodals/TermsOfUseModal";
 
 
 interface Props {
@@ -20,7 +20,7 @@ interface Props {
 const AboutModal = ({ open, setOpen }: Props) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const [ termOfServiceModal, setTermOfServiceModal ] = useState<boolean>(false);
+  const [ termsOfUseModal, setTermsOfUseModal ] = useState<boolean>(false);
   const [ privacyPolicyModal, setPrivacyPolicyModal ] = useState<boolean>(false);
   const [ licenseModal, setLicenseModal ] = useState<boolean>(false);
   const [ changeLogModal, setChangeLogModal ] = useState<boolean>(false);
@@ -34,14 +34,12 @@ const AboutModal = ({ open, setOpen }: Props) => {
       android: Constants.expoConfig?.android?.package,
       ios: Constants.expoConfig?.ios?.bundleIdentifier,
     }),
-    // expoBuildProfile: Constants.expoConfig?.extra?.vrcp?.buildProfile,
-    // node_env: process.env.NODE_ENV,
   };
 
   const buttonItems = [
     {
-      title: t("components.aboutModal.button_termOfService"),
-      onPress: () => setTermOfServiceModal(true),
+      title: t("components.aboutModal.button_termsOfUse"),
+      onPress: () => setTermsOfUseModal(true),
       flex: 1,
     },
     {
@@ -63,7 +61,7 @@ const AboutModal = ({ open, setOpen }: Props) => {
 
   return (
     <GenericModal
-      title={t("components.aboutModal.title")}
+      title={t("components.aboutModal.label")}
       showCloseButton
       size="large"
       open={open}
@@ -88,9 +86,9 @@ const AboutModal = ({ open, setOpen }: Props) => {
       </View>
 
       {/* Modal */}
-      <TermOfServiceModal
-        open={termOfServiceModal}
-        setOpen={setTermOfServiceModal}
+      <TermsOfUseModal
+        open={termsOfUseModal}
+        setOpen={setTermsOfUseModal}
       />
       <PrivacyPolicyModal
         open={privacyPolicyModal}

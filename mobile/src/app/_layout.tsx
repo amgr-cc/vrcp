@@ -22,9 +22,10 @@ function RootLayout() {
   return (
     <Stack initialRouteName="index" screenOptions={{ headerShown: false, gestureEnabled: true }}>
       <Stack.Screen name="maintabs" options={{ headerShown: false }} />
-      <Stack.Screen name="subscreens" options={{ headerShown: false }} />
+      <Stack.Screen name="details" options={{ headerShown: false }} />
+      <Stack.Screen name="settings" options={{ headerShown: false }} />
+      <Stack.Screen name="others" options={{ headerShown: false }} />
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="tmp" options={{ headerShown: false }} />
     </Stack>
   );
 }

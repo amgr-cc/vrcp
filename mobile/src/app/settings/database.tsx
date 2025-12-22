@@ -1,19 +1,16 @@
-import GenericModal from "@/components/layout/GenericModal";
+import GenericScreen from "@/components/layout/GenericScreen";
 import LoadingIndicator from "@/components/view/LoadingIndicator";
 import globalStyles, { spacing } from "@/configs/styles";
 import { useCache } from "@/contexts/CacheContext";
-import { Button, Text } from "@react-navigation/elements";
+import { Button } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
 
-interface Props {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-}
 
-const DatabaseModal = ({ open, setOpen }: Props) => {
+
+export default function Tmp() {
   const theme = useTheme();
   const { t } = useTranslation();
   const cache = useCache();
@@ -48,25 +45,17 @@ const DatabaseModal = ({ open, setOpen }: Props) => {
   //   await db.resetDB();
   //   refleshDatabaseInfo();
   // }
-  
+
   useEffect(() => {
-    if (open) {
-      // setDatabaseInfo(undefined);
-      // refleshDatabaseInfo();
-      
-      setCacheInfo(undefined);
-      refleshCacheInfo();
-    }
-  }, [open]);
+    // setDatabaseInfo(undefined);
+    // refleshDatabaseInfo();
+
+    setCacheInfo(undefined);
+    refleshCacheInfo();
+  }, []);
 
   return (
-    <GenericModal
-      title={t("components.databaseModal.title")}
-      showCloseButton
-      size="large"
-      open={open}
-      onClose={() => setOpen(false)}
-    >
+    <GenericScreen>
       {/* <Text style={[globalStyles.subheader, { color: theme.colors.text }]}>
         Database Backup
       </Text>
@@ -99,7 +88,7 @@ const DatabaseModal = ({ open, setOpen }: Props) => {
         </View>
       </View> */}
       <Text style={[globalStyles.subheader, { color: theme.colors.text }]}>
-        {t("components.databaseModal.groupLabel_cache")}
+        {t("pages.setting_database.groupLabel_cache")}
       </Text>
       <View style={globalStyles.container}>
         <View>
@@ -111,15 +100,15 @@ const DatabaseModal = ({ open, setOpen }: Props) => {
                   globalStyles.container,
                   { color: theme.colors.text },
                 ]}
-              >   
-                {t("components.databaseModal.cache_size_and_count", {size: (cacheInfo.size / (1024 * 1024)).toFixed(2), count: cacheInfo.count})}
+              >
+                {t("pages.setting_database.cache_size_and_count", {size: (cacheInfo.size / (1024 * 1024)).toFixed(2), count: cacheInfo.count})}
               </Text>
               <Button
                 style={[globalStyles.button, { marginLeft: spacing.medium }]}
                 color={theme.colors.text}
                 onPress={clearCache}
               >
-                {t("components.databaseModal.button_clearCache")}
+                {t("pages.setting_database.button_clearCache")}
               </Button>
             </View>
           ) : (
@@ -127,9 +116,9 @@ const DatabaseModal = ({ open, setOpen }: Props) => {
           )}
         </View>
       </View>
-    </GenericModal>
+    </GenericScreen>
   );
-};
+}
 
 const styles = StyleSheet.create({
   cacheContainer: {
@@ -138,5 +127,3 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
 });
-
-export default DatabaseModal;

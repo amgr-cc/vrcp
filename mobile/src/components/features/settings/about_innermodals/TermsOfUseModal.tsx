@@ -7,31 +7,33 @@ import { useTheme } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
-
+import { WebView } from 'react-native-webview';
 
 // term of service
-
-
-
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 
-const TermOfServiceModal = ({ open, setOpen }: Props) => {
+const TermsOfUseModal = ({ open, setOpen }: Props) => {
   const theme = useTheme();
   const { t } = useTranslation();
   return (
     <GenericModal
-      title={t("components.aboutModal.innerModals.termOfService.title")}
+      title={t("components.aboutModal.innerModals.termsOfUse.label")}
       showCloseButton
       size="full"
       open={open}
       onClose={() => setOpen(false)}
     >
-      <Text style={[styles.text, { color: theme.colors.text }]}>
-        {'そんな\nものは\nない!!'}
-      </Text>
+      <WebView
+        source={{ uri: 'https://kitrinor.github.io/vrcp/term-of-use/' }}
+        style={{ flex: 1 }}
+        startInLoadingState={true}
+        renderLoading={() => (
+          <LoadingIndicator absolute />
+        )}
+      />
     </GenericModal>
   );
 };
@@ -48,4 +50,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default TermOfServiceModal;
+export default TermsOfUseModal;

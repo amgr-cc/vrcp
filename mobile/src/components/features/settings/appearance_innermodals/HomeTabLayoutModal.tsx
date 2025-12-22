@@ -49,18 +49,18 @@ const HomeTabLayoutModal = ({ open, setOpen, defaultValue, onSubmit }: Props) =>
   });
   const [ lastOpelated , setLastOpelated ] = useState<"top" | "bottom" | "sepPos" | undefined>(undefined);
 
-    
+
   const getButtonText = (v: HomeTopVariant | HomeBottomVariant): string => {
-    if (v === 'friend-locations') return t("components.uiModal.innerModals.homeTabLayout.option_friendLocations");
-    if (v === 'feeds') return t("components.uiModal.innerModals.homeTabLayout.option_feeds");
-    if (v === 'events') return t("components.uiModal.innerModals.homeTabLayout.option_events");
+    if (v === 'friend-locations') return t("pages.setting_appearance.innerModals.homeTabLayout.option_friendLocations");
+    if (v === 'feeds') return t("pages.setting_appearance.innerModals.homeTabLayout.option_feeds");
+    if (v === 'events') return t("pages.setting_appearance.innerModals.homeTabLayout.option_events");
     return "";
   }
 
   const getTextLabel = (v: HomeTopVariant | HomeBottomVariant): string => {
-    if (v === 'friend-locations') return t("components.uiModal.innerModals.homeTabLayout.selectedLabel_friendLocations");
-    if (v === 'feeds') return t("components.uiModal.innerModals.homeTabLayout.selectedLabel_feeds");
-    if (v === 'events') return t("components.uiModal.innerModals.homeTabLayout.selectedLabel_events");
+    if (v === 'friend-locations') return t("pages.setting_appearance.innerModals.homeTabLayout.selectedLabel_friendLocations");
+    if (v === 'feeds') return t("pages.setting_appearance.innerModals.homeTabLayout.selectedLabel_feeds");
+    if (v === 'events') return t("pages.setting_appearance.innerModals.homeTabLayout.selectedLabel_events");
     return "";
   }
 
@@ -78,17 +78,17 @@ const HomeTabLayoutModal = ({ open, setOpen, defaultValue, onSubmit }: Props) =>
     {
       // use button as text display only
       type: "text",
-      title: lastOpelated === "top" 
-        ? getTextLabel(selectedValue.top ?? "events") 
+      title: lastOpelated === "top"
+        ? getTextLabel(selectedValue.top ?? "events")
         : lastOpelated === "bottom"
         ? getTextLabel(selectedValue.bottom ?? "feeds")
         : lastOpelated === "sepPos"
-        ? t("components.uiModal.innerModals.homeTabLayout.selectedLabel_sepPos")
+        ? t("pages.setting_appearance.innerModals.homeTabLayout.selectedLabel_sepPos")
         : "",
       flex: 1,
     },
     {
-      title: t("components.uiModal.innerModals.homeTabLayout.button_apply"),
+      title: t("pages.setting_appearance.innerModals.homeTabLayout.button_apply"),
       onPress: () => {
         onSubmit?.(selectedValue);
         setOpen(false);
@@ -97,10 +97,11 @@ const HomeTabLayoutModal = ({ open, setOpen, defaultValue, onSubmit }: Props) =>
   ];
 
 
-  
+
 
   return (
       <GenericModal
+        size="large"
         showCloseButton
         open={open}
         onClose={() => setOpen(false)}
@@ -110,7 +111,7 @@ const HomeTabLayoutModal = ({ open, setOpen, defaultValue, onSubmit }: Props) =>
           <View style={styles.variantsContainer}>
             <View>
               <Text style={{ color: theme.colors.subText, textAlign: "center" }}>
-                {t("components.uiModal.innerModals.homeTabLayout.section_top")}
+                {t("pages.setting_appearance.innerModals.homeTabLayout.section_top")}
               </Text>
               <View style={styles.iconButtonContainer}>
                 {['friend-locations', 'feeds', 'events' ].map((value) => (
@@ -139,7 +140,7 @@ const HomeTabLayoutModal = ({ open, setOpen, defaultValue, onSubmit }: Props) =>
             </View>
             <View>
               <Text style={{ color: theme.colors.subText, textAlign: "center" }}>
-                {t("components.uiModal.innerModals.homeTabLayout.section_bottom")}
+                {t("pages.setting_appearance.innerModals.homeTabLayout.section_bottom")}
               </Text>
               <View style={styles.iconButtonContainer}>
                 {['friend-locations', 'feeds', 'events' ].map((value) => (
@@ -168,10 +169,10 @@ const HomeTabLayoutModal = ({ open, setOpen, defaultValue, onSubmit }: Props) =>
             </View>
           </View>
 
-          
-          <View style={styles.sepPosContainer}>  
+
+          <View style={styles.sepPosContainer}>
             <Text style={{ color: theme.colors.subText, textAlign: "center" }}>
-              {t("components.uiModal.innerModals.homeTabLayout.section_separatePos")}
+              {t("pages.setting_appearance.innerModals.homeTabLayout.section_separatePos")}
             </Text>
             <View style={styles.sliderContainer}>
               {/* ヘッダー部分: ラベルと現在の%値を横並び表示 */}
@@ -232,7 +233,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: spacing.small,
-    borderStyle: "solid", 
+    borderStyle: "solid",
     borderWidth: 1,
     borderRadius: radius.small,
   },

@@ -31,7 +31,7 @@ export default function LicenseModal({ open, setOpen }: Props) {
   const licenses = useMemo(() => {
     return Object.keys(rawLicenses).map((key) => {
       const item = rawLicenses[key as keyof typeof rawLicenses];
-      
+
       // parse "package-name@1.2.3"
       const atIndex = key.lastIndexOf('@');
       const name = key.substring(0, atIndex);
@@ -54,7 +54,7 @@ export default function LicenseModal({ open, setOpen }: Props) {
     };
 
     return (
-      <TouchableOpacity 
+      <TouchableOpacity
         style={[styles.itemContainer, { borderBottomColor: theme.colors.border }]}
         onPress={handlePress}
         disabled={!item.url}
@@ -63,7 +63,7 @@ export default function LicenseModal({ open, setOpen }: Props) {
           <Text style={[styles.name, { color: theme.colors.text }]}>{item.name}</Text>
           <Text style={[styles.version, { color: theme.colors.text }]}>v{item.version}</Text>
         </View>
-        
+
         <View style={styles.details}>
           <Text style={[styles.licenseType, { color: theme.colors.primary }]}>
             {item.licenses}
@@ -74,7 +74,7 @@ export default function LicenseModal({ open, setOpen }: Props) {
             </Text>
           )}
         </View>
-        
+
         {item.url && (
           <Text style={[styles.linkHint, { color: theme.colors.border }]}>
             {t("components.aboutModal.innerModals.licenses.link_to_repos")}
@@ -86,7 +86,7 @@ export default function LicenseModal({ open, setOpen }: Props) {
 
   return (
     <GenericModal
-      title={t("components.aboutModal.innerModals.licenses.title")}
+      title={t("components.aboutModal.innerModals.licenses.label")}
       showCloseButton
       open={open}
       onClose={() => setOpen(false)}

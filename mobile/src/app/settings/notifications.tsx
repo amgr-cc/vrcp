@@ -11,7 +11,7 @@ export default function Tmp() {
 
   return (
     <GenericScreen>
-      <Text style={{ color: theme.colors.text }}>Tmp</Text>
+      <Text style={{ color: theme.colors.text }}>notifications</Text>
     </GenericScreen>
   );
 }

@@ -3,9 +3,9 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { MenuItem } from "@/components/layout/type";
-import Feeds from "../subscreens/feeds";
-import Events from "../subscreens/events";
-import Notifications from "../subscreens/notifications";
+import Feeds from "../others/feeds";
+import Events from "../others/events";
+import Notifications from "../others/notifications";
 
 export default function Others() {
   const theme = useTheme();

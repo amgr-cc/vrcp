@@ -1,31 +1,18 @@
+import SettingItem, { SettingItemProps } from "@/components/features/settings/SettingItem";
+import ThemeModal, { getIconName as getIconNameCS } from "@/components/features/settings/appearance_innermodals/ThemeModal";
+import HomeTabLayoutModal, { getIconName as getIconNameHT } from "@/components/features/settings/appearance_innermodals/HomeTabLayoutModal";
+import CardViewColumnsModal, { getIconName as getIconNameCV } from "@/components/features/settings/appearance_innermodals/CardViewColumnsModal";
 import GenericModal from "@/components/layout/GenericModal";
+import GenericScreen from "@/components/layout/GenericScreen";
 import IconSymbol from "@/components/view/icon-components/IconView";
-import { SupportedIconNames } from "@/components/view/icon-components/utils";
-import LoadingIndicator from "@/components/view/LoadingIndicator";
-import globalStyles, { fontSize, radius, spacing } from "@/configs/styles";
-import { useCache } from "@/contexts/CacheContext";
+import { fontSize, spacing } from "@/configs/styles";
 import { useSetting } from "@/contexts/SettingContext";
-import { Button, Text } from "@react-navigation/elements";
+import { getUserLanguage, setUserLanguage } from "@/i18n";
 import { useTheme } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import SettingItem, { SettingItemProps } from "./components/SettingItem";
-import { ScrollView } from "react-native-gesture-handler";
-import ThemeModal, { getIconName as getIconNameCS } from "./ui_innermodals/ThemeModal";
-import HomeTabLayoutModal, { getIconName as getIconNameHT } from "./ui_innermodals/HomeTabLayoutModal";
-import CardViewColumnsModal, { getIconName as getIconNameCV } from "./ui_innermodals/CardViewColumnsModal";
-import { getUserLanguage, setUserLanguage } from "@/i18n";
 import { useTranslation } from "react-i18next";
-
-interface Props {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-}
-
-interface SectionProps {
-  title: string;
-  items: SettingItemProps[];
-}
+import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
+import SettingItemList, { SettingItemListContents } from "@/components/features/settings/SettingItemList";
 
 interface InnerModalOption<T> {
   open: boolean;
@@ -33,7 +20,7 @@ interface InnerModalOption<T> {
   onSubmit?: (value: T) => void;
 }
 
-const UIModal = ({ open, setOpen }: Props) => {
+export default function AppearanceSettings() {
   const theme = useTheme();
   const { t } = useTranslation();
   const { settings, saveSettings } = useSetting();
@@ -54,16 +41,16 @@ const UIModal = ({ open, setOpen }: Props) => {
     getUserLanguage().then(lang => {
       _tmpState[1](lang);
     });
-  }, []); 
+  }, []);
 
-  const sectionItems: SectionProps[] = [
+  const sectionItems: SettingItemListContents = [
     {
-      title: t("components.uiModal.groupLabel_appearance"),
+      title: t("pages.setting_appearance.groupLabel_appearance"),
       items: [
         {
           icon: "theme-light-dark",
-          title: t("components.uiModal.itemLabel_theme"),
-          description: t("components.uiModal.itemDescription_theme"),
+          title: t("pages.setting_appearance.itemLabel_theme"),
+          description: t("pages.setting_appearance.itemDescription_theme"),
           leading: (
             <IconSymbol
               name={getIconNameCS(uiOptions.theme.colorSchema)}
@@ -81,8 +68,8 @@ const UIModal = ({ open, setOpen }: Props) => {
         },
         {
           icon: "page-layout-body",
-          title: t("components.uiModal.itemLabel_homeTabLayout"),
-          description: t("components.uiModal.itemDescription_homeTabLayout"),
+          title: t("pages.setting_appearance.itemLabel_homeTabLayout"),
+          description: t("pages.setting_appearance.itemDescription_homeTabLayout"),
           leading: (
             <IconSymbol
               name={getIconNameHT(uiOptions.layouts.homeTabTopVariant)}
@@ -98,25 +85,25 @@ const UIModal = ({ open, setOpen }: Props) => {
               sepPos: uiOptions.layouts.homeTabSeparatePos,
             },
             onSubmit: (value) => {
-              saveSettings({ 
-                ...settings, 
-                uiOptions: { 
-                  ...uiOptions, 
-                  layouts: { 
-                    ...uiOptions.layouts, 
-                    homeTabTopVariant: value.top ?? uiOptions.layouts.homeTabTopVariant, 
-                    homeTabBottomVariant: value.bottom ?? uiOptions.layouts.homeTabBottomVariant, 
-                    homeTabSeparatePos: value.sepPos ?? uiOptions.layouts.homeTabSeparatePos, 
-                  } 
-                } 
+              saveSettings({
+                ...settings,
+                uiOptions: {
+                  ...uiOptions,
+                  layouts: {
+                    ...uiOptions.layouts,
+                    homeTabTopVariant: value.top ?? uiOptions.layouts.homeTabTopVariant,
+                    homeTabBottomVariant: value.bottom ?? uiOptions.layouts.homeTabBottomVariant,
+                    homeTabSeparatePos: value.sepPos ?? uiOptions.layouts.homeTabSeparatePos,
+                  }
+                }
               });
             }
           }),
         },
         {
           icon: "format-columns",
-          title: t("components.uiModal.itemLabel_cardViewColumns"),
-          description: t("components.uiModal.itemDescription_cardViewColumns"),
+          title: t("pages.setting_appearance.itemLabel_cardViewColumns"),
+          description: t("pages.setting_appearance.itemDescription_cardViewColumns"),
           leading: (
             <IconSymbol
               name={getIconNameCV(uiOptions.layouts.cardViewColumns)}
@@ -134,8 +121,8 @@ const UIModal = ({ open, setOpen }: Props) => {
         },
         // {
         //   icon: "account",
-        //   title: t("components.uiModal.itemLabel_friendColor"),
-        //   description: t("components.uiModal.itemDescription_friendColor"),
+        //   title: t("pages.setting_appearance.itemLabel_friendColor"),
+        //   description: t("pages.setting_appearance.itemDescription_friendColor"),
         //   leading: <ColorSquarePreview colors={[uiOptions.user.friendColor]} />,
         //   onPress: () => setFriendColorModal({
         //     open: true,
@@ -147,8 +134,8 @@ const UIModal = ({ open, setOpen }: Props) => {
         // },
         // {
         //   icon: "group",
-        //   title: t("components.uiModal.itemLabel_favoriteFriendsColors"),
-        //   description: t("components.uiModal.itemDescription_favoriteFriendsColors"),
+        //   title: t("pages.setting_appearance.itemLabel_favoriteFriendsColors"),
+        //   description: t("pages.setting_appearance.itemDescription_favoriteFriendsColors"),
         //   leading: <ColorSquarePreview colors={Object.values(uiOptions.user.favoriteFriendsColors)} />,
         //   onPress: () => setFavoriteFriendsColorsModal({
         //     open: true,
@@ -161,12 +148,12 @@ const UIModal = ({ open, setOpen }: Props) => {
       ]
     },
     {
-      title: t("components.uiModal.groupLabel_others"),
+      title: t("pages.setting_appearance.groupLabel_others"),
       items: [
         {
           icon: "language",
-          title: t("components.uiModal.itemLabel_language"),
-          description: t("components.uiModal.itemDescription_language"),
+          title: t("pages.setting_appearance.itemLabel_language"),
+          description: t("pages.setting_appearance.itemDescription_language"),
           onPress: async () => {
             const cur = await getUserLanguage()
             const newLang = cur === 'en' ? 'ja' : 'en';
@@ -184,38 +171,9 @@ const UIModal = ({ open, setOpen }: Props) => {
   ]
 
   return (
-    <GenericModal
-      title={t("components.uiModal.title")}
-      size="large"
-      showCloseButton
-      scrollable
-      open={open}
-      onClose={() => setOpen(false)}
-    >
-      {sectionItems.map((section, index) => (
-        <View key={`section-${index}`}>
-          <View style={styles.sectionHeaderContainer}>
-            <Text style={[styles.sectionHeaderText, { color: theme.colors.text }]}>
-              {section.title}
-            </Text>
-            <View style={[styles.sectionHeaderDivider, { borderBottomColor: theme.colors.border}]} />
-          </View>
-          <View style={styles.settingItemContainer}>
-            {section.items.map((item, idx) => (
-              <SettingItem 
-                style={[styles.settingItem, { borderBottomColor: theme.colors.border }]}
-                key={`section-${index}-item-${idx}`}
-                icon={item.icon}
-                title={item.title}
-                description={item.description}
-                leading={item.leading}
-                onPress={item.onPress}
-              />
-            ))}
-          </View>
-        </View>
-      ))}
-      
+    <GenericScreen scrollable >
+      <SettingItemList contents={sectionItems} />
+
 
       {/* inner Modals for each setting Items */}
 
@@ -240,7 +198,7 @@ const UIModal = ({ open, setOpen }: Props) => {
         onSubmit={cardViewColumnsModal.onSubmit}
       />
 
-    </GenericModal>
+    </GenericScreen>
   );
 };
 
@@ -253,11 +211,11 @@ const ColorSquarePreview = ({ colors }: { colors: string[] }) => {
       { marginRight: (colors.length - 1) * xOffset }
     ]}>
       {colors.map((color, index) => (
-        <View 
+        <View
           key={`color-square-${index}-color-${color}`}
           style={[
-            styles.colorSquare_square, 
-            { 
+            styles.colorSquare_square,
+            {
               backgroundColor: color,
               transform: [
                 { translateX: index * xOffset },
@@ -307,5 +265,3 @@ const styles = StyleSheet.create({
   },
 
 });
-
-export default UIModal;

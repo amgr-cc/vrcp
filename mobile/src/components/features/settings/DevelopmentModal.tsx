@@ -1,7 +1,7 @@
 import GenericModal from "@/components/layout/GenericModal";
 import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import SettingItem, { SettingItemProps } from "./components/SettingItem";
+import SettingItem, { SettingItemProps } from "./SettingItem";
 import { StyleSheet, Switch, View } from "react-native";
 import { Text } from "react-native";
 import { fontSize, spacing } from "@/configs/styles";
@@ -32,26 +32,26 @@ const DevelopmentModal = ({ open, setOpen }: Props) => {
           title: t("components.developmentModal.itemLabel_sendLogs"),
           description: t("components.developmentModal.itemDescription_sendLogs"),
           leading: (
-            <Switch 
+            <Switch
               value={settings.otherOptions.sendDebugLogs}
               onValueChange={(value) => {
                 saveSettings({otherOptions: {...settings.otherOptions, sendDebugLogs: value}});
               }}
             />
-          ) 
+          )
         },
         {
           icon: "code",
           title: t("components.developmentModal.itemLabel_json"),
           description: t("components.developmentModal.itemDescription_json"),
           leading: (
-            <Switch 
+            <Switch
               value={settings.otherOptions.enableJsonViewer}
               onValueChange={(value) => {
                 saveSettings({otherOptions: {...settings.otherOptions, enableJsonViewer: value}});
               }}
             />
-          ) 
+          )
         },
       ]
     }
@@ -59,12 +59,12 @@ const DevelopmentModal = ({ open, setOpen }: Props) => {
 
   return (
     <GenericModal
-      title={t("components.developmentModal.title")}
+      title={t("components.developmentModal.label")}
       showCloseButton
       size="large"
       open={open}
       onClose={() => setOpen(false)}
-    > 
+    >
       {sectionItems.map((section, index) => (
         <View key={`section-${index}`}>
           <View style={styles.sectionHeaderContainer}>
@@ -75,7 +75,7 @@ const DevelopmentModal = ({ open, setOpen }: Props) => {
           </View>
           <View style={styles.settingItemContainer}>
             {section.items.map((item, idx) => (
-              <SettingItem 
+              <SettingItem
                 style={[styles.settingItem, { borderBottomColor: theme.colors.border }]}
                 key={`section-${index}-item-${idx}`}
                 icon={item.icon}

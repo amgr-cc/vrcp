@@ -10,59 +10,58 @@ import { useTheme } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
-type ColorSchema = Setting["uiOptions"]["theme"]["colorSchema"];
+type CardViewColumns = Setting["uiOptions"]["layouts"]["cardViewColumns"];
 
 interface Props {
   open: boolean;
   setOpen: (v: boolean) => void;
-  defaultValue: ColorSchema | undefined;
-  onSubmit?: (value: ColorSchema) => void;
+  defaultValue: CardViewColumns | undefined;
+  onSubmit?: (value: CardViewColumns) => void;
 }
 
-export const getIconName = (v: ColorSchema): SupportedIconNames => {
-  if (v === 'light') return 'sunny';
-  if (v === 'dark') return 'dark-mode';
-  if (v === 'system') return 'theme-light-dark';
-  return 'theme-light-dark';
+
+export const getIconName = (v: CardViewColumns): SupportedIconNames => {
+  if (v === 1) return 'looks-one';
+  if (v === 2) return 'looks-two';
+  if (v === 3) return 'looks-3';
+  return 'square';
 };
 
 
 
-const ThemeModal = ({ open, setOpen, defaultValue, onSubmit }: Props) => {
+const CardViewColumnsModal = ({ open, setOpen, defaultValue, onSubmit }: Props) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const [ selectedValue, setSelectedValue ] = useState<ColorSchema>(defaultValue || 'system');
+  const [ selectedValue, setSelectedValue ] = useState<CardViewColumns>(defaultValue || 2);
 
   useEffect(() => {
     if (!defaultValue) return;
     setSelectedValue(defaultValue);
   }, [defaultValue]);
 
-  
-  const getButtonText = (v: ColorSchema): string => {
-    switch (v) {
-      case 'light':
-        return t("components.uiModal.innerModals.theme.option_light");
-      case 'dark':
-        return t("components.uiModal.innerModals.theme.option_dark");
-      case 'system':
-        return t("components.uiModal.innerModals.theme.option_system");
-      default:
-        return "";
-    }
+  const getButtonText = (v: CardViewColumns): string => {
+  switch (v) {
+    case 1:
+      return t("pages.setting_appearance.innerModals.cardViewColumns.option_1_columns");
+    case 2:
+      return t("pages.setting_appearance.innerModals.cardViewColumns.option_2_columns");
+    case 3:
+      return t("pages.setting_appearance.innerModals.cardViewColumns.option_3_columns");
+    default:
+      return "";
   }
+}
 
   const buttonItems: ButtonItemForFooter[] = [
     {
-      // use button as text display only 
+      // use button as text display only
       type: "text",
-      title: t("components.uiModal.innerModals.theme.maybe_requireRestart"),
+      title: t("pages.setting_appearance.innerModals.cardViewColumns.maybe_requireRestart"),
       flex: 1,
     },
     {
-      title: t("components.uiModal.innerModals.theme.button_apply"),
+      title: t("pages.setting_appearance.innerModals.cardViewColumns.button_apply"),
       onPress: () => {
         onSubmit?.(selectedValue);
         setOpen(false);
@@ -70,37 +69,43 @@ const ThemeModal = ({ open, setOpen, defaultValue, onSubmit }: Props) => {
     },
   ];
 
+
+
+
   return (
       <GenericModal
+        size="large"
         showCloseButton
         open={open}
         onClose={() => setOpen(false)}
         buttonItems={buttonItems}
       >
         <View style={styles.container}>
-          {['light', 'system', 'dark'].map((value) => (
+          {Array.from([1, 2, 3]).map((v) => (
             <TouchableOpacity
-              key={`color-schema-option-${value}`}
-              style={[styles.item, { borderColor: value === selectedValue ? theme.colors.primary : theme.colors.border }]}
+              key={`color-schema-option-${v}`}
+              style={[styles.item, { borderColor: v === selectedValue ? theme.colors.primary : theme.colors.border }]}
               onPress={() => {
-                setSelectedValue(value as ColorSchema);
+                setSelectedValue(v as CardViewColumns);
               }}
             >
               <IconSymbol
-                name={getIconName(value as ColorSchema)}
+                name={getIconName(v as CardViewColumns)}
                 size={48}
                 color={theme.colors.text}
               />
               <Text style={[{ color: theme.colors.text }]}>
-                {getButtonText(value as ColorSchema)}
+                {getButtonText(v as CardViewColumns)}
               </Text>
             </TouchableOpacity>
           ))}
         </View>
       </GenericModal>
-
   )
 }
+
+
+
 
 const styles = StyleSheet.create({
     // innermodal styles
@@ -114,7 +119,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: spacing.small,
-    borderStyle: "solid", 
+    borderStyle: "solid",
     borderWidth: 1,
     borderRadius: radius.small,
   },
@@ -122,4 +127,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default ThemeModal;
+export default CardViewColumnsModal;

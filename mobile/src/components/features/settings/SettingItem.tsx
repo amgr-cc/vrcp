@@ -8,6 +8,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 export interface SettingItemProps {
   icon: SupportedIconNames;
+  iconColor?: string;
   title: string;
   description?: string;
   leading?: React.ReactNode;
@@ -16,6 +17,7 @@ export interface SettingItemProps {
 }
 const SettingItem = ({
   icon,
+  iconColor,
   title,
   description,
   leading,
@@ -27,7 +29,7 @@ const SettingItem = ({
     <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
       <View style={[styles.container, rest.style]} {...omitObject(rest, 'style')}>
         <View style={styles.icon}>
-          <IconSymbol name={icon} size={fontSize.large} color={theme.colors.text} />
+          <IconSymbol name={icon} size={fontSize.large} color={iconColor ?? theme.colors.text} />
         </View>
         <View style={{ flex: 1 }}>
           <Text style={[styles.title, { color: theme.colors.text }]}>
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: spacing.medium
-  }, 
+  },
   title: {
     fontSize: fontSize.medium,
     fontWeight: "normal"
