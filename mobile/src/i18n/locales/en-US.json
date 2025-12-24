@@ -59,7 +59,6 @@
     },
     "others": {
       "label": "Others",
-      "menuLabel_notifications": "Notification",
       "tabLabel_feeds": "Feeds",
       "tabLabel_events": "Events",
       "tabLabel_notifications": "Notifications"
@@ -78,8 +77,7 @@
       "groupLabel_other": "Other",
       "itemLabel_about": "About",
       "itemDescription_about": "View application information and credits.",
-      "itemLabel_development": "Development Features",
-      "itemDescription_development": "Access development tools and options.",
+      "itemDescription_development": "Access development features and options.",
       "itemLabel_feedback": "Feedback",
       "itemDescription_feedback": "Send your feedback to the developer.",
       "groupLabel_account": "Account",
@@ -87,7 +85,8 @@
       "itemDescription_logout": "Logout from this app.",
       "logout_dialog_text": "Are you sure you want to logout?",
       "logout_dialog_confirm": "Logout",
-      "logout_dialog_cancel": "Cancel"
+      "logout_dialog_cancel": "Cancel",
+      "itemLabel_development": "Developper"
     },
     "setting_appearance": {
       "label": "Appearance Settings",
@@ -157,6 +156,7 @@
       "menuLabel_favoriteGroup_add": "Add to Favorite Group",
       "menuLabel_favoriteGroup_edit": "Edit Favorite Group",
       "menuLabel_note_edit": "Edit Note",
+      "menuLabel_invite_me": "Invite Myself",
       "menuLabel_invite_request": "Request Invite",
       "menuLabel_invite_send": "Send Invite",
       "menuLabel_json": "Raw JSON Data",
@@ -390,12 +390,13 @@
       }
     },
     "developmentModal": {
-      "label": "Developer Options",
-      "groupLabel_option": "Options (not implemented)",
+      "label": "Developer",
+      "groupLabel_debug": "debug",
       "itemLabel_json": "JSON Viewer",
       "itemDescription_json": "Enable JSON viewer for detail pages.",
       "itemLabel_sendLogs": "Send Logs",
-      "itemDescription_sendLogs": "Enable sending logs to developer."
+      "itemDescription_sendLogs": "Enable sending error logs to developer.",
+      "groupLabel_feature": "Developing Feature"
     },
     "feedbackModal": {
       "label": "Send Feedback",

@@ -35,6 +35,7 @@ import { useToast } from "@/contexts/ToastContext";
 import { useTranslation } from "react-i18next";
 import { TouchableEx } from "@/components/CustomElements";
 import { t } from "i18next";
+import { useSetting } from "@/contexts/SettingContext";
 
 type Owner =
   | { type: "user"; owner: UserLike }
@@ -43,6 +44,7 @@ type Owner =
 export default function InstanceDetail() {
   const { id } = useLocalSearchParams<{ id: string }>(); // must be locationStr (e.g. wrld_xxx:00000~region(jp))
   const { parsedLocation } = parseLocationString(id);
+  const { settings: { otherOptions: {enableJsonViewer} } } = useSetting();
   const vrc = useVRChat();
   const { t } = useTranslation();
   const { showToast } = useToast();
@@ -105,12 +107,19 @@ export default function InstanceDetail() {
 
   const menuItems: MenuItem[] = [
     {
-      type: "divider"
+      icon: "circle-medium",
+      title: "INVITE ME or REQUEST INVITE"
+      // onPress: () => {},
+    },
+    {
+      type: "divider",
+      hidden: !enableJsonViewer,
     },
     {
       icon: "code-json",
       title: t("pages.detail_instance.menuLabel_json"),
       onPress: () => setOpenJson(true),
+      hidden: !enableJsonViewer,
     },
   ];
 

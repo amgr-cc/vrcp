@@ -12,17 +12,8 @@ export default function Others() {
   const { t } = useTranslation ();
   const MaterialTab = createMaterialTopTabNavigator();
 
-
-  const menuItems: MenuItem[] = [
-    {
-      icon: "bell-outline",
-      title: t("pages.others.menuLabel_notifications"),
-      onPress: () => {}
-    }
-  ];
-
   return (
-    <GenericScreen menuItems={menuItems}>
+    <GenericScreen> {/* no menu items (add each Tab screen) */}
       <MaterialTab.Navigator
         screenOptions={{
           tabBarStyle: { backgroundColor: theme.colors.background },

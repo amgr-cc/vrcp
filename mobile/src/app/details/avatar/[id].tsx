@@ -19,16 +19,18 @@ import TagChips from "@/components/view/chip-badge/TagChips";
 import { useData } from "@/contexts/DataContext";
 import { MenuItem } from "@/components/layout/type";
 import ChangeFavoriteModal from "@/components/modals/ChangeFavoriteModal";
-import { RefreshControl } from "react-native-gesture-handler";
+import { enableExperimentalWebImplementation, RefreshControl } from "react-native-gesture-handler";
 import JsonDataModal from "@/components/modals/JsonDataModal";
 import ChangeAvatarModal from "@/components/modals/ChangeAvatarModal";
 import { useToast } from "@/contexts/ToastContext";
 import { useTranslation } from "react-i18next";
 import { TouchableEx } from "@/components/CustomElements";
+import { useSetting } from "@/contexts/SettingContext";
 
 export default function AvatarDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { showToast } = useToast();
+  const { settings: { otherOptions: {enableJsonViewer} } } = useSetting();
   const cache = useCache();
   const data = useData();
   const theme = useTheme();
@@ -72,20 +74,24 @@ export default function AvatarDetail() {
       onPress: () => setOpenChangeFavorite(true),
     },
     {
-      type: "divider"
+      type: "divider",
+      hidden: !isFavorite && avatar?.authorId !== data.currentUser.data?.id,
     },
     {
       icon: isCurrentAvatar ? "tshirt-crew-outline" : "tshirt-crew",
       title: isCurrentAvatar ? t("pages.detail_avatar.menuLabel_avatar_nowUsing") : t("pages.detail_avatar.menuLabel_avatar_changeTo"),
       onPress: () => !isCurrentAvatar && setOpenChangeAvatar(true),
+      hidden: !isFavorite && avatar?.authorId !== data.currentUser.data?.id,
     },
     {
-      type: "divider"
+      type: "divider",
+      hidden: !enableJsonViewer,
     },
     {
       icon: "code-json",
       title: t("pages.detail_avatar.menuLabel_json"),
       onPress: () => setOpenJson(true),
+      hidden: !enableJsonViewer,
     },
   ];
 

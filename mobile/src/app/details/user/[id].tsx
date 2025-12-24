@@ -26,9 +26,11 @@ import JsonDataModal from "@/components/modals/JsonDataModal";
 import { useToast } from "@/contexts/ToastContext";
 import { useTranslation } from "react-i18next";
 import { TouchableEx } from "@/components/CustomElements";
+import { useSetting } from "@/contexts/SettingContext";
 
 export default function UserDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { settings: { otherOptions: {enableJsonViewer} } } = useSetting();
   const vrc = useVRChat();
   const { t } = useTranslation();
   const cache = useCache();
@@ -141,24 +143,26 @@ export default function UserDetail() {
       hidden: freReqStatus !== "completed"
     },
     {
-      icon: "chat-question",
-      title: t("pages.detail_user.menuLabel_invite_request"),
+      icon: "circle-medium",
+      title: locationInfo?.iId ? t("pages.detail_user.menuLabel_invite_me") : t("pages.detail_user.menuLabel_invite_request"),
       // onPress: () => {},
       hidden: freReqStatus !== "completed"
     },
     {
-      icon: "chat-plus",
+      icon: "circle-medium",
       title: t("pages.detail_user.menuLabel_invite_send"),
       // onPress: () => {},
       hidden: freReqStatus !== "completed"
     },
     {
-      type: "divider"
+      type: "divider",
+      hidden: !enableJsonViewer,
     },
     {
       icon: "code-json",
       title: t("pages.detail_user.menuLabel_json"),
       onPress: () => setOpenJson(true),
+      hidden: !enableJsonViewer,
     },
 
   ];

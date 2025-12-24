@@ -1,4 +1,5 @@
 import GenericScreen from "@/components/layout/GenericScreen";
+import { MenuItem } from "@/components/layout/type";
 import MonthlyCalendarView from "@/components/view/calendarView/MonthlyColendarView";
 import ListViewEvent from "@/components/view/item-ListView/ListViewEvent";
 import LoadingIndicator from "@/components/view/LoadingIndicator";
@@ -161,8 +162,16 @@ export default function EventCalendar () {
   ), [theme.colors.text, t]);
 
 
+  const menuItems: MenuItem[] = [
+    {
+      icon: "circle-medium",
+      title: "SUBSCRIBING EVENTS",
+      // onPress: () => {},
+    }
+  ];
+
   return (
-    <GenericScreen>
+    <GenericScreen menuItems={menuItems}>
       <View style={styles.calendarContainer}>
         {isLoading && <LoadingIndicator absolute />}
         <MonthlyCalendarView

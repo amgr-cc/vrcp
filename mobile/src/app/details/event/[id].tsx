@@ -22,10 +22,12 @@ import { TouchableEx } from "@/components/CustomElements";
 import { routeToGroup } from "@/libs/route";
 import IconSymbol from "@/components/view/icon-components/IconView";
 import UserOrGroupChip from "@/components/view/chip-badge/UserOrGroupChip";
+import { useSetting } from "@/contexts/SettingContext";
 
 export default function EventDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [ groupId, calendarId ] = id?.split(":") ?? [];
+  const { settings: { otherOptions: {enableJsonViewer} } } = useSetting();
   const vrc = useVRChat();
   const { t } = useTranslation();
   const cache = useCache();
@@ -63,12 +65,19 @@ export default function EventDetail() {
 
   const menuItems: MenuItem[] = [
     {
-      type: "divider"
+      icon: "circle-medium",
+      title: "SUBSCRIBE or UNSUBSCRIBE THIS EVENT", // notify me
+      // onPress: () => {},
+    },
+    {
+      type: "divider",
+      hidden: !enableJsonViewer,
     },
     {
       icon: "code-json",
       title: t("pages.detail_event.menuLabel_json"),
       onPress: () => setOpenJson(true),
+      hidden: !enableJsonViewer,
     },
   ];
 

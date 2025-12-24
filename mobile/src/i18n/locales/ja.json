@@ -59,7 +59,6 @@
     },
     "others": {
       "label": "その他",
-      "menuLabel_notifications": "通知",
       "tabLabel_feeds": "フィード",
       "tabLabel_events": "イベント",
       "tabLabel_notifications": "通知"
@@ -78,8 +77,6 @@
       "groupLabel_other": "その他",
       "itemLabel_about": "アプリ情報",
       "itemDescription_about": "アプリ情報やクレジットを表示します。",
-      "itemLabel_development": "開発機能",
-      "itemDescription_development": "開発ツールやオプションにアクセスします。",
       "itemLabel_feedback": "フィードバック",
       "itemDescription_feedback": "開発者にフィードバックを送信します。",
       "groupLabel_account": "アカウント",
@@ -87,7 +84,9 @@
       "itemDescription_logout": "このアプリからログアウトします。",
       "logout_dialog_text": "ログアウトしてもよろしいですか？",
       "logout_dialog_confirm": "ログアウト",
-      "logout_dialog_cancel": "キャンセル"
+      "logout_dialog_cancel": "キャンセル",
+      "itemDescription_development": "開発中機能やオプションにアクセスします。",
+      "itemLabel_development": "ディベロッパー"
     },
     "setting_appearance": {
       "label": "表示設定",
@@ -172,7 +171,8 @@
       "userLocation_offline": "このユーザーはオフラインです...",
       "userLocation_private": "このユーザーはプライベートインスタンスにいます...",
       "userLocation_traveling": "このユーザーは移動中です...",
-      "userLocation_unknown": "情報が取得できませんでした"
+      "userLocation_unknown": "情報が取得できませんでした",
+      "menuLabel_invite_me": "自分を招待する"
     },
     "detail_avatar": {
       "label": "アバター詳細",
@@ -385,12 +385,13 @@
       }
     },
     "developmentModal": {
-      "label": "開発機能",
       "itemDescription_json": "詳細ページの JSON ビューアを有効にします。",
-      "groupLabel_option": "オプション (未実装)",
       "itemLabel_json": "JSONビューア",
-      "itemDescription_sendLogs": "開発者へのログの送信を有効にします。",
-      "itemLabel_sendLogs": "ログ送信"
+      "itemDescription_sendLogs": "開発者へのエラーログの送信を有効にします。",
+      "itemLabel_sendLogs": "ログ送信",
+      "groupLabel_feature": "開発中機能",
+      "label": "ディベロッパー",
+      "groupLabel_debug": "デバッグ"
     },
     "feedbackModal": {
       "label": "フィードバックを送信",

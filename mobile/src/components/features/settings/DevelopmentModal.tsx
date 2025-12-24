@@ -25,7 +25,7 @@ const DevelopmentModal = ({ open, setOpen }: Props) => {
 
   const sectionItems: SectionProps[] = [
     {
-      title: t("components.developmentModal.groupLabel_option"),
+      title: t("components.developmentModal.groupLabel_debug"),
       items: [
         {
           icon: "bug-outline",
@@ -53,6 +53,12 @@ const DevelopmentModal = ({ open, setOpen }: Props) => {
             />
           )
         },
+      ]
+    },
+    {
+      title: t("components.developmentModal.groupLabel_feature"),
+      items: [
+
       ]
     }
   ]

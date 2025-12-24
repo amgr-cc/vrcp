@@ -16,9 +16,11 @@ import { MenuItem } from "@/components/layout/type";
 import JsonDataModal from "@/components/modals/JsonDataModal";
 import { useToast } from "@/contexts/ToastContext";
 import { useTranslation } from "react-i18next";
+import { useSetting } from "@/contexts/SettingContext";
 
 export default function GroupDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { settings: { otherOptions: {enableJsonViewer} } } = useSetting();
   const vrc = useVRChat();
   const { t } = useTranslation();
   const cache = useCache();
@@ -46,12 +48,22 @@ export default function GroupDetail() {
 
   const menuItems: MenuItem[] = [
     {
-      type: "divider"
+      icon: "circle-medium",
+      title: "(REQUEST) JOIN GROUP or LEAVE GROUP",
+    },
+    {
+      icon: "circle-medium",
+      title: "GROUP INSTANCES",
+    },
+    {
+      type: "divider",
+      hidden: !enableJsonViewer,
     },
     {
       icon: "code-json",
       title: t("pages.detail_group.menuLabel_json"),
       onPress: () => setOpenJson(true),
+      hidden: !enableJsonViewer,
     },
   ];
 
