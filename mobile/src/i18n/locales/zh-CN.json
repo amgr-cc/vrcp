@@ -405,7 +405,6 @@
     "exitDialog": {
       "button_no": "不",
       "button_yes": "是的",
-      "label": "退出应用程序",
       "message": "您确定要退出该应用程序吗？"
     }
   }

@@ -405,7 +405,6 @@
     "exitDialog": {
       "button_no": "No",
       "button_yes": "Yes",
-      "label": "Exit App",
       "message": "Are you sure you want to exit the app?"
     }
   }

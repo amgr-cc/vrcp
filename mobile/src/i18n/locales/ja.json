@@ -405,7 +405,6 @@
     "exitDialog": {
       "button_no": "いいえ",
       "button_yes": "はい",
-      "label": "アプリの終了",
       "message": "アプリを終了してもよろしいですか?"
     }
   }

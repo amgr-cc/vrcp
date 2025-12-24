@@ -405,7 +405,6 @@
     "exitDialog": {
       "button_no": "아니요",
       "button_yes": "예",
-      "label": "앱 종료",
       "message": "앱을 종료하시겠습니까?"
     }
   }
