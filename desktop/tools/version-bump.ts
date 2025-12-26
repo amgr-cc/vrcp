@@ -4,10 +4,13 @@
  */
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import semver from 'semver';
 
 // --- Configuration ---
-const VERSIONS_PATH = path.join(__dirname, '../versions.json');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(path.dirname(__filename)); // desktop
+const VERSIONS_PATH = path.join(__dirname, 'versions.json');
 
 // --- Types ---
 interface UpdateEntry {

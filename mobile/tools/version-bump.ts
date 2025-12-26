@@ -5,9 +5,12 @@
 import fs from 'fs';
 import path from 'path';
 import semver from 'semver';
+import { fileURLToPath } from 'url';
 
 // --- Configuration ---
-const VERSIONS_PATH = path.join(__dirname, '../versions.json');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(path.dirname(__filename)); // mobile
+const VERSIONS_PATH = path.join(__dirname, 'versions.json');
 
 // --- Types ---
 interface UpdateEntry {
@@ -43,7 +46,7 @@ const main = () => {
     console.error('❌ versions.json not found.');
     process.exit(1);
   }
-  
+
   const rawData = fs.readFileSync(VERSIONS_PATH, 'utf8');
   const changelog: VersionsJson = JSON.parse(rawData);
 
@@ -52,9 +55,9 @@ const main = () => {
     // === OTA Mode ===
     // Add a new update entry to the TOP of the current native version
     console.log('Adding new draft for OTA update...');
-    
+
     const currentVersionBlock = changelog.versions[0];
-    
+
     const newUpdate: UpdateEntry = {
       date: getToday(),
       message: "[Draft] New OTA update description"
@@ -62,7 +65,7 @@ const main = () => {
 
     // Add to the beginning of the updates array
     currentVersionBlock.updates.unshift(newUpdate);
-    
+
     console.log(`Added draft to version ${currentVersionBlock.nativeVersion}`);
 
   } else if (mode === 'native') {
@@ -90,7 +93,7 @@ const main = () => {
 
     // Add to the beginning of the versions array
     changelog.versions.unshift(newVersionBlock);
-    
+
     console.log(`Created new native version block: ${nextVer}`);
   }
 
