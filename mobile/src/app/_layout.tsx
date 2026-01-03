@@ -24,12 +24,12 @@ import { registerBackgroundTaskAsync } from "@/tasks/bg-fetch";
 function RootLayout() {
   return (
     <>
-      <Stack initialRouteName="login" screenOptions={{ headerShown: false, gestureEnabled: true }}>
+      <Stack initialRouteName="index" screenOptions={{ headerShown: false, gestureEnabled: true }}>
         <Stack.Screen name="maintabs" options={{ headerShown: false }} />
         <Stack.Screen name="details" options={{ headerShown: false }} />
         <Stack.Screen name="settings" options={{ headerShown: false }} />
         <Stack.Screen name="others" options={{ headerShown: false }} />
-        <Stack.Screen name="login" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false }} />
       </Stack>
       {/* <ConfirmAtFirstDialog /> */}
     </>

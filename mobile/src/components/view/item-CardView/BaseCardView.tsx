@@ -48,16 +48,17 @@ const BaseCardView = <T,>({
         onLongPress={onLongPress}
         style={[styles.base, { backgroundColor: theme.colors.card }]}
       >
-          <CachedImage
-            localUriRef={localUriRef}
-            src={resolvedImageUrl}
-            style={[styles.image, rest.ImageStyle]}
-          />
-          <View style={[styles.footer, rest.FooterStyle, { backgroundColor: theme.colors.card }]}>
-            <Text style={[styles.title, rest.TitleStyle]} numberOfLines={numberOfLines}>
-              {resolvedTitle}
-            </Text>
-          </View>
+        <CachedImage
+          localUriRef={localUriRef}
+          src={resolvedImageUrl}
+          contentFit="cover"
+          style={[styles.image, rest.ImageStyle]}
+        />
+        <View style={[styles.footer, rest.FooterStyle, { backgroundColor: theme.colors.card }]}>
+          <Text style={[styles.title, rest.TitleStyle]} numberOfLines={numberOfLines}>
+            {resolvedTitle}
+          </Text>
+        </View>
         <View style={styles.overlap}>{OverlapComponents}</View>
       </TouchableEx>
     </View>
@@ -88,7 +89,6 @@ const styles = StyleSheet.create({
   },
   image: {
     aspectRatio: 16 / 9, //default
-    resizeMode: "cover",
     overflow: "hidden",
   },
   footer: {

@@ -6,10 +6,11 @@ import { MenuItem } from "@/components/layout/type";
 import Feeds from "../others/feeds";
 import EventCalendar from "../others/calendar";
 import Notifications from "../others/notifications";
+import Analytics from "../others/analytics";
 
 export default function Others() {
   const theme = useTheme();
-  const { t } = useTranslation ();
+  const { t } = useTranslation();
   const MaterialTab = createMaterialTopTabNavigator();
 
   return (
@@ -20,6 +21,11 @@ export default function Others() {
           tabBarIndicatorStyle: { backgroundColor: theme.colors.primary },
         }}
       >
+        <MaterialTab.Screen
+          name="analytics"
+          options={{ tabBarLabel: t("pages.others.tabLabel_analytics") }}
+          component={Analytics} //
+        />
         <MaterialTab.Screen
           name="events"
           options={{ tabBarLabel: t("pages.others.tabLabel_events") }}

@@ -63,6 +63,7 @@
     "others": {
       "label": "Others",
       "tabLabel_feeds": "Feeds",
+      "tabLabel_analytics": "Analytics",
       "tabLabel_events": "Events",
       "tabLabel_notifications": "Notifications"
     },
@@ -91,7 +92,6 @@
       "logout_dialog_cancel": "Cancel",
       "itemLabel_development": "Developper"
     },
-
     "setting_appearance": {
       "label": "Appearance Settings",
       "groupLabel_app": "App",
@@ -152,9 +152,6 @@
       "label": "Language Settings",
       "description": "Select Your Language "
     },
-
-
-
     "detail_user": {
       "label": "User Details",
       "menuLabel_friend_remove": "Remove Friend",
@@ -237,7 +234,6 @@
       "sectionLabel_owner": "Owner",
       "sectionLabel_description": "Description"
     },
-
     "detail_user_worlds": {
       "label": "User's Worlds",
       "no_worlds_found": "No worlds found for this user."
@@ -246,13 +242,16 @@
       "label": "User's Groups",
       "no_groups_found": "No groups found for this user."
     },
-
     "search": {
       "label": "Search Results",
       "searchbox_placeholder": "Search for worlds, groups, or users",
       "no_worlds_found": "No worlds found for '{{search}}'.",
       "no_groups_found": "No groups found for '{{search}}'.",
       "no_users_found": "No users found for '{{search}}'."
+    },
+    "analytics": {
+      "label": "Analytics",
+      "no_analytics": "No analytics data available."
     },
     "favorites": {
       "label": "Favorites",
